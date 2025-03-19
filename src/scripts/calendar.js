@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
       center: 'title',
       right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
     },
+    schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     initialView: 'resourceTimelineDay', // Default view
     aspectRatio: 1.5,
     resourceAreaColumns: [
