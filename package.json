@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "fullcalendar": "^6.1.15"
+  },
+  "type": "module"
+}
