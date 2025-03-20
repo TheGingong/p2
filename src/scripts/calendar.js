@@ -21,8 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     },
 
-    initialView: 'resourceTimelineDay', // Default view
-
     aspectRatio: 1.5,
     resourceAreaColumns: [
       {
