@@ -1,39 +1,12 @@
-
-
-testarray = [
-    {
-        title: 'title', 
-        start: '2025-03-20', 
-        end: '2025-03-23',
-        resourceIds: ['a']
-    },
-    {
-        title: 'title', 
-        start: '2025-03-21', 
-        end: '2025-03-25',
-        resourceIds: ['c']
-    },
-    {
-        title: 'hejmmeddie', 
-        start: '2025-03-18', 
-        end: '2025-03-24',
-        resourceIds: ['b'],
-        extendedProps: {
-            department: 'BioChemistry'
-          },
-          description: 'Lecture'
-    }
-
-]
-
 // addEvent (event objekt)
 /* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
 function allocate(testarray){
+    console.log(testarray)
     for (let i = 0; i < testarray.length; i++){
         calendar.addEvent({
             title: testarray[i].title, 
-            start: testarray[i].start, 
-            end: testarray[i].end,
+            start: testarray[i].startDate, 
+            end: testarray[i].endDate,
             resourceIds: [testarray[i].resourceIds],
             extendedProps: {
                 department: 'BioChemistry'
@@ -64,8 +37,8 @@ function yes(info) {
         modifiers: [{ name: 'offset', options: { offset: [0, 8] } }]
     });
 
-    // Show the tooltip on mouseenter
-    info.el.addEventListener('mouseenter', function () {
+    // Show the tooltip on mouseover
+    info.el.addEventListener('mouseover', function () {
         tooltip.style.visibility = 'visible';
         tooltip.style.zIndex = '1000'; // Ensure it appears in front of other elements
     });
@@ -77,7 +50,7 @@ function yes(info) {
 }
 
 
-
+window.yes = yes;
 
 
 

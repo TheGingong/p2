@@ -62,13 +62,14 @@ document.addEventListener('DOMContentLoaded', function() {
     ],
   
  
+    
 
     // Add the eventDidMount option here
     eventDidMount: function (info) {
       yes(info);
     }
 
-    
+
   });
 
 
