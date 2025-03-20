@@ -8,7 +8,21 @@ document.addEventListener('DOMContentLoaded', function() {
       right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
     },
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+
+    initialView: 'booking_view', // Default view
+    views: {
+      booking_view: {
+        type: 'resourceTimeline',
+        duration: {days: 7},
+        slotLabelInterval: {days:1},
+        slotLabelFormat: [{
+          weekday: 'long'
+        }]
+      }
+    },
+
     initialView: 'resourceTimelineDay', // Default view
+
     aspectRatio: 1.5,
     resourceAreaColumns: [
       {
