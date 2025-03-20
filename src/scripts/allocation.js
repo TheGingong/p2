@@ -26,7 +26,7 @@ testarray = [
 
 ]
 
-// addEvent (event)
+// addEvent (event objekt)
 /* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
 function allocate(testarray){
     for (let i = 0; i < testarray.length; i++){
@@ -45,6 +45,7 @@ function allocate(testarray){
 }
 
 
+// this is a function
 function yes(info) {
     // Create a tooltip element
     let tooltip = document.createElement('div');
