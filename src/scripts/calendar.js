@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
     ]
   });
 
-  window.calendar = calendar;
+
   calendar.render();
+  window.calendar = calendar;
 });
+
