@@ -10,9 +10,17 @@
 
 import { readFile } from 'fs';
 
-// calculate total rooms (regardless of floor)
-
+// reads json file, and allocates data in roomTypes object
+//         directory,   parse-type,   callback
 readFile('roomTypes.json', 'utf8', (err, data) => {
     if (err) throw err;
-    console.log(data);
+    let roomData = data
+    console.log(roomData);
     });
+
+// calculate total rooms
+function totalRooms () {
+    for (let rooms in roomsData.roomsTotal) {
+        //bomboclyat
+    }
+}
