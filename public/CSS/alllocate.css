@@ -1,0 +1,13 @@
+.custom-tooltip {
+    position: absolute;
+    background-color: rgb(255, 255, 128); /* White background */
+    color: #333; /* Dark text */
+    padding: 10px;
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    font-size: 14px;
+    pointer-events: none; /* Prevent interaction with the tooltip */
+    visibility: hidden; /* Initially hidden */
+    z-index: 1000; /* Ensure it appears in front of other elements */
+}
