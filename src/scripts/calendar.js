@@ -65,5 +65,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   calendar.render();
   window.calendar = calendar;
+
+
+  calendar.on('eventClick', function(info){
+    hej(info)
+  })
+
 });
 
