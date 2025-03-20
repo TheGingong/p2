@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
       right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
     },
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+
     initialView: 'booking_view', // Default view
     views: {
       booking_view: {
@@ -19,6 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }]
       }
     },
+
+    initialView: 'resourceTimelineDay', // Default view
+
     aspectRatio: 1.5,
     resourceAreaColumns: [
       {
