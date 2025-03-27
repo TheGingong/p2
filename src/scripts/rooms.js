@@ -21,6 +21,8 @@ readFile('roomTypes.json', 'utf8', (err, data) => {
 // calculate total rooms
 function totalRooms () {
     for (let rooms in roomsData.roomsTotal) {
-        //bomboclyat
+        //bomboclyatty
     }
 }
+
+// calculate total available rooms
