@@ -38,6 +38,7 @@ function createBookingBatch(batch) {
     } 
     
     console.log("Here is the array", array);
+    return array
 }
 
-createBookingBatch(20);
+window.createBookingBatch = createBookingBatch;

@@ -1,4 +1,6 @@
-testarray = [
+
+
+let testarray = [
     { startDate: '2025-04-08', endDate: '2025-04-17', resourceIds: 'a' },
     { startDate: '2025-02-24', endDate: '2025-03-11', resourceIds: 'b' },
     { startDate: '2025-12-31', endDate: '2026-01-09', resourceIds: 'c' },
@@ -21,6 +23,8 @@ testarray = [
     { startDate: '2025-04-02', endDate: '2025-04-06', resourceIds: 't' }
   ]
 
+//window.testarray = testarray;
+
 // addEvent (event objekt)
 /* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
 // Date format {yeah-month-day} eg. {2025-06-03} 
@@ -36,6 +40,11 @@ function allocate(testarray){
             
         });
     }
+}
+
+function nextDay(){
+    let newBatch = createBookingBatch(20)
+    allocate(newBatch)
 }
 
 
@@ -70,6 +79,29 @@ function tooltipMaker(info) {
     });
 }
 
+
+function printJson(data, filename) {
+    const jsonString = JSON.stringify(data, null, 2);
+    const fs = require('fs');
+    fs.writeFileSync(filename, jsonString)
+}
+
+function sortByDate(bookings) {
+    const sortedBookings = [...bookings].sort((a, b) => {
+      const dateA = new Date(a.startDate);
+      const dateB = new Date(b.startDate);
+      return dateA - dateB;
+    });
+
+    printJson(sortedBookings, 'sorted_bookings.json');
+
+    return sortedBookings;
+  }
+
+
+
 // Makes tooltipmaker global by adding it as a property to the window object
 window.tooltipMaker = tooltipMaker;
-
+window.allocate = allocate;
+window.sortByDate = sortByDate
+window.nextDay = nextDay
