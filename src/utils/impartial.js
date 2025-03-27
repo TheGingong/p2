@@ -1,43 +1,72 @@
 function createBookingBatch(batch) {
-    let checkInYear, checkOutYear, checkInMonth, checkOutMonth, checkInDay, checkOutDay, startDate, endDate, duration, bookingObject, resourceIds;
-    let array = [];
+    let checkOutYear, checkInMonth, checkOutMonth, checkInDay, checkOutDay, daysInMonth, startDate, endDate, stayDuration, totalDays, isMonthOverflow, currentBookingObject, preferences, resourceIds;
+    let bookingBatches = [];
     let currentDay = new Date();
-    let months = [31,28,31,30,31,30,31,31,30,31,30,31];
-    checkInYear = currentDay.getFullYear();
+    let checkInYear = currentDay.getFullYear();
     
-    for (let i = 0; i < batch; i++) {
-        checkInMonth = Math.floor((Math.random() * 12) + 1)
-        let daysInMonth = months[checkInMonth-1]
-        checkInDay = Math.floor((Math.random() * daysInMonth) + 1);
-        duration = Math.floor((Math.random() * 19) + 1);
-
-        if (checkInDay + duration > daysInMonth) {
-            checkOutMonth = (checkInMonth + 1) % 12;
-            checkOutDay = (checkInDay+duration)-daysInMonth
-            if (checkInMonth + 1 > 12) {
-                checkOutYear = checkInYear + 1;
-            } else {
-                checkOutYear = checkInYear;
-            }
-        } else {
-            checkOutMonth = checkInMonth;
-            checkOutYear = checkInYear;
-            checkOutDay = (checkInDay+duration)
-        }
+    return new Promise((resolve, reject) => {
+        try {
+            for (let i = 0; i < batch; i++) {
+                // Needs to be revised to handle current date and upcoming days booking batches. (talk in the group on how you want to handle it)
+                checkInMonth = Math.floor((Math.random() * 12) + 1);
+                daysInMonth = getDaysInMonth(checkInYear, checkInMonth);
+                checkInDay = Math.floor((Math.random() * daysInMonth) + 1);
+                stayDuration = Math.floor((Math.random() * 19) + 1);
+                totalDays = checkInDay + stayDuration;
+                isMonthOverflow = totalDays > daysInMonth;
         
-        startDate = `${checkInYear}-${String(checkInMonth).padStart(2, '0')}-${String(checkInDay).padStart(2, '0')}`;
-        endDate = `${checkOutYear}-${String(checkOutMonth).padStart(2, '0')}-${String(checkOutDay).padStart(2, '0')}`;
+                // Logic that checks for overflow in days, months and year. Assigns the correct check-out information.
+                if (isMonthOverflow) {
+                    checkOutDay = totalDays - daysInMonth;
+                    checkOutMonth = checkInMonth === 12 ? 1 : checkInMonth + 1;
+                    checkOutYear = checkInMonth === 12 ? checkInYear + 1 : checkInYear;
+                } else {
+                    checkOutMonth = checkInMonth;
+                    checkOutYear = checkInYear;
+                    checkOutDay = totalDays;
+                }
+                
+                // Properties of the current booking object gets initialized
+                startDate = `${checkInYear}-${String(checkInMonth).padStart(2, '0')}-${String(checkInDay).padStart(2, '0')}`;
+                endDate = `${checkOutYear}-${String(checkOutMonth).padStart(2, '0')}-${String(checkOutDay).padStart(2, '0')}`;
+                preferences = ["Possible preferences"];
+                
+                // Needs to be deleted later
+                resourceIds = String.fromCharCode('a'.charCodeAt(0) + i);
+            
+                // Appends the properties to the current booking object and pushes it into the array of booking batches
+                currentBookingObject = {startDate, endDate, resourceIds, preferences, stayDuration};
+                bookingBatches.push(currentBookingObject);
+            } 
 
-        resourceIds = String.fromCharCode('a'.charCodeAt(0) + i);
-    
-        bookingObject = {startDate, endDate, resourceIds};
-        array.push(bookingObject);
-    
-        console.log("Here is booking object: ", bookingObject);
-        console.log("Start date: ", startDate, "End date: ", endDate);
-    } 
-    
-    console.log("Here is the array", array);
+            // Resolves if no errors and returns array of booking batches
+            resolve(bookingBatches);
+        
+        } catch (error) {
+            // Catches any errors there might be
+            reject(error);
+        }
+    })
 }
 
-createBookingBatch(20);
+// Function that gets the amount of days in a specific month and year
+function getDaysInMonth(year, month) {
+    return new Date(year, month, 0).getDate();
+  }
+  
+// Example function!! Simulates a function used in e.g. a button (next batch)
+async function calling() {
+    try {
+        let data = [];
+        console.log("Calling promise");
+        data = await createBookingBatch(20);
+        console.log(data);
+    } catch (error) {
+        console.error("You got an error:", error);
+    }
+}
+
+calling();
+
+// This will run before the data is received from createBookingBatch
+console.log("Testing async");
