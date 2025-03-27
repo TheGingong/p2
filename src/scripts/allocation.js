@@ -1,4 +1,25 @@
-
+testarray = [
+    { startDate: '2025-04-08', endDate: '2025-04-17', resourceIds: 'a' },
+    { startDate: '2025-02-24', endDate: '2025-03-11', resourceIds: 'b' },
+    { startDate: '2025-12-31', endDate: '2026-01-09', resourceIds: 'c' },
+    { startDate: '2025-11-10', endDate: '2025-11-16', resourceIds: 'd' },
+    { startDate: '2025-11-12', endDate: '2025-11-16', resourceIds: 'e' },
+    { startDate: '2025-02-21', endDate: '2025-02-25', resourceIds: 'f' },
+    { startDate: '2025-02-07', endDate: '2025-02-11', resourceIds: 'g' },
+    { startDate: '2025-09-10', endDate: '2025-09-18', resourceIds: 'h' },
+    { startDate: '2025-08-28', endDate: '2025-09-12', resourceIds: 'i' },
+    { startDate: '2025-09-30', endDate: '2025-10-11', resourceIds: 'j' },
+    { startDate: '2025-09-27', endDate: '2025-10-07', resourceIds: 'k' },
+    { startDate: '2025-06-12', endDate: '2025-06-29', resourceIds: 'l' },
+    { startDate: '2025-09-10', endDate: '2025-09-15', resourceIds: 'm' },
+    { startDate: '2025-06-18', endDate: '2025-06-21', resourceIds: 'n' },
+    { startDate: '2025-05-01', endDate: '2025-05-16', resourceIds: 'o' },
+    { startDate: '2025-02-13', endDate: '2025-02-22', resourceIds: 'p' },
+    { startDate: '2025-03-03', endDate: '2025-03-07', resourceIds: 'q' },
+    { startDate: '2025-07-20', endDate: '2025-07-23', resourceIds: 'r' },
+    { startDate: '2025-06-21', endDate: '2025-07-05', resourceIds: 's' },
+    { startDate: '2025-04-02', endDate: '2025-04-06', resourceIds: 't' }
+  ]
 
 // addEvent (event objekt)
 /* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
@@ -11,10 +32,7 @@ function allocate(testarray){
             start: testarray[i].startDate, 
             end: testarray[i].endDate,
             resourceIds: [testarray[i].resourceIds],
-            extendedProps: {
-                department: 'BioChemistry'
-              },
-              description: 'Lecture'
+            description: 'Lecture'
             
         });
     }
@@ -22,7 +40,7 @@ function allocate(testarray){
 
 
 // this is a function
-function tooltipmaker(info) {
+function tooltipMaker(info) {
     // Create a tooltip element
     let tooltip = document.createElement('div');
     tooltip.className = 'custom-tooltip'; // Match the CSS class
@@ -53,5 +71,5 @@ function tooltipmaker(info) {
 }
 
 // Makes tooltipmaker global by adding it as a property to the window object
-window.tooltipmaker = tooltipmaker;
+window.tooltipMaker = tooltipMaker;
 
