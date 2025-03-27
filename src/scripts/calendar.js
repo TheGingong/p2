@@ -59,9 +59,32 @@ document.addEventListener('DOMContentLoaded', function() {
       { id: 'x', title: 'Room 24', occupancy: 4 },
       { id: 'y', title: 'Room 25', occupancy: 4 },
       { id: 'z', title: 'Room 26', occupancy: 4 }
-    ]
+    ],
+  
+ 
+    
+
+    // Add the eventDidMount option here
+    eventDidMount: function (info) {
+      yes(info);
+    }
+
+
   });
 
-  window.calendar = calendar;
+
+
+
+
+
   calendar.render();
+  window.calendar = calendar;
+
+
+  /*calendar.on('eventClick', function(info){
+    hej(info)
+  }) */
+
+
 });
+
