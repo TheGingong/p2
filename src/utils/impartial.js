@@ -54,6 +54,7 @@ function getDaysInMonth(year, month) {
     return new Date(year, month, 0).getDate();
   }
   
+// Example function!! Simulates a function used in e.g. a button (next batch)
 async function calling() {
     try {
         let data = [];
@@ -66,3 +67,6 @@ async function calling() {
 }
 
 calling();
+
+// This will run before the data is received from createBookingBatch
+console.log("Testing async");
