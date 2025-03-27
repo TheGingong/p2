@@ -2,6 +2,7 @@
 
 // addEvent (event objekt)
 /* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
+// Date format {yeah-month-day} eg. {2025-06-03} 
 function allocate(testarray){
     console.log(testarray)
     for (let i = 0; i < testarray.length; i++){
@@ -51,21 +52,6 @@ function tooltipmaker(info) {
     });
 }
 
+// Makes tooltipmaker global by adding it as a property to the window object
+window.tooltipmaker = tooltipmaker;
 
-window.yes = yes;
-
-
-
-
-function hej(info) {
-    let eventObj = info.event;
-    console.log("hej")
-    console.log(eventObj)
-    console.log(info)
-    let tooltip = new bootstrap.Tooltip(info.el, {
-        title: info.event.extendedProps.description,
-        placement: 'top',
-        trigger: 'hover',
-        container: 'body'
-    });
-}

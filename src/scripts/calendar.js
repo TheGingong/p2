@@ -64,9 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
  
     
 
-    // Add the eventDidMount option here
+    // When mouse hover over event, call tooltipmakerfunktion
     eventDidMount: function (info) {
-      yes(info);
+      tooltipmaker(info);
     }
 
 
