@@ -36,6 +36,7 @@ const serverName="http://localhost:3000"
 
 /* ***                 Setup Serving of files ***                  */ 
 
+// Change this to /public when we got it working with scripts outside of public folder!!!!!!!!!
 const publicResources="/public";
 //secture file system access as described on 
 //https://nodejs.org/en/knowledge/file-system/security/introduction/

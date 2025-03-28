@@ -3,19 +3,44 @@
   <head>
     <meta charset='utf-8' />
 
-    <link rel="stylesheet" href="../public/CSS/alllocate.css">
+    <link rel="stylesheet" href="CSS/alllocate.css">
     <script src="https://unpkg.com/@popperjs/core@2"></script>
 
-    <script src='../src/scripts/allocation.js'></script>
-    <script src='../src/scripts/allocation.js'></script>
-    <input type='button' value='Allocate' onclick='allocate(testarray)' />
+    <input type='button' id = "knap" value='Allocate' onclick="allocateAction()" />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.15/index.global.min.js'></script>
-    <script src='../src/scripts/calendar.js'></script>
-    <script src='../src/scripts/calendar.js'></script>
+    <script src="js/calendar.js"></script>
 
   </head>
   <body>
     <div id='calendar'></div>
   </body>
+
+  <script>
+    // filepath: c:\Users\david\Desktop\Vscode projects\p2 1.0\P2_rep\public\js\calendar.js
+
+function allocateAction() {
+    fetch('/allocate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'allocate' }),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log('Allocation successful:', data);
+            // Handle the response data (e.g., update the calendar)
+        })
+        .catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+  </script>
+
 
 </html>

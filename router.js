@@ -20,7 +20,22 @@ startServer();
         let pathElements=queryPath.split("/"); 
         console.log(pathElements[1]);
          switch(pathElements[1]){
-          // ADD CASES FOR POST  
+          // ADD CASES FOR POST
+          case "allocate": {
+            // Perform allocation logic here
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk;
+            });
+            req.on('end', () => {
+                const requestData = JSON.parse(body);
+                console.log('Allocation request received:', requestData);
+              // Example response
+                const responseData = { success: true, message: 'Allocation completed' };
+                jsonResponse(res, responseData);
+            });
+            break;
+          }  
           default: 
             console.error("Resource doesn't exist");
             reportError(res, new Error(NoResourceError)); 
@@ -33,15 +48,8 @@ startServer();
         //USE "sp" from above to get query search parameters
         switch(pathElements[1]){     
           case "": // "/"
-             fileResponse(res,"/HTML/index.html");
+             fileResponse(res,"/html/index.html");
              break;
-          case "date": {// date
-            let date=new Date();
-            console.log(date);
-            jsonResponse(res,date);
-          }
-          break;
-
           default: //for anything else we assume it is a file to be served
             fileResponse(res, req.url);
           break;
