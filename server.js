@@ -23,7 +23,7 @@ const hostname = 'localhost';
 const port = 3000;
 
 // Localhost
-const serverName="http://localhost:3230"
+const serverName="http://localhost:3000"
 
 // Offical server
 //const serverName="https://cs-25-dat-2-03.p2datsw.cs.aau.dk:3230";
