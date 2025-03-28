@@ -20,13 +20,13 @@ import {processReq,ValidationError, NoResourceError} from "./router.js";
 export {startServer,extractJSON, extractForm, fileResponse, htmlResponse,jsonResponse,errorResponse,reportError};
 
 const hostname = 'localhost';
-const port = 3230;
+const port = 3000;
 
 // Localhost
-// const serverName="http://localhost:3000"
+const serverName="http://localhost:3000"
 
 // Offical server
-const serverName="https://cs-25-dat-2-03.p2datsw.cs.aau.dk:3230";
+//const serverName="https://cs-25-dat-2-03.p2datsw.cs.aau.dk:3230";
 
 
 /* ***************************************************************************  
@@ -36,7 +36,8 @@ const serverName="https://cs-25-dat-2-03.p2datsw.cs.aau.dk:3230";
 
 /* ***                 Setup Serving of files ***                  */ 
 
-const publicResources="public/";
+// Change this to /public when we got it working with scripts outside of public folder!!!!!!!!!
+const publicResources="/";
 //secture file system access as described on 
 //https://nodejs.org/en/knowledge/file-system/security/introduction/
 const rootFileSystem=process.cwd();

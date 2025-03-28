@@ -20,12 +20,7 @@ startServer();
         let pathElements=queryPath.split("/"); 
         console.log(pathElements[1]);
          switch(pathElements[1]){
-          case "bmi-records": //just to be nice
-            extractJSON(req)
-            .then(bmiData => validateBMIRecordForm(bmiData))
-            .then(validBmiData => jsonResponse(res,recordBMI(validBmiData)))
-            .catch(err=>reportError(res,err));
-            break;  
+          // ADD CASES FOR POST  
           default: 
             console.error("Resource doesn't exist");
             reportError(res, new Error(NoResourceError)); 
@@ -37,34 +32,9 @@ startServer();
         console.log(pathElements);
         //USE "sp" from above to get query search parameters
         switch(pathElements[1]){     
-          case "": // "/"
-             fileResponse(res,"/html/bmi.html");
+          case "/": // "/"
+             fileResponse(res,"public/html/index.html");
              break;
-          case "date": {// date
-            let date=new Date();
-            console.log(date);
-            jsonResponse(res,date);
-          }
-          break;
-          case "bmi-records":
-          try { 
-            if((pathElements.length===2) && (searchParms.toString().length===0)) { // GET /bmi-records => return entire DB
-                jsonResponse(res,getEntries());
-            } else 
-            if ((pathElements.length===2) && (searchParms.toString().length>0)){ // "/bmi-records?name=xxx"
-                  let validBMIStatData=validateBMIStatSearchParams(searchParms);
-                  jsonResponse(res,getBMIStats(validBMIStatData.userName));
-            } else 
-            if(pathElements.length===3){ //"/bmi-records/name"
-              let validBMIUser=validateBMIStatName(pathElements[2]);
-              jsonResponse(res,getBMIStats(validBMIUser));  
-            }
-            else //resource does not exist
-             reportError(res, new Error(NoResourceError));
-          }catch(error){
-            reportError(res,error)
-          } 
-          break;
           default: //for anything else we assume it is a file to be served
             fileResponse(res, req.url);
           break;
@@ -75,5 +45,3 @@ startServer();
        reportError(res, new Error(NoResourceError)); 
     } //end switch method
   }
-  
-  
