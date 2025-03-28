@@ -20,12 +20,7 @@ startServer();
         let pathElements=queryPath.split("/"); 
         console.log(pathElements[1]);
          switch(pathElements[1]){
-          case "bmi-records": //just to be nice
-            extractJSON(req)
-            .then(bmiData => validateBMIRecordForm(bmiData))
-            .then(validBmiData => jsonResponse(res,recordBMI(validBmiData)))
-            .catch(err=>reportError(res,err));
-            break;  
+          // ADD CASES FOR POST  
           default: 
             console.error("Resource doesn't exist");
             reportError(res, new Error(NoResourceError)); 
@@ -57,5 +52,3 @@ startServer();
        reportError(res, new Error(NoResourceError)); 
     } //end switch method
   }
-  
-  
