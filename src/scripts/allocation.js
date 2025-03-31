@@ -20,7 +20,7 @@ function allocate(testarray){
 
 
 // this is a function
-function yes(info) {
+function tooltipMaker(info) {
     // Create a tooltip element
     let tooltip = document.createElement('div');
     tooltip.className = 'custom-tooltip'; // Match the CSS class
@@ -47,24 +47,5 @@ function yes(info) {
     // Hide the tooltip on mouseleave
     info.el.addEventListener('mouseleave', function () {
         tooltip.style.visibility = 'hidden';
-    });
-}
-
-
-window.yes = yes;
-
-
-
-
-function hej(info) {
-    let eventObj = info.event;
-    console.log("hej")
-    console.log(eventObj)
-    console.log(info)
-    let tooltip = new bootstrap.Tooltip(info.el, {
-        title: info.event.extendedProps.description,
-        placement: 'top',
-        trigger: 'hover',
-        container: 'body'
     });
 }
