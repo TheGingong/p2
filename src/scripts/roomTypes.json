@@ -1,0 +1,49 @@
+{"hotelStats":{
+
+},
+    
+"roomsTotal" : 
+    {"single2": 50,
+    "queen1": 50,
+    "single1Queen1": 70,
+    "single2Queen1": 0,
+    "queen2": 0,
+    "queen3": 0},
+
+"roomTypes": 
+    [{"type":"single2",
+    "guests": 2,
+    "singles": 2,
+    "queens": 0,
+    "floors":{"1st": 10, "2nd": 10, "3rd": 10, "4th": 10, "5th": 10}},
+
+    {"type":"queen1",
+    "guests": 2,
+    "singles": 0,
+    "queens": 1,
+    "floors":{"1st": 10, "2nd": 10, "3rd": 10, "4th": 10, "5th": 10}},
+
+    {"type": "single1Queen1",
+    "guests": 3,
+    "singles": 1,
+    "queens": 1,
+    "floors":{"1st": 14, "2nd": 14, "3rd": 14, "4th": 14, "5th": 14}},
+
+    {"type": "single2Queen1",
+    "guests": 4,
+    "singles": 2,
+    "queens": 1,
+    "floors":{"1st": 20, "2nd": 20, "3rd": 20, "4th": 20, "5th": 20}},
+
+    {"type": "queen2",
+    "guests": 4,
+    "singles": 0,
+    "queens": 2,
+    "floors":{"1st": 6, "2nd": 6, "3rd": 6, "4th": 6, "5th": 6}},
+
+    {"type": "queen3",
+    "guests": 6,
+    "singles": 0,
+    "queens": 3,
+    "floors":{"1st": 4, "2nd": 4, "3rd": 4, "4th": 4, "5th": 4}}]}
+
