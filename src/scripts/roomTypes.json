@@ -17,6 +17,7 @@
     "queens": 0,
     "floors":[]},
 
+
     {"type":"queen1",
     "guests": 2,
     "singles": 0,
