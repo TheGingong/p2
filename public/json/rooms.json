@@ -1,0 +1,26 @@
+{
+"roomTypes": 
+    [{"roomNumber": "1",
+    "guests": 2,
+    "amenities": ["floor1", "s2q0", "seaview"]},
+
+    {"roomNumber": "2",
+    "guests": 2,
+    "amenities": ["floor1", "s0q1", "regular"]},
+
+    {"roomNumber": "3",
+    "guests": 3,
+    "amenities": ["floor1", "s1q1", "seaview"]},
+
+    {"roomNumber": "4",
+    "guests": 4,
+    "amenities": ["floor1", "s2q1", "regular"]},
+
+    {"roomNumber": "5",
+    "guests": 4,
+    "amenities": ["floor1", "s0q2", "seaview"]},
+
+    {"roomNumber": "6",
+    "guests": 6,
+    "amenities": ["floor1", "s0q3", "regular"]}]
+}
