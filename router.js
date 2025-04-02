@@ -1,7 +1,7 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
 import {allocate} from "./public/js/allocation.js"
-import { Rooms, Bookings } from "./src/getInfo.js"
+import { Rooms, Bookings } from "./src/utils/getInfo.js"
 import { storeBatch } from "./src/utils/impartial.js";
 
 const ValidationError="Validation Error";
