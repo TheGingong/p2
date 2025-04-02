@@ -2,6 +2,28 @@ export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
+import {allocate} from "./public/js/allocation.js"
+import { Rooms, Bookings } from "./src/getInfo.js"
+
+
+let testarray = [
+  {
+    startDate: '2025-03-11',
+    endDate: '2025-03-27',
+    resourceIds: 'a',
+    preferences: [ 'Possible preferences' ],
+    stayDuration: 4
+  },
+  {
+    startDate: '2025-04-19',
+    endDate: '2025-04-22',
+    resourceIds: 'b',
+    preferences: [ 'Possible preferences' ],
+    stayDuration: 3
+  }] 
+
+
+
 
 startServer();
 /* *********************************************************************
@@ -33,6 +55,10 @@ startServer();
               // Example response
                 const responseData = { success: true, message: 'Allocation completed' };
                 jsonResponse(res, responseData);
+
+
+                
+
             });
             break;
           }  
@@ -50,6 +76,23 @@ startServer();
           case "": // "/"
              fileResponse(res,"/html/index.html");
              break;
+          
+          case "allocate": {
+            jsonResponse(res, testarray);
+            break;
+          }
+
+          case "rooms": {
+            if (Rooms) {
+                jsonResponse(res, Rooms);
+            } else {
+                console.error("Rooms data is not loaded yet.");
+                jsonResponse(res, { error: "Rooms data is not available." });
+            }
+            break;
+        }
+
+
           default: //for anything else we assume it is a file to be served
             fileResponse(res, req.url);
           break;

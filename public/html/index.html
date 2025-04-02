@@ -9,37 +9,36 @@
     <input type='button' id="knap" value='allocate' onclick="allocateAction()" />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.15/index.global.min.js'></script>
     <script src="js/calendar.js"></script>
-
   </head>
   <body>
     <div id='calendar'></div>
   </body>
 
-  <script>
+  <script type="module">
+    import { allocate } from '../js/allocation.js';
 
-function allocateAction() {
-    fetch('allocate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ action: 'allocate' }),
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
+    function allocateAction() {
+        fetch('allocate', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         })
-        .then((data) => {
-            console.log('Allocation successful:', data);
-            // Handle the response data (e.g., update the calendar)
-        })
-        .catch((error) => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-}
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Allocation data received:', data);
+                // Call the allocate function with the fetched data
+                allocate(data);
+            })
+            .catch((error) => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+    window.allocateAction = allocateAction;
   </script>
-
-
 </html>
