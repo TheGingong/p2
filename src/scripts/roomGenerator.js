@@ -9,7 +9,7 @@ let maxGuests = 5; // maximum guests for largest room (-1 because we add in the 
 // and write them into the json file through an array
 async function generateRooms () {
     // define file path for rooms.json file
-    const roomsPath = "../../public/json/rooms.json";
+    const roomsPath = "../json/rooms.json";
 
     // prepare to write a bunch of data 
     await fs.writeFile(roomsPath, "[\n", "utf8");
