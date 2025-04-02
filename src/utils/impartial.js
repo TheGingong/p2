@@ -62,7 +62,7 @@ async function writeJSON() {
         let data = [];
         console.log("Calling promise");
         data = await createBookingBatch(20);
-        fs.writeFile("../../public/json/bookings.json", data, (err)=>{
+        fs.writeFile("../json/bookings.json", data, (err)=>{
             if (err){
                 console.error(err);
                 return;
