@@ -43,16 +43,15 @@ startServer();
          switch(pathElements[1]){
           // ADD CASES FOR POST
           // Post endpoint for the generation of batches
-          case "batch": {
+          case "batch":
             storeBatch()
             .then((result) => {
               jsonResponse(res, result);
             })
             .catch((err) => {
-              reportError(res, new Error(err));
-            }
+              reportError(res, new Error(err));          
+            })
             break;
-          }
           default: 
             console.error("Resource doesn't exist");
             reportError(res, new Error(NoResourceError)); 
@@ -67,11 +66,10 @@ startServer();
           case "": // "/"
              fileResponse(res,"/html/index.html");
              break;
-          case "allocate": {
+          case "allocate":
             jsonResponse(res, testarray);
             break;
-          }
-          case "rooms": {
+          case "rooms":
             if (Rooms) {
                 jsonResponse(res, Rooms);
             } else {
@@ -79,7 +77,6 @@ startServer();
                 jsonResponse(res, { error: "Rooms data is not available." });
             }
             break;
-        }
           default: //for anything else we assume it is a file to be served
             fileResponse(res, req.url);
           break;
