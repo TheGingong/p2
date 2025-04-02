@@ -2,43 +2,71 @@
 <html lang='en'>
   <head>
     <meta charset='utf-8' />
-
     <link rel="stylesheet" href="css/allocate.css">
     <script src="https://unpkg.com/@popperjs/core@2"></script>
-
-    <input type='button' id="knap" value='allocate' onclick="allocateAction()" />
+    <input type="button" id="allocateButton_id" value="allocate">
+    <input type="button" id="batchButton_id" value="generate batch">
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.15/index.global.min.js'></script>
     <script src="js/calendar.js"></script>
   </head>
   <body>
     <div id='calendar'></div>
   </body>
-
   <script type="module">
+    // Import needed for allocate (use of calendar in html file)
     import { allocate } from '../js/allocation.js';
 
+    // Event listeners and handlers for the buttons
+    let allocateElem = document.querySelector("#allocateButton_id");
+    allocateElem.addEventListener("click", allocateAction);
+
+    let batchElem = document.querySelector("#batchButton_id");
+    batchElem.addEventListener("click", generateBatches);
+
+    // Allocate function called upon button click. Used later to allocate bookings into calendar.
     function allocateAction() {
-        fetch('allocate', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log('Allocation data received:', data);
-                // Call the allocate function with the fetched data
-                allocate(data);
-            })
-            .catch((error) => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+      fetch('allocate', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      })
+          .then((response) => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+          })
+          .then((data) => {
+              console.log('Allocation data received:', data);
+              // Call the allocate function with the fetched data, that allocates bookings into calendar
+              allocate(data);
+          })
+          .catch((error) => {
+              console.error('There was a problem with the fetch operation:', error);
+          });
     }
     window.allocateAction = allocateAction;
+
+    function generateBatches() {
+      // Sending POST request to router.js, as we are creating batches on the server side
+      fetch('batch', {
+        method: "POST"
+      })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((result) => {
+            // Reponse in form of text that the batch was generated
+            console.log('Batch generated:', result);
+            alert(`${result.message}\nGenerated batch:\n${result.data}`);
+        })
+        .catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+      }
   </script>
 </html>

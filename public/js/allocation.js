@@ -1,5 +1,6 @@
 // addEvent (event objekt)
 /* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
+export {allocate}
 
 function allocate(testarray){
     console.log(testarray)
@@ -17,6 +18,3 @@ function allocate(testarray){
         });
     }
 }
-
-
-export{allocate}

@@ -1,5 +1,10 @@
+import fs from 'fs/promises'
+export { storeBatch }
+
 function createBookingBatch(batch) {
-    let checkOutYear, checkInMonth, checkOutMonth, checkInDay, checkOutDay, daysInMonth, startDate, endDate, stayDuration, totalDays, isMonthOverflow, currentBookingObject, preferences, resourceIds;
+    let checkOutYear, checkInMonth, checkOutMonth, checkInDay, checkOutDay, daysInMonth, 
+    startDate, endDate, stayDuration, totalDays, isMonthOverflow, currentBookingObject, 
+    preferences, guestsNumber, resourceIds;
     let bookingBatches = [];
     let currentDay = new Date();
     let checkInYear = currentDay.getFullYear();
@@ -29,19 +34,22 @@ function createBookingBatch(batch) {
                 // Properties of the current booking object gets initialized
                 startDate = `${checkInYear}-${String(checkInMonth).padStart(2, '0')}-${String(checkInDay).padStart(2, '0')}`;
                 endDate = `${checkOutYear}-${String(checkOutMonth).padStart(2, '0')}-${String(checkOutDay).padStart(2, '0')}`;
-                preferences = ["Possible preferences"];
                 
+                // Generating guests
+                guestsNumber = Math.floor((Math.random() * 4) + 1);
+
                 // Needs to be deleted later
-                resourceIds = String.fromCharCode('a'.charCodeAt(0) + i);
-            
+                resourceIds = i
+
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {startDate, endDate, resourceIds, preferences, stayDuration};
+                currentBookingObject = {startDate, endDate, guestsNumber, resourceIds, stayDuration};
                 bookingBatches.push(currentBookingObject);
             } 
 
             // Resolves if no errors and returns array of booking batches
-            resolve(bookingBatches);
-        
+            // Creates JSON return from the array of objects bookingBatches
+            let jsonBookingBatches = JSON.stringify(bookingBatches, null, 2);
+            resolve(jsonBookingBatches);
         } catch (error) {
             // Catches any errors there might be
             reject(error);
@@ -54,19 +62,14 @@ function getDaysInMonth(year, month) {
     return new Date(year, month, 0).getDate();
   }
   
-// Example function!! Simulates a function used in e.g. a button (next batch)
-async function calling() {
+// Function that generates the batches and places it inside a JSON file
+async function storeBatch() {
     try {
-        let data = [];
         console.log("Calling promise");
-        data = await createBookingBatch(20);
-        console.log(data);
+        const data = await createBookingBatch(20);
+        await fs.writeFile("src/json/bookings.json", data);
+        return { message: "Batch filled.", data };
     } catch (error) {
-        console.error("You got an error:", error);
+        return { error: "Batch generation failed." };
     }
 }
-
-calling();
-
-// This will run before the data is received from createBookingBatch
-console.log("Testing async");
