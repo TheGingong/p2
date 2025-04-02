@@ -1,3 +1,5 @@
+import fs from 'fs'
+
 function createBookingBatch(batch) {
     let checkOutYear, checkInMonth, checkOutMonth, checkInDay, checkOutDay, daysInMonth, startDate, endDate, stayDuration, totalDays, isMonthOverflow, currentBookingObject, preferences, resourceIds;
     let bookingBatches = [];
@@ -29,18 +31,18 @@ function createBookingBatch(batch) {
                 // Properties of the current booking object gets initialized
                 startDate = `${checkInYear}-${String(checkInMonth).padStart(2, '0')}-${String(checkInDay).padStart(2, '0')}`;
                 endDate = `${checkOutYear}-${String(checkOutMonth).padStart(2, '0')}-${String(checkOutDay).padStart(2, '0')}`;
-                preferences = ["Possible preferences"];
                 
                 // Needs to be deleted later
-                resourceIds = String.fromCharCode('a'.charCodeAt(0) + i);
-            
+                resourceIds = i
+
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
                 currentBookingObject = {startDate, endDate, resourceIds, preferences, stayDuration};
                 bookingBatches.push(currentBookingObject);
             } 
 
             // Resolves if no errors and returns array of booking batches
-            resolve(bookingBatches);
+            let jsonBookingBatches = JSON.stringify(bookingBatches, null, 2);
+            resolve(jsonBookingBatches);
         
         } catch (error) {
             // Catches any errors there might be
@@ -55,18 +57,25 @@ function getDaysInMonth(year, month) {
   }
   
 // Example function!! Simulates a function used in e.g. a button (next batch)
-async function calling() {
+async function writeJSON() {
     try {
         let data = [];
         console.log("Calling promise");
         data = await createBookingBatch(20);
-        console.log(data);
+        fs.writeFile("../../public/json/bookings.json", data, (err)=>{
+            if (err){
+                console.error(err);
+                return;
+            }
+            console.log("File written successfully")
+            })
+        
     } catch (error) {
         console.error("You got an error:", error);
     }
 }
 
-calling();
+writeJSON();
 
 // This will run before the data is received from createBookingBatch
 console.log("Testing async");
