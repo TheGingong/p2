@@ -1,7 +1,7 @@
 {
 "roomTypes": 
-    [{"roomNumber": "1",
-    "guests": 2,
+    [{"roomNumber": "",
+    "guests": "",
     "amenities": ["floor1", "s2q0", "seaview"]},
 
     {"roomNumber": "2",

@@ -20,12 +20,11 @@ fetch('rooms', {
 
       data.roomTypes.forEach(room => {
           resources.push({
-              id: room.roomNumber,   // Use room number as the unique ID
-              title: room.roomNumber, // Display both type & number
-              occupancy: room.guests // Extra info
+              id: room.roomNumber || "Not read from JSON",   // Fallback values, in case undefined, null or other is passed
+              title: room.roomNumber || "Not read from JSON", 
+              occupancy: room.guests || "Not read from JSON",
           });
       });
-
 
     document.addEventListener('DOMContentLoaded', function() {
       let calendarEl = document.getElementById('calendar');
