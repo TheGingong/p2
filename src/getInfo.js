@@ -19,8 +19,8 @@ async function loadData() {
 // Load data at startup
 await loadData();
 
-console.log("Rooms Loaded:", Rooms);
-console.log("Bookings Loaded:", Bookings);
+//console.log("Rooms Loaded:", Rooms);
+//console.log("Bookings Loaded:", Bookings);
 // Now, Rooms and Bookings will have data after loading
 
 export { Rooms, Bookings };

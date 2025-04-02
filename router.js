@@ -3,6 +3,7 @@ import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorRe
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
 import {allocate} from "./public/js/allocation.js"
+import { Rooms, Bookings } from "./src/getInfo.js"
 
 
 let testarray = [
@@ -80,6 +81,17 @@ startServer();
             jsonResponse(res, testarray);
             break;
           }
+
+          case "rooms": {
+            if (Rooms) {
+                jsonResponse(res, Rooms);
+            } else {
+                console.error("Rooms data is not loaded yet.");
+                jsonResponse(res, { error: "Rooms data is not available." });
+            }
+            break;
+        }
+
 
           default: //for anything else we assume it is a file to be served
             fileResponse(res, req.url);

@@ -1,3 +1,36 @@
+
+fetch('rooms', {
+  method: 'GET',
+  headers: {
+      'Content-Type': 'application/json',
+  },
+})
+  .then((response) => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+  .then((data) => {
+      //console.log('Allocation data received:', data);
+      console.log("Hello")
+      // Call the allocate function with the fetched data
+      data.roomTypes.forEach(room => {
+        console.log(`Room Number: ${room.roomNumber}`);
+        console.log(`Guests: ${room.guests}`);
+        console.log(`Amenities: ${room.amenities.join(", ")}`);
+        console.log("-".repeat(20));
+    });
+    
+  })
+  .catch((error) => {
+      console.error('There was a problem with the fetch operation:', error);
+  });
+
+
+console.log
+
+
 document.addEventListener('DOMContentLoaded', function() {
   let calendarEl = document.getElementById('calendar');
 
