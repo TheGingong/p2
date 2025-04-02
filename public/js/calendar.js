@@ -1,4 +1,8 @@
+// Creates calender with the fullCalender library
+// Fetches rooms from rooms.JSON and inserts into calender
+// Creates tooltips for mouse hovers
 
+// Makes a 'GET' request for the server, to request room data from JSON file
 fetch('rooms', {
   method: 'GET',
   headers: {
@@ -12,55 +16,53 @@ fetch('rooms', {
       return response.json();
   })
   .then((data) => {
-      //console.log('Allocation data received:', data);
-      console.log("Hello")
-      // Call the allocate function with the fetched data
       // Map roomTypes to FullCalendar resources
-      let resources = [];
-
+      let roomResources = [];
+      // Pushes room data to our roomResources array
       data.roomTypes.forEach(room => {
-          resources.push({
+          roomResources.push({
               id: room.roomNumber || "Not read from JSON",   // Fallback values, in case undefined, null or other is passed
               title: room.roomNumber || "Not read from JSON", 
-              occupancy: room.guests || "Not read from JSON",
+              roomSize: room.guests || "Not read from JSON",
           });
       });
-
+      // Event listener that listens after the HTML page has been loaded and deferred scripts have been executed
+      // calenderEl is created using the fullCalender library
     document.addEventListener('DOMContentLoaded', function() {
       let calendarEl = document.getElementById('calendar');
-    
       let calendar = new FullCalendar.Calendar(calendarEl, {
         headerToolbar: {
           left: 'today prev,next',
           center: 'title',
           right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
         },
-        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // Public key for private use
     
         initialView: 'booking_view', // Default view
-        views: {
+        views: { // Initialization of calender setup, a default 7 day calender
           booking_view: {
             type: 'resourceTimeline',
             duration: {days: 7},
             slotLabelInterval: {days:1},
             slotLabelFormat: [{
-              weekday: 'long'
+              weekday: 'long' // Format for day titles
             }]
           }
         },
     
         aspectRatio: 1.5,
+        // Creates columns on the far left, for rooms and room sizes
         resourceAreaColumns: [
           {
             field: 'title',
             headerContent: 'Room'
           },
           {
-            field: 'occupancy',
-            headerContent: 'Occupancy'
+            field: 'roomSize',
+            headerContent: 'Room size'
           }
         ],
-        resources: resources,
+        resources: roomResources, // Insert array to resources
       
         
         
@@ -69,26 +71,11 @@ fetch('rooms', {
         eventDidMount: function (info) {
           tooltipMaker(info);
         }
-    
-    
       });
-    
-    
-    
-    
-    
-    
-      calendar.render();
-      window.calendar = calendar;
-    
-    
-      /*calendar.on('eventClick', function(info){
-        hej(info)
-      }) */
-    
-    
-    });
 
+      calendar.render(); // Renders the calender
+      window.calendar = calendar; // Makes calender global by making it property of a global object
+    });
     
   })
   .catch((error) => {
@@ -97,9 +84,7 @@ fetch('rooms', {
 
 
 
-
-
-// this is a function
+// This function creates tooltips for mousehover over bookings
 function tooltipMaker(info) {
   // Create a tooltip element
   let tooltip = document.createElement('div');

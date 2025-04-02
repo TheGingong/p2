@@ -1,10 +1,12 @@
-import { readFile } from 'fs/promises';
+import { readFile } from 'fs/promises'; // Imports function readFile from File System library
 
+// 
 let Rooms = null;
 let Bookings = null;
 
 async function loadData() {
     try {
+        // Calls readFile on bookings and rooms respectively
         const roomsData = await readFile('src/json/rooms.json', 'utf8');
         const bookingsData = await readFile('src/json/bookings.json', 'utf8');
 
