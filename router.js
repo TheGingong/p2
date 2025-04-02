@@ -2,6 +2,23 @@ export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
+import { storeBatch } from "./src/utils/impartial.js";
+
+let testarray = [
+  {
+    startDate: '2025-03-11',
+    endDate: '2025-03-27',
+    resourceIds: 'a',
+    preferences: [ 'Possible preferences' ],
+    stayDuration: 4
+  },
+  {
+    startDate: '2025-04-19',
+    endDate: '2025-04-22',
+    resourceIds: 'b',
+    preferences: [ 'Possible preferences' ],
+    stayDuration: 3
+  }] 
 
 startServer();
 /* *********************************************************************
@@ -21,21 +38,17 @@ startServer();
         console.log(pathElements[1]);
          switch(pathElements[1]){
           // ADD CASES FOR POST
-          case "allocate": {
-            // Perform allocation logic here
-            let body = '';
-            req.on('data', chunk => {
-                body += chunk;
-            });
-            req.on('end', () => {
-                const requestData = JSON.parse(body);
-                console.log('Allocation request received:', requestData);
-              // Example response
-                const responseData = { success: true, message: 'Allocation completed' };
-                jsonResponse(res, responseData);
+          // Post endpoint for the generation of batches
+          case "batch": {
+            storeBatch()
+            .then((result) => {
+              jsonResponse(res, result);
+            })
+            .catch((err) => {
+              reportError(res, new Error(err));
             });
             break;
-          }  
+          }
           default: 
             console.error("Resource doesn't exist");
             reportError(res, new Error(NoResourceError)); 
@@ -49,7 +62,11 @@ startServer();
         switch(pathElements[1]){     
           case "": // "/"
              fileResponse(res,"/html/index.html");
-             break;
+             break;   
+          case "allocate": {
+            jsonResponse(res, testarray);
+            break;
+          }
           default: //for anything else we assume it is a file to be served
             fileResponse(res, req.url);
           break;
