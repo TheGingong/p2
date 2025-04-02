@@ -12,14 +12,14 @@ let testarray = [
   {
     startDate: '2025-03-11',
     endDate: '2025-03-27',
-    resourceIds: 'a',
+    resourceIds: '1',
     preferences: [ 'Possible preferences' ],
     stayDuration: 4
   },
   {
-    startDate: '2025-04-19',
-    endDate: '2025-04-22',
-    resourceIds: 'b',
+    startDate: '2025-03-19',
+    endDate: '2025-03-22',
+    resourceIds: '2',
     preferences: [ 'Possible preferences' ],
     stayDuration: 3
   }] 
