@@ -1,9 +1,13 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
-const ValidationError="Validation Error";
-const NoResourceError="No Such Resource";
+import {allocate} from "./public/js/allocation.js"
+import { Rooms, Bookings } from "./src/getInfo.js"
 import { storeBatch } from "./src/utils/impartial.js";
 
+const ValidationError="Validation Error";
+const NoResourceError="No Such Resource";
+
+// Delete soon
 let testarray = [
   {
     startDate: '2025-03-11',
@@ -46,7 +50,7 @@ startServer();
             })
             .catch((err) => {
               reportError(res, new Error(err));
-            });
+            }
             break;
           }
           default: 
@@ -62,11 +66,20 @@ startServer();
         switch(pathElements[1]){     
           case "": // "/"
              fileResponse(res,"/html/index.html");
-             break;   
+             break;
           case "allocate": {
             jsonResponse(res, testarray);
             break;
           }
+          case "rooms": {
+            if (Rooms) {
+                jsonResponse(res, Rooms);
+            } else {
+                console.error("Rooms data is not loaded yet.");
+                jsonResponse(res, { error: "Rooms data is not available." });
+            }
+            break;
+        }
           default: //for anything else we assume it is a file to be served
             fileResponse(res, req.url);
           break;
