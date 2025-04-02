@@ -15,12 +15,16 @@ fetch('rooms', {
       //console.log('Allocation data received:', data);
       console.log("Hello")
       // Call the allocate function with the fetched data
+      // Map roomTypes to FullCalendar resources
+      let resources = [];
+
       data.roomTypes.forEach(room => {
-        console.log(`Room Number: ${room.roomNumber}`);
-        console.log(`Guests: ${room.guests}`);
-        console.log(`Amenities: ${room.amenities.join(", ")}`);
-        console.log("-".repeat(20));
-    });
+          resources.push({
+              id: room.roomNumber,   // Use room number as the unique ID
+              title: room.roomNumber, // Display both type & number
+              occupancy: room.guests // Extra info
+          });
+      });
 
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -57,36 +61,9 @@ fetch('rooms', {
             headerContent: 'Occupancy'
           }
         ],
-        resources: [
-          { id: 'a', title: 'Room 1', occupancy: 1 },
-          { id: 'b', title: 'Room 2', occupancy: 1 },
-          { id: 'c', title: 'Room 3', occupancy: 1 },
-          { id: 'd', title: 'Room 4', occupancy: 1 },
-          { id: 'e', title: 'Room 5', occupancy: 1 },
-          { id: 'f', title: 'Room 6', occupancy: 1 },
-          { id: 'g', title: 'Room 7', occupancy: 1 },
-          { id: 'h', title: 'Room 8', occupancy: 1 },
-          { id: 'i', title: 'Room 9', occupancy: 2 },
-          { id: 'j', title: 'Room 10', occupancy: 2 },
-          { id: 'k', title: 'Room 11', occupancy: 2 },
-          { id: 'l', title: 'Room 12', occupancy: 2 },
-          { id: 'm', title: 'Room 13', occupancy: 2 },
-          { id: 'n', title: 'Room 14', occupancy: 2 },
-          { id: 'o', title: 'Room 15', occupancy: 3 },
-          { id: 'p', title: 'Room 16', occupancy: 3 },
-          { id: 'q', title: 'Room 17', occupancy: 3 },
-          { id: 'r', title: 'Room 18', occupancy: 3 },
-          { id: 's', title: 'Room 19', occupancy: 3 },
-          { id: 't', title: 'Room 20', occupancy: 3 },
-          { id: 'u', title: 'Room 21', occupancy: 3 },
-          { id: 'v', title: 'Room 22', occupancy: 3 },
-          { id: 'w', title: 'Room 23', occupancy: 4 },
-          { id: 'x', title: 'Room 24', occupancy: 4 },
-          { id: 'y', title: 'Room 25', occupancy: 4 },
-          { id: 'z', title: 'Room 26', occupancy: 4 }
-        ],
+        resources: resources,
       
-     
+        
         
     
         // Add the eventDidMount option here
