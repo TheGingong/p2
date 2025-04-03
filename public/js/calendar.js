@@ -10,6 +10,7 @@ fetch('rooms', {
   },
 })
   .then((response) => {
+    console.log("test1")
       if (!response.ok) {
           throw new Error('Network response was not ok');
       }
@@ -17,13 +18,16 @@ fetch('rooms', {
   })
   .then((data) => {
       // Map roomTypes to FullCalendar resources
+      console.log("test2")
       let roomResources = [];
+      console.log("data received from rooms endpoint")
+
       // Pushes room data to our roomResources array
       data.roomTypes.forEach(room => {
-          roomResources.push({
+              roomResources.push({
               id: room.roomNumber || "Not read from JSON",   // Fallback values, in case undefined, null or other is passed
               title: room.roomNumber || "Not read from JSON", 
-              roomSize: room.guests || "Not read from JSON",
+              roomSize: room.roomGuests || "Not read from JSON",
           });
       });
       // Event listener that listens after the HTML page has been loaded and deferred scripts have been executed

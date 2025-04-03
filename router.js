@@ -12,14 +12,14 @@ let testarray = [
   {
     startDate: '2025-03-11',
     endDate: '2025-03-27',
-    resourceIds: '1',
+    resourceIds: '101',
     preferences: [ 'Possible preferences' ],
     stayDuration: 4
   },
   {
     startDate: '2025-03-19',
     endDate: '2025-03-22',
-    resourceIds: '2',
+    resourceIds: '102',
     preferences: [ 'Possible preferences' ],
     stayDuration: 3
   }] 
@@ -67,7 +67,7 @@ startServer();
              fileResponse(res,"/html/index.html");
              break;
           case "allocate":
-            jsonResponse(res, testarray);
+            jsonResponse(res, Bookings);
             break;
           case "rooms":
             if (Rooms) {
