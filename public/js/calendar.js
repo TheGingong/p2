@@ -35,21 +35,24 @@ fetch('rooms', {
     document.addEventListener('DOMContentLoaded', function() {
       let calendarEl = document.getElementById('calendar');
       let calendar = new FullCalendar.Calendar(calendarEl, {
-        headerToolbar: {
-          left: 'today prev,next',
-          center: 'title',
-          right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
-        },
+        //headerToolbar: {
+        //  left: 'today prev,next',
+        //  center: 'title',
+        //  right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
+        //},
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // Public key for private use
     
         initialView: 'booking_view', // Default view
         views: { // Initialization of calender setup, a default 7 day calender
           booking_view: {
             type: 'resourceTimeline',
-            duration: {days: 7},
+            duration: {month: 1},
             slotLabelInterval: {days:1},
-            slotLabelFormat: [{
-              weekday: 'long' // Format for day titles
+              slotLabelFormat: [{
+              weekday: 'short',
+              day: 'numeric',
+              month: 'numeric',
+               // Format for day titles
             }]
           }
         },
