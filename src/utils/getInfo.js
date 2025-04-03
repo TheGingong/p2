@@ -1,19 +1,34 @@
 import { readFile } from 'fs/promises'; // Imports function readFile from File System library
-export { roomsInfo, bookingsInfo, loadBookings };
+export { roomsInfo, bookingsInfo, loadBookings, loadRooms };
 
 let roomsInfo = null;
 let bookingsInfo = null;
+
+async function loadRooms() {
+    try {
+        // Calls readFile on bookings and rooms respectively
+        const roomsData = await readFile('src/json/rooms.json', 'utf8');
+
+        roomsInfo = JSON.parse(roomsData);
+
+        return {roomsInfo}; // Return the loaded data
+    } catch (err) {
+        console.error("Error reading files:", err);
+        throw err; // Ensure errors are propagated
+    }
+}
+
+await loadRooms()
+
 
 async function loadBookings() {
     try {
         // Calls readFile on bookings and rooms respectively
         const bookingsData = await readFile('src/json/bookings.json', 'utf8');
-        const roomsData = await readFile('src/json/rooms.json', 'utf8');
 
-        roomsInfo = JSON.parse(roomsData);
         bookingsInfo = JSON.parse(bookingsData);
 
-        return { roomsInfo, bookingsInfo }; // Return the loaded data
+        return {bookingsInfo}; // Return the loaded data
     } catch (err) {
         console.error("Error reading files:", err);
         throw err; // Ensure errors are propagated

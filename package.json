@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dayjs": "^1.11.13",
     "fullcalendar": "^6.1.15",
     "fullcalendar-scheduler": "^6.1.15"
   },
