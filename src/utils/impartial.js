@@ -12,7 +12,7 @@ function createBookingBatch(batch) {
     
     return new Promise((resolve, reject) => {
         try {
-            for (let i = 0; i < batch; i++) {
+            for (let i = 1, j = 1; i < batch; i++) {
                 // Needs to be revised to handle current date and upcoming days booking batches. (talk in the group on how you want to handle it)
                 checkInMonth = Math.floor((Math.random() * 12) + 1);
                 daysInMonth = getDaysInMonth(checkInYear, checkInMonth);
@@ -40,11 +40,16 @@ function createBookingBatch(batch) {
                 guestsNumber = Math.floor((Math.random() * 4) + 1);
 
                 // Needs to be deleted later
-                room = i+1 > 10 ? 1 : i+1
-                if (room === 1){
-                    floor += 1
+                let room = i % 11
+                if (room === 0){
+                    j += 1
+                    i++
+                    resourceIds = generateRoomNumber(j,room+1)
+                } else {
+                    resourceIds = generateRoomNumber(j,room)
                 }
-                resourceIds = generateRoomNumber(floor,room)
+                
+                console.log(i,resourceIds)
 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
                 currentBookingObject = {startDate, endDate, guestsNumber, resourceIds, stayDuration};
@@ -78,3 +83,5 @@ async function storeBatch() {
         return { error: "Batch generation failed." };
     }
 }
+
+createBookingBatch(20)
