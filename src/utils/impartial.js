@@ -1,4 +1,5 @@
 import fs from 'fs/promises'
+import { generateRoomNumber } from '../scripts/roomGenerator.js';
 export { storeBatch }
 
 function createBookingBatch(batch) {
@@ -11,9 +12,9 @@ function createBookingBatch(batch) {
     
     return new Promise((resolve, reject) => {
         try {
-            for (let i = 0; i < batch; i++) {
+            for (let i = 1, j = 1; i < batch; i++) {
                 // Needs to be revised to handle current date and upcoming days booking batches. (talk in the group on how you want to handle it)
-                checkInMonth = Math.floor((Math.random() * 12) + 1);
+                checkInMonth = 4 //Math.floor((Math.random() * 12) + 1);
                 daysInMonth = getDaysInMonth(checkInYear, checkInMonth);
                 checkInDay = Math.floor((Math.random() * daysInMonth) + 1);
                 stayDuration = Math.floor((Math.random() * 19) + 1);
@@ -39,8 +40,15 @@ function createBookingBatch(batch) {
                 guestsNumber = Math.floor((Math.random() * 4) + 1);
 
                 // Needs to be deleted later
-                resourceIds = i
-
+                let room = i % 11
+                if (room === 0){
+                    j += 1
+                    i++
+                    resourceIds = generateRoomNumber(j,room+1)
+                } else {
+                    resourceIds = generateRoomNumber(j,room)
+                }
+                
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
                 currentBookingObject = {startDate, endDate, guestsNumber, resourceIds, stayDuration};
                 bookingBatches.push(currentBookingObject);
@@ -73,3 +81,5 @@ async function storeBatch() {
         return { error: "Batch generation failed." };
     }
 }
+
+createBookingBatch(20)

@@ -23,7 +23,7 @@ fetch('rooms', {
       console.log("data received from rooms endpoint")
 
       // Pushes room data to our roomResources array
-      data.roomTypes.forEach(room => {
+      data.forEach(room => {
               roomResources.push({
               id: room.roomNumber || "Not read from JSON",   // Fallback values, in case undefined, null or other is passed
               title: room.roomNumber || "Not read from JSON", 
@@ -71,10 +71,10 @@ fetch('rooms', {
         
         
     
-        // Add the eventDidMount option here
-        eventDidMount: function (info) {
-          tooltipMaker(info);
-        }
+        // Add the eventDidMount option here (TOOL TIPS FUCKING UP - COMMENTING OUT FOR NOW)
+        //eventDidMount: function (info) {
+        //  tooltipMaker(info);
+        //}
       });
 
       calendar.render(); // Renders the calender

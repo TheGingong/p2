@@ -1,4 +1,5 @@
 import fs from 'fs/promises'
+export {generateRoomNumber}
 
 // variables
 let buildingFloors = 5; // floors in the hotel
@@ -50,4 +51,4 @@ function generateGuests (maximumGuests) {
 }
 
 // run the function
-generateRooms();
+ //generateRooms();
