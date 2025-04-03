@@ -1,4 +1,5 @@
 import fs from 'fs/promises'
+import { generateRoomNumber } from '../scripts/roomGenerator.js';
 export { storeBatch }
 
 function createBookingBatch(batch) {
@@ -39,7 +40,11 @@ function createBookingBatch(batch) {
                 guestsNumber = Math.floor((Math.random() * 4) + 1);
 
                 // Needs to be deleted later
-                resourceIds = i
+                room = i+1 > 10 ? 1 : i+1
+                if (room === 1){
+                    floor += 1
+                }
+                resourceIds = generateRoomNumber(floor,room)
 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
                 currentBookingObject = {startDate, endDate, guestsNumber, resourceIds, stayDuration};
