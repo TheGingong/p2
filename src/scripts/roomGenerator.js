@@ -51,4 +51,4 @@ function generateGuests (maximumGuests) {
 }
 
 // run the function
-//generateRooms();
+ //generateRooms();

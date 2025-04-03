@@ -14,7 +14,7 @@ function createBookingBatch(batch) {
         try {
             for (let i = 1, j = 1; i < batch; i++) {
                 // Needs to be revised to handle current date and upcoming days booking batches. (talk in the group on how you want to handle it)
-                checkInMonth = Math.floor((Math.random() * 12) + 1);
+                checkInMonth = 4 //Math.floor((Math.random() * 12) + 1);
                 daysInMonth = getDaysInMonth(checkInYear, checkInMonth);
                 checkInDay = Math.floor((Math.random() * daysInMonth) + 1);
                 stayDuration = Math.floor((Math.random() * 19) + 1);
@@ -49,8 +49,6 @@ function createBookingBatch(batch) {
                     resourceIds = generateRoomNumber(j,room)
                 }
                 
-                console.log(i,resourceIds)
-
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
                 currentBookingObject = {startDate, endDate, guestsNumber, resourceIds, stayDuration};
                 bookingBatches.push(currentBookingObject);

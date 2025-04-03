@@ -23,7 +23,7 @@ fetch('rooms', {
       console.log("data received from rooms endpoint")
 
       // Pushes room data to our roomResources array
-      data.roomTypes.forEach(room => {
+      data.forEach(room => {
               roomResources.push({
               id: room.roomNumber || "Not read from JSON",   // Fallback values, in case undefined, null or other is passed
               title: room.roomNumber || "Not read from JSON", 

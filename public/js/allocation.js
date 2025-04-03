@@ -2,18 +2,18 @@
 /* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
 export {allocate}
 
-function allocate(testarray){
-    console.log(testarray)
-    for (let i = 0; i < testarray.length; i++){
+function allocate(bookings){
+    console.log(bookings)
+    for (let i = 0; i < bookings.length; i++){
         calendar.addEvent({
-            title: testarray[i].title, 
-            start: testarray[i].startDate, 
-            end: testarray[i].endDate,
-            resourceIds: [testarray[i].resourceIds],
+            title: `Booking ${bookings[i].resourceIds}`,
+            start: bookings[i].startDate,
+            end: bookings[i].endDate,
+            resourceIds: [bookings[i].resourceIds],
             extendedProps: {
-                department: 'BioChemistry'
+                guestsNumber: bookings[i].guestsNumber,
               },
-              description: 'Lecture'
+              description: `Stay Duration: ${bookings[i].stayDuration} days`,
             
         });
     }

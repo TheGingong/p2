@@ -1,7 +1,7 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
 import {allocate} from "./public/js/allocation.js"
-import { Rooms, Bookings } from "./src/utils/getInfo.js"
+import { roomsInfo, bookingsInfo, loadBookings } from "./src/utils/getInfo.js"
 import { storeBatch } from "./src/utils/impartial.js";
 
 const ValidationError="Validation Error";
@@ -35,7 +35,7 @@ startServer();
     let url=new URL(req.url,baseURL);
     let searchParms=new URLSearchParams(url.search);
     let queryPath=decodeURIComponent(url.pathname); //Convert uri encoded special letters (eg æøå that is escaped by "%number") to JS string
-  
+
     switch(req.method){
       case "POST": {
         let pathElements=queryPath.split("/"); 
@@ -64,14 +64,27 @@ startServer();
         //USE "sp" from above to get query search parameters
         switch(pathElements[1]){     
           case "": // "/"
+             // Load bookings at startup - promisebased (can be used later as a database maybe?)
+             loadBookings()
+             .then(() => {
+                 console.log("Rooms and Bookings loaded successfully.");
+             })
+             .catch((err) => {
+                 console.error("Error loading Rooms and Bookings:", err);
+              });
              fileResponse(res,"/html/index.html");
              break;
           case "allocate":
-            jsonResponse(res, Bookings);
+            loadBookings()
+            .then(() => {jsonResponse(res, bookingsInfo)})
+            .catch((err) => {
+              console.error("Error loading bookings:", err);
+              reportError(res, new Error("Failed to load bookings."));
+          });
             break;
           case "rooms":
-            if (Rooms) {
-                jsonResponse(res, Rooms);
+            if (roomsInfo) {
+                jsonResponse(res, roomsInfo);
             } else {
                 console.error("Rooms data is not loaded yet.");
                 jsonResponse(res, { error: "Rooms data is not available." });
