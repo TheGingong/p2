@@ -1,0 +1,23 @@
+[
+    {
+        "monday": [{"roomNumber":1, "stayDuration":1}]
+    },
+    {
+        "tuesday": [{"roomNumber":2, "stayDuration":2}]
+    },
+    {
+        "wednesday": [{"roomNumber":3, "stayDuration":3}]
+    },
+    {
+        "thursday": [{"roomNumber":4, "stayDuration":4}]
+    },
+    {
+        "friday": [{"roomNumber":5, "stayDuration":5}]
+    },
+    {
+        "saturday": [{"roomNumber":6, "stayDuration":6}]
+    },
+    {
+        "sunday": [{"roomNumber":7, "stayDuration":7}]
+    }
+]
