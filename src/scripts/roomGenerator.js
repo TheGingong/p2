@@ -2,8 +2,8 @@ import fs from 'fs/promises'
 export {generateRoomNumber}
 
 // variables
-let buildingFloors = 2; // floors in the hotel
-let roomsPerFloor = 3; // how many rooms to generate for every floor
+let buildingFloors = 1; // floors in the hotel
+let roomsPerFloor = 4; // how many rooms to generate for every floor
 let maxGuests = 5; // maximum guests for largest room (-1 because we add in the random)
 
 // function that will generate all rooms using other functions, 
@@ -51,4 +51,4 @@ function generateGuests (maximumGuests) {
 }
 
 // run the function
- generateRooms();
+//generateRooms();
