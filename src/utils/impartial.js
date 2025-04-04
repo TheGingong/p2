@@ -2,21 +2,43 @@ import fs from 'fs/promises'
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
 export { storeBatch }
 
+let counter = 0;
+let monthCounter = 0;
+
 function createBookingBatch(batch) {
     let checkOutYear, checkInMonth, checkOutMonth, checkInDay, checkOutDay, daysInMonth, 
     startDate, endDate, stayDuration, totalDays, isMonthOverflow, currentBookingObject, 
     preferences, guestsNumber, resourceIds;
     let bookingBatches = [];
     let currentDay = new Date();
+    let currentMonth = (currentDay.getMonth() + 1) + monthCounter;
     let checkInYear = currentDay.getFullYear();
+    let minDay = counter;
     
     return new Promise((resolve, reject) => {
         try {
+            console.log(counter);
+            let minDay = counter;
             for (let i = 1, j = 1; i < batch; i++) {
                 // Needs to be revised to handle current date and upcoming days booking batches. (talk in the group on how you want to handle it)
-                checkInMonth = 4 //Math.floor((Math.random() * 12) + 1);
+
+                // Missing part that only allows check-out dates to be within three months
+
+                checkInMonth = Math.floor((Math.random() * (12-currentMonth)) + currentMonth);
                 daysInMonth = getDaysInMonth(checkInYear, checkInMonth);
-                checkInDay = Math.floor((Math.random() * daysInMonth) + 1);
+                
+                if (minDay > daysInMonth) {
+                    // move to next month
+                    minDay = 1; // set counter to 1
+                    currentMonth++; // increment month
+                    if (currentMonth > 12) {
+                        currentMonth = 1;
+                        checkInYear++;
+                    }
+                    daysInMonth = getDaysInMonth(checkInYear, currentMonth);
+                }
+
+                checkInDay = Math.floor(Math.random() * (daysInMonth - minDay + 1)) + minDay;
                 stayDuration = Math.floor((Math.random() * 19) + 1);
                 totalDays = checkInDay + stayDuration;
                 isMonthOverflow = totalDays > daysInMonth;
@@ -52,7 +74,11 @@ function createBookingBatch(batch) {
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
                 currentBookingObject = {startDate, endDate, guestsNumber, resourceIds, stayDuration};
                 bookingBatches.push(currentBookingObject);
+
+                
             } 
+            minDay = checkInDay + 1;
+            counter++;
 
             // Resolves if no errors and returns array of booking batches
             // Creates JSON return from the array of objects bookingBatches
@@ -74,12 +100,10 @@ function getDaysInMonth(year, month) {
 async function storeBatch() {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(20);
+        const data = await createBookingBatch(52);
         await fs.writeFile("src/json/bookings.json", data);
         return { message: "Batch filled.", data };
     } catch (error) {
         return { error: "Batch generation failed." };
     }
 }
-
-createBookingBatch(20)
