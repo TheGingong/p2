@@ -1,5 +1,6 @@
 import fs from 'fs/promises'
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
+import dayjs from 'dayjs';
 export { storeBatch }
 
 function createBookingBatch(batch) {
@@ -13,11 +14,18 @@ function createBookingBatch(batch) {
     return new Promise((resolve, reject) => {
         try {
             for (let i = 1, j = 1; i < batch; i++) {
+                let randomMonthIndex = Math.floor(Math.random() * 12);
+                let checkInMonth = dayjs().month(randomMonthIndex);
+                let daysInMonth = checkInMonth.daysInMonth();
+                let randomDateIndex = Math.ceil((Math.random() * 28));
+                let checkInDate = dayjs().year('2025').month(randomMonthIndex).date(randomDateIndex);
+                let stayDuration = Math.ceil((Math.random() * 19));
+                let checkOutDate = checkInDate.add(stayDuration, 'day'); // maybe days
+
                 // Needs to be revised to handle current date and upcoming days booking batches. (talk in the group on how you want to handle it)
-                checkInMonth = 4 //Math.floor((Math.random() * 12) + 1);
-                daysInMonth = getDaysInMonth(checkInYear, checkInMonth);
-                checkInDay = Math.floor((Math.random() * daysInMonth) + 1);
-                stayDuration = Math.floor((Math.random() * 19) + 1);
+
+                
+                
                 totalDays = checkInDay + stayDuration;
                 isMonthOverflow = totalDays > daysInMonth;
         
