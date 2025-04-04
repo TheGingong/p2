@@ -1,11 +1,14 @@
 import { bookingsInfo, roomsInfo } from '../utils/getInfo.js';
 import dayjs from 'dayjs';
 //import 'dayjs/plugin/duration';
+export {extendGrid, bookingRange}
 
 const d = new Date();
 const todayish = dayjs(d)  // Get today's date
 const today = todayish.subtract(1, 'day')
 
+
+let availabilityGrid = {}; // global matrix
 
 let temp_min = today
 
@@ -54,10 +57,35 @@ function dateDifference(date1, date2) {
 	return date2.diff(date1, "day");
 }*/
 
-//console.log(dateIndex(today))
-//bookingRange(test1)
-//bookingRange(test2)
-console.log(today)
-console.log(dateDifference('2025-04-03', test1[0].endDate));
-console.log(dateDifference(today, test1[0].endDate));
-console.log(dateDifference(test1[0].endDate, test2[0].endDate));
+
+
+
+
+function extendGrid(rooms, date_range){
+	if (date_range === 0){
+	return;
+	}
+
+	let tempGrid = {}
+
+	// if empty, create new grid and fill with 0
+	if (Object.keys(availabilityGrid).length === 0){
+		rooms.roomTypes.forEach(room => {
+			availabilityGrid[room.roomNumber] = new Array(date_range).fill(0);
+	});
+	}
+	
+	else {
+		// Makes temporary grid for the new matrix that needs to be appended to the total grid
+		rooms.roomTypes.forEach(room => {
+			tempGrid[room.roomNumber] = new Array(date_range).fill(0);
+		});
+		// Appends the temp grid to the total grid
+		// the format and syntax to push might be wrong atm..
+		rooms.roomTypes.forEach(room => {
+				availabilityGrid[room.roomNumber].push(tempGrid);
+		});	   
+		
+	}
+	console.log(availabilityGrid)
+}

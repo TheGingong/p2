@@ -3,6 +3,7 @@ import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorRe
 import {allocate} from "./public/js/allocation.js"
 import { roomsInfo, bookingsInfo, loadBookings } from "./src/utils/getInfo.js"
 import { storeBatch } from "./src/utils/impartial.js";
+import { extendGrid } from "./src/scripts/availabilityMatrix.js";
 
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
@@ -84,6 +85,7 @@ startServer();
             break;
           case "rooms":
             if (roomsInfo) {
+                extendGrid
                 jsonResponse(res, roomsInfo);
             } else {
                 console.error("Rooms data is not loaded yet.");

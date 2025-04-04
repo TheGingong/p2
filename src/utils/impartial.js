@@ -1,6 +1,9 @@
 import fs from 'fs/promises'
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
 export { storeBatch }
+import { extendGrid, bookingRange } from '../scripts/availabilityMatrix.js';
+import { roomsInfo } from './getInfo.js';
+
 
 function createBookingBatch(batch) {
     let checkOutYear, checkInMonth, checkOutMonth, checkInDay, checkOutDay, daysInMonth, 
@@ -57,7 +60,9 @@ function createBookingBatch(batch) {
             // Resolves if no errors and returns array of booking batches
             // Creates JSON return from the array of objects bookingBatches
             let jsonBookingBatches = JSON.stringify(bookingBatches, null, 2);
+            extendGrid(roomsInfo, bookingRange(bookingBatches));
             resolve(jsonBookingBatches);
+
         } catch (error) {
             // Catches any errors there might be
             reject(error);
@@ -74,7 +79,7 @@ function getDaysInMonth(year, month) {
 async function storeBatch() {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(20);
+        const data = await createBookingBatch(4);
         await fs.writeFile("src/json/bookings.json", data);
         return { message: "Batch filled.", data };
     } catch (error) {
@@ -82,4 +87,4 @@ async function storeBatch() {
     }
 }
 
-createBookingBatch(20)
+//createBookingBatch()
