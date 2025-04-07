@@ -36,9 +36,9 @@ async function matchBookingsToRooms() {
 }
 
 async function sejAlgortime() {
-    consolelog("Hey")
+    console.log("Hey")
 }
 
-
+console.log("hey");
 
 matchBookingsToRooms();
