@@ -10,21 +10,23 @@ async function matchBookingsToRooms() {
         console.log("Reading rooms from:", roomsPath);
         const roomsRaw = await fs.readFile(roomsPath, 'utf-8');
 
+        // Check if files are empty or invalid
+        if (!bookingsRaw.trim() || !roomsRaw.trim()) {
+            console.error("Error: One or more files are empty.");
+            return;
+        }
+
         const bookings = JSON.parse(bookingsRaw);
         const rooms = JSON.parse(roomsRaw);
 
         console.log(`Loaded ${bookings.length} bookings from ${bookingsPath}`);
         console.log(`Loaded ${rooms.length} rooms from ${roomsPath}`);
 
-        for(const booking of bookings) {
-            booking.resourceIds = sejAlgortime
+        sortBookings(bookings);
+        // Match bookings to rooms
+        for (const booking of bookings) {
+            booking.resourceIds = await assignResId(booking, rooms);
         }
-        
-        
-        // Update the stayDuration for each booking
-        //for (const booking of bookings) {
-        //    booking.resourceIds = 200;
-        //}
 
         console.log("Writing updated bookings to:", bookingsPath);
         await fs.writeFile(bookingsPath, JSON.stringify(bookings, null, 2));
@@ -35,10 +37,22 @@ async function matchBookingsToRooms() {
     }
 }
 
-async function sejAlgortime() {
-    console.log("Hey")
+async function assignResId(booking, rooms) {
+    // Loop through the rooms and check availability
+    for (const room of rooms) {
+        if (booking.guestsNumber === room.roomGuests) {
+            // Return room number or some other identifier
+            return room.roomNumber;
+        }
+        else {
+            continue;
+        }
+    }
+    return null; // Return null if no room is found
 }
 
-console.log("hey");
+function sortBookings(bookings){
+    bookings.sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+}
 
 matchBookingsToRooms();
