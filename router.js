@@ -2,7 +2,7 @@ export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
 import {allocate} from "./public/js/allocation.js"
 import { roomsInfo, bookingsInfo, loadBookings } from "./src/utils/getInfo.js"
-import { storeBatch } from "./src/utils/impartial.js";
+import { storeBatch, storeBatch365 } from "./src/utils/impartial.js";
 
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
@@ -45,6 +45,15 @@ startServer();
           // Post endpoint for the generation of batches
           case "batch":
             storeBatch()
+            .then((result) => {
+              jsonResponse(res, result);
+            })
+            .catch((err) => {
+              reportError(res, new Error(err));          
+            })
+            break;
+          case "batch365":
+            storeBatch365()
             .then((result) => {
               jsonResponse(res, result);
             })
