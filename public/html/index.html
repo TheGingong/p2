@@ -6,6 +6,7 @@
     <!--<script src="https://unpkg.com/@popperjs/core@2"></script>-->
     <input type="button" id="allocateButton_id" value="allocate">
     <input type="button" id="batchButton_id" value="generate batch">
+    <input type="button" id="batchButton_idmany" value="generate 365 batches">
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.15/index.global.min.js'></script>
     <script src="js/calendar.js"></script>
   </head>
@@ -22,6 +23,9 @@
 
     let batchElem = document.querySelector("#batchButton_id");
     batchElem.addEventListener("click", generateBatches);
+
+    let batch365Elem = document.querySelector("#batchButton_idmany");
+    batch365Elem.addEventListener("click", generateBatches365);
 
     // Allocate function called upon button click. Used later to allocate bookings into calendar.
     function allocateAction() {
@@ -67,5 +71,26 @@
             console.error('There was a problem with the fetch operation:', error);
         });
       }
+      
+      function generateBatches365() {
+      // Sending POST request to router.js, as we are creating batches on the server side
+      fetch('batch365', {
+        method: "POST"
+      })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((result) => {
+            // Reponse in form of text that the batch was generated
+            console.log('Batch generated:', result);
+            alert(`${result.message}\nGenerated batch:\n${result.data}`);
+        })
+        .catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+      } 
   </script>
 </html>

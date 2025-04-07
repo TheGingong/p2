@@ -1,63 +1,57 @@
 import fs from 'fs/promises'
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
-export { storeBatch }
+import dayjs from 'dayjs';
+export { storeBatch, storeBatch365 }
+
+// controlDate, lets us shift the earlist possible checkinDate
+let controlDate = dayjs().year('2025').month(0).date(1);
 
 function createBookingBatch(batch) {
-    let checkOutYear, checkInMonth, checkOutMonth, checkInDay, checkOutDay, daysInMonth, 
-    startDate, endDate, stayDuration, totalDays, isMonthOverflow, currentBookingObject, 
-    preferences, guestsNumber, resourceIds;
+    let checkInMonth, randomDateInterval, checkInDate, stayDuration, checkOutDate, 
+    currentBookingObject, preferences, guestsNumber, resourceIds;
+    
+    // Array which will hold booking objects
     let bookingBatches = [];
-    let currentDay = new Date();
-    let checkInYear = currentDay.getFullYear();
+    
+    // Change the length of the interval in which the checkInDates can be within
+    let intervalLength = 8;
     
     return new Promise((resolve, reject) => {
         try {
             for (let i = 1, j = 1; i < batch; i++) {
-                // Needs to be revised to handle current date and upcoming days booking batches. (talk in the group on how you want to handle it)
-                checkInMonth = 4 //Math.floor((Math.random() * 12) + 1);
-                daysInMonth = getDaysInMonth(checkInYear, checkInMonth);
-                checkInDay = Math.floor((Math.random() * daysInMonth) + 1);
-                stayDuration = Math.floor((Math.random() * 19) + 1);
-                totalDays = checkInDay + stayDuration;
-                isMonthOverflow = totalDays > daysInMonth;
-        
-                // Logic that checks for overflow in days, months and year. Assigns the correct check-out information.
-                if (isMonthOverflow) {
-                    checkOutDay = totalDays - daysInMonth;
-                    checkOutMonth = checkInMonth === 12 ? 1 : checkInMonth + 1;
-                    checkOutYear = checkInMonth === 12 ? checkInYear + 1 : checkInYear;
-                } else {
-                    checkOutMonth = checkInMonth;
-                    checkOutYear = checkInYear;
-                    checkOutDay = totalDays;
-                }
-                
-                // Properties of the current booking object gets initialized
-                startDate = `${checkInYear}-${String(checkInMonth).padStart(2, '0')}-${String(checkInDay).padStart(2, '0')}`;
-                endDate = `${checkOutYear}-${String(checkOutMonth).padStart(2, '0')}-${String(checkOutDay).padStart(2, '0')}`;
-                
+                checkInMonth = controlDate.month();
+                randomDateInterval = Math.floor((Math.random() * intervalLength) + controlDate.date()); // Generates a random number from [0 - intervalLenth], and shifts nr of days in controlDate
+                checkInDate = dayjs().year('2025').month(checkInMonth).date(randomDateInterval); 
+                stayDuration = Math.ceil((Math.random() * 19));
+                checkOutDate = checkInDate.add(stayDuration, 'day');
+
+                // Correct the format
+                checkInDate = checkInDate.format('YYYY-MM-DD');
+                checkOutDate = checkOutDate.format('YYYY-MM-DD'); 
+               
                 // Generating guests
                 guestsNumber = Math.floor((Math.random() * 4) + 1);
 
                 // Needs to be deleted later
-                let room = i % 11
+                let room = i % 11;
                 if (room === 0){
-                    j += 1
-                    i++
-                    resourceIds = generateRoomNumber(j,room+1)
+                    j += 1;
+                    i++;
+                    resourceIds = generateRoomNumber(j,room+1);
                 } else {
-                    resourceIds = generateRoomNumber(j,room)
+                    resourceIds = generateRoomNumber(j,room);
                 }
                 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {startDate, endDate, guestsNumber, resourceIds, stayDuration};
+                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, resourceIds, stayDuration};
                 bookingBatches.push(currentBookingObject);
             } 
-
+            //Shifts control month by 1 day
+            controlDate = controlDate.add(1, 'day');
+            
             // Resolves if no errors and returns array of booking batches
             // Creates JSON return from the array of objects bookingBatches
-            let jsonBookingBatches = JSON.stringify(bookingBatches, null, 2);
-            resolve(jsonBookingBatches);
+            resolve(bookingBatches);
         } catch (error) {
             // Catches any errors there might be
             reject(error);
@@ -65,21 +59,32 @@ function createBookingBatch(batch) {
     })
 }
 
-// Function that gets the amount of days in a specific month and year
-function getDaysInMonth(year, month) {
-    return new Date(year, month, 0).getDate();
-  }
-  
 // Function that generates the batches and places it inside a JSON file
 async function storeBatch() {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(20);
-        await fs.writeFile("src/json/bookings.json", data);
+        const data = await createBookingBatch(50);
+        let jsonBookingBatches = JSON.stringify(data, null, 2);
+        await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
         return { message: "Batch filled.", data };
     } catch (error) {
         return { error: "Batch generation failed." };
     }
 }
 
-createBookingBatch(20)
+// Function that works exactly as the one above just creating an array of arrays containing objects and creating for the whole year
+async function storeBatch365() {
+    try {
+        // Array containing arrays of booking objects
+        let allBookings = [];
+        console.log("Calling promise");
+        for (let i = 0; i < 365; i++) {
+            const data = await createBookingBatch(5);
+            allBookings.push(data)
+        }
+        await fs.writeFile("src/json/bookings365.json", JSON.stringify(allBookings, null, 2));
+        return { message: "Batch filled."};
+    } catch (error) {
+        return { error: "Batch generation failed." };
+    }
+}
