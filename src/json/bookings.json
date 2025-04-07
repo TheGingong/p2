@@ -1,9 +1,9 @@
 [
   {
-    "startDate": "2025-04-19",
-    "endDate": "2025-05-04",
-    "guestsNumber": 1,
+    "startDate": "2025-04-21",
+    "endDate": "2025-05-03",
+    "guestsNumber": 4,
     "resourceIds": "101",
-    "stayDuration": 15
+    "stayDuration": 12
   }
 ]

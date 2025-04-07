@@ -83,16 +83,25 @@ function extendGrid(rooms, date_range){
 		rooms.forEach(room => {
 			tempGrid[room.roomNumber] = new Array(date_range).fill(0);
 		});
+		console.log("avtempGRidailabilityGrid")
 		console.log(tempGrid);
 		
 		// Appends the temp grid to the total grid
 		// the format and syntax to push might be wrong atm..
-		//roomsInfo.forEach(room => {
-		//		availabilityGrid[room.roomNumber].push(tempGrid);
-		//});	   
+		roomsInfo.forEach(room => {	
+		//		availabilityGrid[room.roomNumber].push(date_range.fill(0));
+		});	   
 
+		// nyt forsøg
+		for (let roomNumber in tempGrid) {
+				// Append the array from tempGrid to the corresponding array in availabilityGrid
+				// ... spread the array from tempgrid and pushes them individually so we dont push the entire array as one element
+				availabilityGrid[roomNumber].push(...tempGrid[roomNumber]);
+			
+		}
 		// Append each room's temp grid to the existing grid
 		
 	}
+	console.log("availabilityGrid")
 	console.log(availabilityGrid)
 }
