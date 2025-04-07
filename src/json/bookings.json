@@ -94,8 +94,8 @@
     "checkInDate": "2025-01-04",
     "checkOutDate": "2025-01-05",
     "guestsNumber": 1,
-    "resourceIds": "204",
-    "stayDuration": 1
+    "resourceIds": 200,
+    "stayDuration": 5
   },
   {
     "checkInDate": "2025-01-07",
