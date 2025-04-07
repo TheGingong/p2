@@ -16,10 +16,15 @@ async function matchBookingsToRooms() {
         console.log(`Loaded ${bookings.length} bookings from ${bookingsPath}`);
         console.log(`Loaded ${rooms.length} rooms from ${roomsPath}`);
 
-        // Update the stayDuration for each booking
-        for (const booking of bookings) {
-            booking.resourceIds = 200;
+        for(const booking of bookings) {
+            booking.resourceIds = sejAlgortime
         }
+        
+        
+        // Update the stayDuration for each booking
+        //for (const booking of bookings) {
+        //    booking.resourceIds = 200;
+        //}
 
         console.log("Writing updated bookings to:", bookingsPath);
         await fs.writeFile(bookingsPath, JSON.stringify(bookings, null, 2));
@@ -29,5 +34,11 @@ async function matchBookingsToRooms() {
         console.error("Error updating bookings:", error);
     }
 }
-//hej
+
+async function sejAlgortime() {
+    consolelog("Hey")
+}
+
+
+
 matchBookingsToRooms();
