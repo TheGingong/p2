@@ -29,5 +29,5 @@ async function matchBookingsToRooms() {
         console.error("Error updating bookings:", error);
     }
 }
-
+//hej
 matchBookingsToRooms();
