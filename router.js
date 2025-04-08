@@ -3,7 +3,7 @@ import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorRe
 import {allocate} from "./public/js/allocation.js"
 import { roomsInfo, bookingsInfo, loadBookings } from "./src/utils/getInfo.js"
 import { storeBatch } from "./src/utils/impartial.js";
-import { extendGrid } from "./src/scripts/availabilityMatrix.js";
+import { extendGrid, insertBookings, checkAvailability, loopAvailability } from "./src/scripts/availabilityMatrix.js";
 
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
@@ -77,11 +77,16 @@ startServer();
              break;
           case "allocate":
             loadBookings()
-            .then(() => {jsonResponse(res, bookingsInfo)})
+            .then(() => {
+              insertBookings(bookingsInfo)
+              jsonResponse(res, bookingsInfo);
+           
+                    })
             .catch((err) => {
               console.error("Error loading bookings:", err);
               reportError(res, new Error("Failed to load bookings."));
           });
+
             break;
           case "rooms":
             if (roomsInfo) {
