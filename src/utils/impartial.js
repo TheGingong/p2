@@ -8,7 +8,7 @@ let controlDate = dayjs().year('2025').month(0).date(1);
 
 function createBookingBatch(batch) {
     let checkInMonth, randomDateInterval, checkInDate, stayDuration, checkOutDate, 
-    currentBookingObject, preferences, guestsNumber, resourceIds;
+    currentBookingObject, floorPref, guestsNumber, resourceIds;
     
     // Array which will hold booking objects
     let bookingBatches = [];
@@ -30,7 +30,7 @@ function createBookingBatch(batch) {
                 checkOutDate = checkOutDate.format('YYYY-MM-DD'); 
                
                 // Generating guests
-                guestsNumber = Math.floor((Math.random() * 4) + 1);
+                guestsNumber = Math.ceil(Math.random() * 5);
 
                 // Needs to be deleted later
                 let room = i % 11;
@@ -41,6 +41,9 @@ function createBookingBatch(batch) {
                 } else {
                     resourceIds = generateRoomNumber(j,room);
                 }
+
+                // Generate floor preference
+                floorPref = Math.ceil(Math.random() * 5);
                 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
                 currentBookingObject = {checkInDate, checkOutDate, guestsNumber, resourceIds, stayDuration};

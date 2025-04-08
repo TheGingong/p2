@@ -1,202 +1,252 @@
 [
-{
-  "roomNumber": "101",
-  "roomGuests": 3
-},
-{
-  "roomNumber": "102",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "103",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "104",
-  "roomGuests": 3
-},
-{
-  "roomNumber": "105",
-  "roomGuests": 3
-},
-{
-  "roomNumber": "106",
-  "roomGuests": 3
-},
-{
-  "roomNumber": "107",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "108",
-  "roomGuests": 2
-},
-{
-  "roomNumber": "109",
-  "roomGuests": 2
-},
-{
-  "roomNumber": "110",
-  "roomGuests": 2
-},
-{
-  "roomNumber": "201",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "202",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "203",
-  "roomGuests": 3
-},
-{
-  "roomNumber": "204",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "205",
-  "roomGuests": 3
-},
-{
-  "roomNumber": "206",
-  "roomGuests": 2
-},
-{
-  "roomNumber": "207",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "208",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "209",
-  "roomGuests": 2
-},
-{
-  "roomNumber": "210",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "301",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "302",
-  "roomGuests": 3
-},
-{
-  "roomNumber": "303",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "304",
-  "roomGuests": 3
-},
-{
-  "roomNumber": "305",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "306",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "307",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "308",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "309",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "310",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "401",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "402",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "403",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "404",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "405",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "406",
-  "roomGuests": 3
-},
-{
-  "roomNumber": "407",
-  "roomGuests": 2
-},
-{
-  "roomNumber": "408",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "409",
-  "roomGuests": 2
-},
-{
-  "roomNumber": "410",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "501",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "502",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "503",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "504",
-  "roomGuests": 4
-},
-{
-  "roomNumber": "505",
-  "roomGuests": 2
-},
-{
-  "roomNumber": "506",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "507",
-  "roomGuests": 1
-},
-{
-  "roomNumber": "508",
-  "roomGuests": 5
-},
-{
-  "roomNumber": "509",
-  "roomGuests": 2
-},
-{
-  "roomNumber": "510",
-  "roomGuests": 3
-}
+  {
+    "roomNumber": "101",
+    "roomGuests": 3,
+    "floor": 1
+  },
+  {
+    "roomNumber": "102",
+    "roomGuests": 1,
+    "floor": 1
+  },
+  {
+    "roomNumber": "103",
+    "roomGuests": 1,
+    "floor": 1
+  },
+  {
+    "roomNumber": "104",
+    "roomGuests": 3,
+    "floor": 1
+  },
+  {
+    "roomNumber": "105",
+    "roomGuests": 3,
+    "floor": 1
+  },
+  {
+    "roomNumber": "106",
+    "roomGuests": 3,
+    "floor": 1
+  },
+  {
+    "roomNumber": "107",
+    "roomGuests": 5,
+    "floor": 1
+  },
+  {
+    "roomNumber": "108",
+    "roomGuests": 2,
+    "floor": 1
+  },
+  {
+    "roomNumber": "109",
+    "roomGuests": 2,
+    "floor": 1
+  },
+  {
+    "roomNumber": "110",
+    "roomGuests": 2,
+    "floor": 1
+  },
+  {
+    "roomNumber": "201",
+    "roomGuests": 4,
+    "floor": 2
+  },
+  {
+    "roomNumber": "202",
+    "roomGuests": 1,
+    "floor": 2
+  },
+  {
+    "roomNumber": "203",
+    "roomGuests": 3,
+    "floor": 2
+  },
+  {
+    "roomNumber": "204",
+    "roomGuests": 4,
+    "floor": 2
+  },
+  {
+    "roomNumber": "205",
+    "roomGuests": 3,
+    "floor": 2
+  },
+  {
+    "roomNumber": "206",
+    "roomGuests": 2,
+    "floor": 2
+  },
+  {
+    "roomNumber": "207",
+    "roomGuests": 5,
+    "floor": 2
+  },
+  {
+    "roomNumber": "208",
+    "roomGuests": 4,
+    "floor": 2
+  },
+  {
+    "roomNumber": "209",
+    "roomGuests": 2,
+    "floor": 2
+  },
+  {
+    "roomNumber": "210",
+    "roomGuests": 4,
+    "floor": 2
+  },
+  {
+    "roomNumber": "301",
+    "roomGuests": 5,
+    "floor": 3
+  },
+  {
+    "roomNumber": "302",
+    "roomGuests": 3,
+    "floor": 3
+  },
+  {
+    "roomNumber": "303",
+    "roomGuests": 5,
+    "floor": 3
+  },
+  {
+    "roomNumber": "304",
+    "roomGuests": 3,
+    "floor": 3
+  },
+  {
+    "roomNumber": "305",
+    "roomGuests": 1,
+    "floor": 3
+  },
+  {
+    "roomNumber": "306",
+    "roomGuests": 5,
+    "floor": 3
+  },
+  {
+    "roomNumber": "307",
+    "roomGuests": 5,
+    "floor": 3
+  },
+  {
+    "roomNumber": "308",
+    "roomGuests": 1,
+    "floor": 3
+  },
+  {
+    "roomNumber": "309",
+    "roomGuests": 1,
+    "floor": 3
+  },
+  {
+    "roomNumber": "310",
+    "roomGuests": 4,
+    "floor": 3
+  },
+  {
+    "roomNumber": "401",
+    "roomGuests": 4,
+    "floor": 4
+  },
+  {
+    "roomNumber": "402",
+    "roomGuests": 5,
+    "floor": 4
+  },
+  {
+    "roomNumber": "403",
+    "roomGuests": 1,
+    "floor": 4
+  },
+  {
+    "roomNumber": "404",
+    "roomGuests": 4,
+    "floor": 4
+  },
+  {
+    "roomNumber": "405",
+    "roomGuests": 5,
+    "floor": 4
+  },
+  {
+    "roomNumber": "406",
+    "roomGuests": 3,
+    "floor": 4
+  },
+  {
+    "roomNumber": "407",
+    "roomGuests": 2,
+    "floor": 4
+  },
+  {
+    "roomNumber": "408",
+    "roomGuests": 5,
+    "floor": 4
+  },
+  {
+    "roomNumber": "409",
+    "roomGuests": 2,
+    "floor": 4
+  },
+  {
+    "roomNumber": "410",
+    "roomGuests": 4,
+    "floor": 4
+  },
+  {
+    "roomNumber": "501",
+    "roomGuests": 5,
+    "floor": 5
+  },
+  {
+    "roomNumber": "502",
+    "roomGuests": 4,
+    "floor": 5
+  },
+  {
+    "roomNumber": "503",
+    "roomGuests": 1,
+    "floor": 5
+  },
+  {
+    "roomNumber": "504",
+    "roomGuests": 4,
+    "floor": 5
+  },
+  {
+    "roomNumber": "505",
+    "roomGuests": 2,
+    "floor": 5
+  },
+  {
+    "roomNumber": "506",
+    "roomGuests": 1,
+    "floor": 5
+  },
+  {
+    "roomNumber": "507",
+    "roomGuests": 1,
+    "floor": 5
+  },
+  {
+    "roomNumber": "508",
+    "roomGuests": 5,
+    "floor": 5
+  },
+  {
+    "roomNumber": "509",
+    "roomGuests": 2,
+    "floor": 5
+  },
+  {
+    "roomNumber": "510",
+    "roomGuests": 3,
+    "floor": 5
+  }
 ]
