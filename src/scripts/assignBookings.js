@@ -47,6 +47,7 @@ async function matchBookingsToRooms() {
 async function assignResId(booking, rooms) {
     // Loop through
     for (const room of rooms) {
+        // Check occupation
         if (booking.guestsNumber === room.roomGuests) {
             // Return room number or some other identifier
             return room.roomNumber;
@@ -55,8 +56,8 @@ async function assignResId(booking, rooms) {
             continue;
         }
     }
-    return null; // Return null if no room is found
 }
+
 
 function sortBookings(bookings){
     bookings.sort((a, b) => new Date(a.endDate) - new Date(b.endDate));

@@ -21,7 +21,8 @@ async function generateRooms () {
             console.log(`Room Number (${i}, ${j}):`, generateRoomNumber(i, j));
             let roomObject = {
                 "roomNumber" : generateRoomNumber(i, j),
-                "roomGuests" : generateGuests(maxGuests)
+                "roomGuests" : generateGuests(maxGuests),
+                "roomOcc" : 0
             };
 
             // convert to json string
