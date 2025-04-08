@@ -36,6 +36,7 @@ async function matchBookingsToRooms() {
         console.log("Writing updated bookings to:", bookingsPath);
         // Updating resourceIds in bookings, to the newly assigned rooms
         await fs.writeFile(bookingsPath, JSON.stringify(bookings, null, 2));
+        await fs.writeFile(roomsPath, JSON.stringify(rooms, null, 2));
         console.log("Bookings updated successfully!");
 
     } catch (error) {
@@ -48,8 +49,12 @@ async function assignResId(booking, rooms) {
     // Loop through
     for (const room of rooms) {
         // Check occupation
+        if (room.roomOcc === 1){
+            continue;
+        }
         if (booking.guestsNumber === room.roomGuests) {
             // Return room number or some other identifier
+            room.roomOcc = 1;
             return room.roomNumber;
         }
         else {
@@ -58,9 +63,19 @@ async function assignResId(booking, rooms) {
     }
 }
 
-
+// Function for sorting the bookings
 function sortBookings(bookings){
-    bookings.sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+    bookings.sort((a,b) => {
+        const endDiff = new Date(a.checkOutDate) - new Date(b.checkOutDate)
+        if (endDiff !== 0) {
+            return endDiff};
+
+        return b.stayDuration - a.stayDuration
+    })
 }
+
+//function sortBookings(bookings){
+//    bookings.sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+//}
 
 matchBookingsToRooms();

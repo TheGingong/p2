@@ -1,5 +1,7 @@
 import fs from 'fs/promises'
 export {generateRoomNumber}
+export {generateRooms}
+export {generateGuests}
 
 // variables
 let buildingFloors = 5; // floors in the hotel
@@ -10,7 +12,7 @@ let maxGuests = 5; // maximum guests for largest room (-1 because we add in the 
 // and write them into the json file through an array
 async function generateRooms () {
     // define file path for rooms.json file
-    const roomsPath = "../json/rooms.json";
+    const roomsPath = 'src/json/rooms.json';
 
     // prepare to write a bunch of data 
     await fs.writeFile(roomsPath, "[\n", "utf8");

@@ -3,6 +3,7 @@ import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorRe
 import {allocate} from "./public/js/allocation.js"
 import { roomsInfo, bookingsInfo, loadBookings } from "./src/utils/getInfo.js"
 import { storeBatch, storeBatch365 } from "./src/utils/impartial.js";
+import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
@@ -28,6 +29,8 @@ startServer();
 /* *********************************************************************
    Setup HTTP route handling: Called when a HTTP request is received 
    ******************************************************************** */
+    generateRooms();
+
    function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
   
