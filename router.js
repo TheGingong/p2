@@ -1,9 +1,10 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
-import { roomsInfo, bookingsInfo, loadBookings } from "./src/utils/getInfo.js"
+import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBatch365 } from "./src/utils/impartial.js";
 import { scoring } from "./src/utils/prefScores.js";
+import { json } from "stream/consumers";
 
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
@@ -68,7 +69,7 @@ startServer();
         switch(pathElements[1]){     
           case "": // "/"
              // Load bookings at startup - promisebased (can be used later as a database maybe?)
-             loadBookings()
+             loadRooms()
              .then(() => {
                  console.log("Rooms and Bookings loaded successfully.");
              })
@@ -78,13 +79,8 @@ startServer();
              fileResponse(res,"/html/index.html");
              break;
           case "allocate":
-            loadBookings()
-            .then(() => {jsonResponse(res, bookingsInfo)})
-            .then(() => scoring(bookingsInfo, roomsInfo))
-            .catch((err) => {
-              console.error("Error loading bookings:", err);
-              reportError(res, new Error("Failed to load bookings."));
-          });
+            jsonResponse(res, bookingsInfo);
+            scoring(bookingsInfo, roomsInfo)
             break;
           case "rooms":
             if (roomsInfo) {

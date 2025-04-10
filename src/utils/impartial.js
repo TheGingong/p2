@@ -50,8 +50,7 @@ function createBookingBatch(batch) {
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
                 currentBookingObject = {checkInDate, checkOutDate, guestsNumber, resourceIds, stayDuration, dayOfBooking};
                 bookingBatches.push(currentBookingObject);
-            }
-            
+            }    
             // Resolves if no errors and returns array of booking batches
             // Creates JSON return from the array of objects bookingBatches
             resolve(bookingBatches);
@@ -59,7 +58,6 @@ function createBookingBatch(batch) {
             // Catches any errors there might be
             reject(error);
         }
-        loadBookings();
     })
 }
 
@@ -70,6 +68,7 @@ async function storeBatch365() {
         const data = await createBookingBatch(50);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
+        await loadBookings();
         return { message: "Batch filled.", data };
     } catch (error) {
         return { error: "Batch generation failed." };
