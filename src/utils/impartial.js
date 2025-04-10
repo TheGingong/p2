@@ -1,36 +1,38 @@
 import fs from 'fs/promises'
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
 import dayjs from 'dayjs';
-export { storeBatch, storeBatch365 }
+import { loadBookings } from './getInfo.js';
+export { storeBatch365 }
 
-// controlDate, lets us shift the earlist possible checkinDate
-let controlDate = dayjs().year('2025').month(0).date(1);
 
 function createBookingBatch(batch) {
-    let checkInMonth, randomDateInterval, checkInDate, stayDuration, checkOutDate, 
-    currentBookingObject, preferences, guestsNumber, resourceIds;
+    let checkInMonth, checkInDate, stayDuration, checkOutDate, 
+    currentBookingObject, floorPref, guestsNumber, resourceIds, daysInMonth, dayOfBooking,
+    daysBeforeCheckIn, randomCheckInDay;
     
     // Array which will hold booking objects
     let bookingBatches = [];
     
-    // Change the length of the interval in which the checkInDates can be within
-    let intervalLength = 8;
-    
     return new Promise((resolve, reject) => {
         try {
             for (let i = 1, j = 1; i < batch; i++) {
-                checkInMonth = controlDate.month();
-                randomDateInterval = Math.floor((Math.random() * intervalLength) + controlDate.date()); // Generates a random number from [0 - intervalLenth], and shifts nr of days in controlDate
-                checkInDate = dayjs().year('2025').month(checkInMonth).date(randomDateInterval); 
+                checkInMonth = Math.floor(Math.random() * 12); // Generates random number 1-12
+                daysInMonth = dayjs().year('2025').month(checkInMonth).daysInMonth();
+                randomCheckInDay = Math.ceil(Math.random() * daysInMonth); // Generates a random number from [0 - intervalLenth], and shifts nr of days in controlDate
+                checkInDate = dayjs().year('2025').month(checkInMonth).date(randomCheckInDay); 
                 stayDuration = Math.ceil((Math.random() * 19));
                 checkOutDate = checkInDate.add(stayDuration, 'day');
+                
+                // Generating day of booking
+                daysBeforeCheckIn = Math.ceil(Math.random() * 30);
+                dayOfBooking = checkInDate.subtract(daysBeforeCheckIn, 'day').format('YYYY-MM-DD');
 
                 // Correct the format
                 checkInDate = checkInDate.format('YYYY-MM-DD');
                 checkOutDate = checkOutDate.format('YYYY-MM-DD'); 
                
                 // Generating guests
-                guestsNumber = Math.floor((Math.random() * 4) + 1);
+                guestsNumber = Math.ceil(Math.random() * 5);
 
                 // Needs to be deleted later
                 let room = i % 11;
@@ -41,13 +43,14 @@ function createBookingBatch(batch) {
                 } else {
                     resourceIds = generateRoomNumber(j,room);
                 }
+
+                // Generate floor preference
+                floorPref = Math.ceil(Math.random() * 5);
                 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, resourceIds, stayDuration};
+                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, resourceIds, stayDuration, dayOfBooking};
                 bookingBatches.push(currentBookingObject);
-            } 
-            //Shifts control month by 1 day
-            controlDate = controlDate.add(1, 'day');
+            }
             
             // Resolves if no errors and returns array of booking batches
             // Creates JSON return from the array of objects bookingBatches
@@ -56,34 +59,18 @@ function createBookingBatch(batch) {
             // Catches any errors there might be
             reject(error);
         }
+        loadBookings();
     })
 }
 
 // Function that generates the batches and places it inside a JSON file
-async function storeBatch() {
+async function storeBatch365() {
     try {
         console.log("Calling promise");
         const data = await createBookingBatch(50);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
         return { message: "Batch filled.", data };
-    } catch (error) {
-        return { error: "Batch generation failed." };
-    }
-}
-
-// Function that works exactly as the one above just creating an array of arrays containing objects and creating for the whole year
-async function storeBatch365() {
-    try {
-        // Array containing arrays of booking objects
-        let allBookings = [];
-        console.log("Calling promise");
-        for (let i = 0; i < 365; i++) {
-            const data = await createBookingBatch(5);
-            allBookings.push(data)
-        }
-        await fs.writeFile("src/json/bookings365.json", JSON.stringify(allBookings, null, 2));
-        return { message: "Batch filled."};
     } catch (error) {
         return { error: "Batch generation failed." };
     }

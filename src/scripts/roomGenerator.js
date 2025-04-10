@@ -1,15 +1,19 @@
 import fs from 'fs/promises'
+import { loadRooms } from '../utils/getInfo.js';
 export {generateRoomNumber}
 import {buildingFloors,
     roomsPerFloor,
     maxGuests} from '../utils/globalVariables.js'
+export {generateRooms}
+export {generateGuests}
+
 
 
 // function that will generate all rooms using other functions, 
 // and write them into the json file through an array
 async function generateRooms () {
     // define file path for rooms.json file
-    const roomsPath = "../json/rooms.json";
+    const roomsPath = 'src/json/rooms.json';
 
     // prepare to write a bunch of data 
     await fs.writeFile(roomsPath, "[\n", "utf8");
@@ -20,7 +24,8 @@ async function generateRooms () {
             console.log(`Room Number (${i}, ${j}):`, generateRoomNumber(i, j));
             let roomObject = {
                 "roomNumber" : generateRoomNumber(i, j),
-                "roomGuests" : generateGuests(maxGuests)
+                "roomGuests" : generateGuests(maxGuests),
+                "roomOcc" : 0
             };
 
             // convert to json string
@@ -36,6 +41,8 @@ async function generateRooms () {
         }
     };
     await fs.appendFile(roomsPath, "\n]", "utf8");
+
+    loadRooms();
 }
 
 // function that generates a roomnumber s.t. ex "109" is room 9 in floor 1
@@ -50,4 +57,4 @@ function generateGuests (maximumGuests) {
 }
 
 // run the function
- //generateRooms();
+//generateRooms();
