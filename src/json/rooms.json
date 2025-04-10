@@ -1,12 +1,12 @@
 [
 {
   "roomNumber": "101",
-  "roomGuests": 5,
+  "roomGuests": 3,
   "roomOcc": 0
 },
 {
   "roomNumber": "102",
-  "roomGuests": 5,
+  "roomGuests": 3,
   "roomOcc": 0
 }
 ]

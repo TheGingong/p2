@@ -79,8 +79,8 @@ startServer();
              fileResponse(res,"/html/index.html");
              break;
           case "allocate":
-            jsonResponse(res, bookingsInfo);
-            scoring(bookingsInfo, roomsInfo)
+            jsonResponse(res, bookingsInfo)
+            .then(() => {scoring(bookingsInfo, roomsInfo)});
             break;
           case "rooms":
             if (roomsInfo) {
