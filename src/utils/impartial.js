@@ -6,12 +6,12 @@ export { storeBatch365 }
 
 function createBookingBatch(batch) {
     let checkInMonth, checkInDate, stayDuration, checkOutDate, 
-    currentBookingObject, floorPref, guestsNumber, daysInMonth, 
-    dayOfBooking, daysBeforeCheckIn, randomCheckInDay;
+    currentBookingObject, guestsNumber, daysInMonth, 
+    dayOfBooking, daysBeforeCheckIn, randomCheckInDay, preference;
     
     // Array which will hold booking objects
     let bookingBatches = [];
-    
+
     return new Promise((resolve, reject) => {
         try {
             for (let i = 1, j = 1; i < batch; i++) {
@@ -31,13 +31,35 @@ function createBookingBatch(batch) {
                 checkOutDate = checkOutDate.format('YYYY-MM-DD'); 
                
                 // Generating guests
-                guestsNumber = Math.ceil(Math.random() * 5);
+                guestsNumber = Math.ceil(Math.random() * 4);
 
-                // Generate floor preference
-                floorPref = Math.ceil(Math.random() * 5);
+                // Initialize the preference object for current booking
+                preference = {}
+
+                // Generate room preference
+                switch(guestsNumber) {
+                    case 1:
+                        preference.beds = roomtypes[0]; // One single bed
+                        break;
+                    case 2:
+                        preference.beds = roomtypes[Math.ceil(Math.random() * 2)]; // 2 single bed or 1 queen bed
+                        break;
+                    case 3:
+                        preference.beds = roomtypes[3]; // One single bed and 1 queen bed
+                        break;
+                    case 4:
+                        preference.beds = roomtypes[4]; // One single bed and 1 queen bed
+                        break;
+                    default:
+                        console.log("Something went wrong. Too many guests.");
+                }
+
+                if ((i % 20) === 0) {
+                    preference.floor = Math.ceil(Math.random() * 5);
+                }
                 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking};
+                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, preference};
                 bookingBatches.push(currentBookingObject);
             }    
             // Resolves if no errors and returns array of booking batches
