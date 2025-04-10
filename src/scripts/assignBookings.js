@@ -1,4 +1,6 @@
 import fs from 'fs/promises';
+import { loadBookings, loadRooms } from '../utils/getInfo.js';
+
 
 async function matchBookingsToRooms() {   
     // Defining paths to JSON files

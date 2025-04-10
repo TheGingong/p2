@@ -1,4 +1,5 @@
 import fs from 'fs/promises'
+import { loadRooms } from '../utils/getInfo.js';
 export {generateRoomNumber}
 export {generateRooms}
 export {generateGuests}
@@ -40,6 +41,8 @@ async function generateRooms () {
         }
     };
     await fs.appendFile(roomsPath, "\n]", "utf8");
+
+    //loadRooms();
 }
 
 // function that generates a roomnumber s.t. ex "109" is room 9 in floor 1
@@ -54,4 +57,4 @@ function generateGuests (maximumGuests) {
 }
 
 // run the function
- //generateRooms();
+//generateRooms();

@@ -1,6 +1,7 @@
 import fs from 'fs/promises'
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
 import dayjs from 'dayjs';
+import { loadBookings } from './getInfo.js';
 export { storeBatch, storeBatch365 }
 
 // controlDate, lets us shift the earlist possible checkinDate
@@ -56,6 +57,7 @@ function createBookingBatch(batch) {
             // Catches any errors there might be
             reject(error);
         }
+        loadBookings();
     })
 }
 
