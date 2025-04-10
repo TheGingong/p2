@@ -2,6 +2,7 @@ export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
 import { roomsInfo, bookingsInfo, loadBookings } from "./src/utils/getInfo.js"
 import { storeBatch365 } from "./src/utils/impartial.js";
+import { scoring } from "./src/utils/prefScores.js";
 
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
@@ -46,7 +47,6 @@ startServer();
             storeBatch365()
             .then((result) => {
               jsonResponse(res, result);
-              console.log("Results are her!", result);
             })
             .catch((err) => {
               reportError(res, new Error(err));          
@@ -77,6 +77,7 @@ startServer();
           case "allocate":
             loadBookings()
             .then(() => {jsonResponse(res, bookingsInfo)})
+            .then(() => scoring(bookingsInfo, roomsInfo))
             .catch((err) => {
               console.error("Error loading bookings:", err);
               reportError(res, new Error("Failed to load bookings."));
