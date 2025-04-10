@@ -79,9 +79,14 @@ startServer();
              fileResponse(res,"/html/index.html");
              break;
           case "allocate":
-            jsonResponse(res, bookingsInfo);
-            scoring(bookingsInfo, roomsInfo)
-            break;
+          try {
+              scoring(bookingsInfo, roomsInfo); // Perform scoring
+              jsonResponse(res, bookingsInfo); // Send the response
+          } catch (error) {
+              console.error("Error in allocate case:", error);
+              reportError(res, error); // Send error response
+          }
+          break;
           case "rooms":
             if (roomsInfo) {
                 jsonResponse(res, roomsInfo);

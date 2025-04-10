@@ -11,14 +11,16 @@ export {
     roomsPerFloor,
     maxGuests,
     currentDay,
+    roomtypes,
 } // 
 
 
 let currentDay = '2025-01-01';
 
-
+// Array which will hold template of rooms
+let roomtypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]
 
 // roomGeneration
 let buildingFloors = 1; // floors in the hotel
 let roomsPerFloor = 2; // how many rooms to generate for every floor
-let maxGuests = 5; // maximum guests for largest room (-1 because we add in the random)
+let maxGuests = 4; // maximum guests for largest room (-1 because we add in the random)
