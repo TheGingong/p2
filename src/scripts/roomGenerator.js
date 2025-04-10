@@ -1,10 +1,9 @@
 import fs from 'fs/promises'
 export {generateRoomNumber}
+import {buildingFloors,
+    roomsPerFloor,
+    maxGuests} from '../utils/globalVariables.js'
 
-// variables
-let buildingFloors = 5; // floors in the hotel
-let roomsPerFloor = 10; // how many rooms to generate for every floor
-let maxGuests = 5; // maximum guests for largest room (-1 because we add in the random)
 
 // function that will generate all rooms using other functions, 
 // and write them into the json file through an array
