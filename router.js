@@ -1,6 +1,7 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
 import { roomsInfo, bookingsInfo, loadBookings } from "./src/utils/getInfo.js"
+import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBatch365 } from "./src/utils/impartial.js";
 import { scoring } from "./src/utils/prefScores.js";
 
@@ -28,6 +29,8 @@ startServer();
 /* *********************************************************************
    Setup HTTP route handling: Called when a HTTP request is received 
    ******************************************************************** */
+    generateRooms();
+
    function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
   

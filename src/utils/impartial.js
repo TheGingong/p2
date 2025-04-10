@@ -1,6 +1,7 @@
 import fs from 'fs/promises'
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
 import dayjs from 'dayjs';
+import { loadBookings } from './getInfo.js';
 export { storeBatch365 }
 
 
@@ -58,6 +59,7 @@ function createBookingBatch(batch) {
             // Catches any errors there might be
             reject(error);
         }
+        loadBookings();
     })
 }
 
