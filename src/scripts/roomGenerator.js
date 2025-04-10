@@ -1,13 +1,13 @@
 import fs from 'fs/promises'
 import { loadRooms } from '../utils/getInfo.js';
 export {generateRoomNumber}
+import {buildingFloors,
+    roomsPerFloor,
+    maxGuests} from '../utils/globalVariables.js'
 export {generateRooms}
 export {generateGuests}
 
-// variables
-let buildingFloors = 5; // floors in the hotel
-let roomsPerFloor = 10; // how many rooms to generate for every floor
-let maxGuests = 5; // maximum guests for largest room (-1 because we add in the random)
+
 
 // function that will generate all rooms using other functions, 
 // and write them into the json file through an array
@@ -42,7 +42,7 @@ async function generateRooms () {
     };
     await fs.appendFile(roomsPath, "\n]", "utf8");
 
-    //loadRooms();
+    loadRooms();
 }
 
 // function that generates a roomnumber s.t. ex "109" is room 9 in floor 1
