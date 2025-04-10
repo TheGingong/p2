@@ -10,7 +10,6 @@ const __dirname = path.dirname(__filename);
 let roomsInfo = null;
 let bookingsInfo = null;
 
-
 async function loadBookings() {
     try {
         // Use absolute paths for the JSON files
@@ -44,9 +43,3 @@ async function loadRooms() {
         throw err; // Ensure errors are propagated
     }
 }
-
-//console.log("Rooms Loaded:", Rooms);
-//console.log("Bookings Loaded:", Bookings);
-// Now, Rooms and Bookings will have data after loading
-
-

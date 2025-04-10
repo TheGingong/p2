@@ -4,11 +4,10 @@ import dayjs from 'dayjs';
 import { loadBookings } from './getInfo.js';
 export { storeBatch365 }
 
-
 function createBookingBatch(batch) {
     let checkInMonth, checkInDate, stayDuration, checkOutDate, 
-    currentBookingObject, floorPref, guestsNumber, resourceIds, daysInMonth, dayOfBooking,
-    daysBeforeCheckIn, randomCheckInDay;
+    currentBookingObject, floorPref, guestsNumber, daysInMonth, 
+    dayOfBooking, daysBeforeCheckIn, randomCheckInDay;
     
     // Array which will hold booking objects
     let bookingBatches = [];
@@ -34,21 +33,11 @@ function createBookingBatch(batch) {
                 // Generating guests
                 guestsNumber = Math.ceil(Math.random() * 5);
 
-                // Needs to be deleted later
-                let room = i % 11;
-                if (room === 0){
-                    j += 1;
-                    i++;
-                    resourceIds = generateRoomNumber(j,room+1);
-                } else {
-                    resourceIds = generateRoomNumber(j,room);
-                }
-
                 // Generate floor preference
                 floorPref = Math.ceil(Math.random() * 5);
                 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, resourceIds, stayDuration, dayOfBooking};
+                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking};
                 bookingBatches.push(currentBookingObject);
             }    
             // Resolves if no errors and returns array of booking batches
@@ -68,7 +57,7 @@ async function storeBatch365() {
         const data = await createBookingBatch(50);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
-        await loadBookings();
+        await loadBookings(); // Loading bookings into array after its been written into bookings.json
         return { message: "Batch filled.", data };
     } catch (error) {
         return { error: "Batch generation failed." };
