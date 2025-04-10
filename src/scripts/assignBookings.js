@@ -66,11 +66,7 @@ async function assignResId(booking, rooms) {
 // Function for sorting the bookings
 function sortBookings(bookings){
     bookings.sort((a,b) => {
-        const endDiff = new Date(a.checkOutDate) - new Date(b.checkOutDate)
-        if (endDiff !== 0) {
-            return endDiff};
-
-        return b.stayDuration - a.stayDuration
+        const endDiff = new Date(a.dayOfbooking) - new Date(b.dayOfBooking)
     })
 }
 
