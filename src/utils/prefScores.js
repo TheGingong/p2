@@ -20,6 +20,5 @@ async function scoring(bookingsInfo, roomsInfo) {
             console.log(`Room ${assignment.resourceIds} not found in roomsInfo`);
         }
     }
-
     console.log("Average score is", score / 50);
 }
