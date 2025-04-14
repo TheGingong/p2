@@ -21,7 +21,7 @@ async function generateRooms () {
             console.log(`Room Number (${i}, ${j}):`, generateRoomNumber(i, j));
             let guests = generateGuests(maxGuests);
             generateRoomTypes(guests)
-            veryImportant()
+            //veryImportant()
             let roomObject = {
                 "roomNumber" : generateRoomNumber(i, j),
                 "roomGuests" : guests,

@@ -74,7 +74,7 @@ function createBookingBatch(batch) {
                 }
 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, preference, resourceIds};
+                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, preference};
                 bookingBatches.push(currentBookingObject);
             }    
             
