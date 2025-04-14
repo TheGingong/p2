@@ -4,6 +4,7 @@ import { extendGrid, bookingRange, availabilityGrid } from '../scripts/availabil
 import { roomsInfo, loadBookings } from './getInfo.js';
 import dayjs from 'dayjs';
 export { storeBatch365 }
+import { roomtypes } from './globalVariables.js';
 
 
 function createBookingBatch(batch) {
@@ -94,4 +95,6 @@ async function storeBatch365() {
         return { error: "Batch generation failed." };
     }
 }
+
+
 

@@ -7,7 +7,6 @@ export {
   availabilityGrid,
   insertBookings,
   checkAvailability,
-  loopAvailability
 };
 
 const d = new Date();
