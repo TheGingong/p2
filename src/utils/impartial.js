@@ -55,6 +55,8 @@ async function storeBatch365() {
     try {
         console.log("Calling promise");
         const data = await createBookingBatch(50);
+        console.log(data);
+        await sortByBooking(data);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
         await loadBookings(); // Loading bookings into array after its been written into bookings.json
@@ -62,4 +64,16 @@ async function storeBatch365() {
     } catch (error) {
         return { error: "Batch generation failed." };
     }
+}
+
+async function sortByBooking(data){
+    data.sort((a,b) =>{
+        let bookingDiff = new Date(a.dayOfBooking) - new Date(b.dayOfBooking);
+        if(bookingDiff === 0){
+            let checkoutDiff = Date(a.checkOutDate) - Date(b.checkOutDate);
+            if(checkoutDiff === 0){
+                return b.stayDuration - a.stayDuration;
+            } else return checkoutDiff;
+        } else return bookingDiff
+    })
 }

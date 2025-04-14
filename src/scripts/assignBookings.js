@@ -1,36 +1,28 @@
 import fs from 'fs/promises';
-import { bookingsInfo } from '../utils/getInfo.js';
+import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
 
 
 async function matchBookingsToRooms() {   
-    // Defining paths to JSON files
-    const roomsPath = "../json/rooms.json";
-    const bookingsPath = "../json/bookings.json";
 
     try {
-        // Reads from JSON files and checks for errors
-        const bookingsRaw = await fs.readFile(bookingsPath, 'utf-8');
-        const roomsRaw = await fs.readFile(roomsPath, 'utf-8');
-
-        if (!bookingsRaw.trim() || !roomsRaw.trim()) {
-            console.error("Error: One or more files are empty.");
-            return;
-        }
+        const { bookingsInfo } = await loadBookings();
+        const { roomsInfo } = await loadRooms();
+        console.log(bookingsInfo);
+        // filter bookings by given Booking date
         
-        // Parses the JSON content 
-        const allBookings = JSON.parse(bookingsRaw);
-        const rooms = JSON.parse(roomsRaw);
-        // Sort bookings by earliest enddate
-        sortBookings(bookings);
 
+        // Sort bookings by earliest enddate
+        //await sortBookings(bookingsInfo);
+        getBookingsAtDate(bookingsInfo, today);
+//
         // Match bookings to rooms
-        for (const booking of bookings) {
-            booking.resourceIds = await assignResId(booking, rooms);
+        for (const booking of bookingsInfo) {
+            booking.resourceIds = await assignResId(booking, roomsInfo);
         }
 
         // Updating resourceIds in bookings, to the newly assigned rooms
-        await fs.writeFile(bookingsPath, JSON.stringify(bookings, null, 2));
-        await fs.writeFile(roomsPath, JSON.stringify(rooms, null, 2));
+        await fs.writeFile(bookingsPath, JSON.stringify(bookingsInfo, null, 2));
+        await fs.writeFile(roomsPath, JSON.stringify(roomsInfo, null, 2));
 
     } catch (error) {
         console.error("Error updating bookings:", error);
@@ -58,14 +50,14 @@ async function assignResId(booking, rooms) {
 }
 
 // Function for sorting the bookings
-function sortBookings(bookings){
-    bookings.sort((a,b) => {
-        const endDiff = new Date(a.dayOfbooking) - new Date(b.dayOfBooking)
+function sortBookings(bookingsInfo){
+    bookingsInfo.sort((a,b) => {
+        const endDiff = new Date(a.checkOutDate) - new Date(b.checkOutDate)
     })
 }
 
-function getBookingsAtDate(bookings,date){
-    const visibleBookings = bookings.filter((booking) => bookings.dayOfBooking === date);
+function getBookingsAtDate(bookingsInfo,date){
+    const visibleBookings = bookingsInfo.filter((booking) => bookingsInfo.dayOfBooking === date);
     return visibleBookings
 }
 
