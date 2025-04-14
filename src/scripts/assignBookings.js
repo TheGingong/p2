@@ -1,13 +1,19 @@
 import fs from 'fs/promises';
+import dayjs from 'dayjs';
 import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 async function matchBookingsToRooms() {   
 
     try {
         const { bookingsInfo } = await loadBookings();
         const { roomsInfo } = await loadRooms();
-        console.log(bookingsInfo);
+        //console.log(bookingsInfo);
+        const visibleBookings = await getVisibleBookings(bookingsInfo, "2025-03-09");
         // filter bookings by given Booking date
         
 
@@ -15,18 +21,18 @@ async function matchBookingsToRooms() {
         //await sortBookings(bookingsInfo);
 
         // Loop through the bookings by dayOfBooking
-        for (today=0; today <= 365; today++){
-            const bookingsAtDate = getBookingsAtDate(bookingsInfo, today);
-            console.log("Bookings at date: ", bookingsAtDate);
-            for (booking of bookingsAtDate){
-                if booking.avalible === 0){
-            }
-        }
+        //for (today=0; today <= 365; today++){
+        //    const bookingsAtDate = getBookingsAtDate(bookingsInfo, today);
+        //    console.log("Bookings at date: ", bookingsAtDate);
+        //    for (booking of bookingsAtDate){
+        //        if booking.avalible === 0){
+        //    }
+        //}
 //
         // Match bookings to rooms
         for (const booking of bookingsInfo) {
             booking.resourceIds = await assignResId(booking, roomsInfo);
-        }
+        } 
 
         // Updating resourceIds in bookings, to the newly assigned rooms
         await fs.writeFile(bookingsPath, JSON.stringify(bookingsInfo, null, 2));
@@ -68,9 +74,27 @@ function getBookingsAtDate(bookingsInfo,date){
     const visibleBookings = bookingsInfo.filter((booking) => bookingsInfo.dayOfBooking === date);
     return visibleBookings
 }
-function getVisibleBookings(bookingsInfo, date){
-    for()
+
+async function getVisibleBookings(bookingsInfo, date) {
+    // Parse the input date using dayjs
+    let today = dayjs(date);
+
+    // Initialize array for visible bookings
+    let allocationArray = [];
+
+    // For hver booking checker vi constrains
+    for (let x of bookingsInfo){
+        let bookings = dayjs(x.dayOfBooking);
+        let checkdate = dayjs(x.checkInDate);
+        if (bookings <= today && checkdate >= today) {
+            allocationArray.push(x)
+        }
+    }
+
+    console.log("allocationArray:");
+    console.log(allocationArray);
+    return allocationArray;
 }
+
+
 matchBookingsToRooms();
-
-

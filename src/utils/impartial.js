@@ -23,7 +23,7 @@ function createBookingBatch(batch) {
                 checkOutDate = checkInDate.add(stayDuration, 'day');
                 
                 // Generating day of booking
-                daysBeforeCheckIn = Math.ceil(Math.random() * 30);
+                daysBeforeCheckIn = Math.ceil(Math.random() * 60);
                 dayOfBooking = checkInDate.subtract(daysBeforeCheckIn, 'day').format('YYYY-MM-DD');
 
                 // Correct the format
