@@ -31,7 +31,9 @@ startServer();
 /* *********************************************************************
    Setup HTTP route handling: Called when a HTTP request is received 
    ******************************************************************** */
-    generateRooms();
+   
+   // Fills the rooms! 
+   generateRooms();
 
    function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);

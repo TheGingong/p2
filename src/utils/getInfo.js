@@ -7,7 +7,6 @@ export { roomsInfo, bookingsInfo, loadBookings, loadRooms };
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 let roomsInfo = null;
 let bookingsInfo = null;
 

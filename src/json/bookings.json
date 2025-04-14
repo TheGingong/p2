@@ -1,494 +1,455 @@
 [
   {
-    "checkInDate": "2025-07-10",
-    "checkOutDate": "2025-07-28",
-    "guestsNumber": 1,
-    "stayDuration": 18,
-    "dayOfBooking": "2025-07-05",
-    "preference": {
-      "beds": "s1q0"
-    }
-  },
-  {
-    "checkInDate": "2025-05-13",
-    "checkOutDate": "2025-05-19",
+    "checkInDate": "2025-11-03",
+    "checkOutDate": "2025-11-18",
     "guestsNumber": 3,
-    "stayDuration": 6,
-    "dayOfBooking": "2025-04-21",
+    "stayDuration": 15,
+    "dayOfBooking": "2025-10-11",
     "preference": {
       "beds": "s1q1"
     }
   },
   {
-    "checkInDate": "2025-05-19",
-    "checkOutDate": "2025-06-01",
+    "checkInDate": "2025-12-22",
+    "checkOutDate": "2025-12-29",
     "guestsNumber": 4,
-    "stayDuration": 13,
-    "dayOfBooking": "2025-05-03",
+    "stayDuration": 7,
+    "dayOfBooking": "2025-12-08",
     "preference": {
       "beds": "s0q2"
     }
   },
   {
-    "checkInDate": "2025-01-06",
-    "checkOutDate": "2025-01-12",
-    "guestsNumber": 1,
-    "stayDuration": 6,
-    "dayOfBooking": "2024-12-15",
-    "preference": {
-      "beds": "s1q0"
-    }
-  },
-  {
-    "checkInDate": "2025-11-20",
-    "checkOutDate": "2025-12-04",
-    "guestsNumber": 2,
-    "stayDuration": 14,
-    "dayOfBooking": "2025-10-28",
-    "preference": {
-      "beds": "s2q0"
-    }
-  },
-  {
-    "checkInDate": "2025-08-28",
-    "checkOutDate": "2025-09-05",
-    "guestsNumber": 4,
-    "stayDuration": 8,
-    "dayOfBooking": "2025-08-08",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-06-25",
-    "checkOutDate": "2025-06-30",
-    "guestsNumber": 4,
+    "checkInDate": "2025-05-20",
+    "checkOutDate": "2025-05-25",
+    "guestsNumber": 3,
     "stayDuration": 5,
-    "dayOfBooking": "2025-06-19",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-02-09",
-    "checkOutDate": "2025-02-23",
-    "guestsNumber": 4,
-    "stayDuration": 14,
-    "dayOfBooking": "2025-02-02",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-08-27",
-    "checkOutDate": "2025-08-30",
-    "guestsNumber": 3,
-    "stayDuration": 3,
-    "dayOfBooking": "2025-08-18",
+    "dayOfBooking": "2025-04-29",
     "preference": {
       "beds": "s1q1"
     }
   },
   {
-    "checkInDate": "2025-06-28",
-    "checkOutDate": "2025-07-14",
+    "checkInDate": "2025-08-09",
+    "checkOutDate": "2025-08-13",
+    "guestsNumber": 4,
+    "stayDuration": 4,
+    "dayOfBooking": "2025-07-14",
+    "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-02-12",
+    "checkOutDate": "2025-03-03",
+    "guestsNumber": 1,
+    "stayDuration": 19,
+    "dayOfBooking": "2025-02-04",
+    "preference": {
+      "beds": "s1q0"
+    }
+  },
+  {
+    "checkInDate": "2025-07-11",
+    "checkOutDate": "2025-07-21",
     "guestsNumber": 2,
-    "stayDuration": 16,
-    "dayOfBooking": "2025-06-01",
+    "stayDuration": 10,
+    "dayOfBooking": "2025-06-26",
     "preference": {
       "beds": "s0q1"
     }
   },
   {
-    "checkInDate": "2025-07-11",
-    "checkOutDate": "2025-07-19",
+    "checkInDate": "2025-04-04",
+    "checkOutDate": "2025-04-09",
+    "guestsNumber": 3,
+    "stayDuration": 5,
+    "dayOfBooking": "2025-03-08",
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-10-10",
+    "checkOutDate": "2025-10-29",
+    "guestsNumber": 4,
+    "stayDuration": 19,
+    "dayOfBooking": "2025-09-23",
+    "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-09-28",
+    "checkOutDate": "2025-10-15",
+    "guestsNumber": 3,
+    "stayDuration": 17,
+    "dayOfBooking": "2025-09-26",
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-05-30",
+    "checkOutDate": "2025-06-10",
+    "guestsNumber": 2,
+    "stayDuration": 11,
+    "dayOfBooking": "2025-05-10",
+    "preference": {
+      "beds": "s0q1"
+    }
+  },
+  {
+    "checkInDate": "2025-01-17",
+    "checkOutDate": "2025-02-05",
+    "guestsNumber": 4,
+    "stayDuration": 19,
+    "dayOfBooking": "2024-12-30",
+    "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-07-14",
+    "checkOutDate": "2025-08-02",
+    "guestsNumber": 3,
+    "stayDuration": 19,
+    "dayOfBooking": "2025-07-10",
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-05-31",
+    "checkOutDate": "2025-06-09",
     "guestsNumber": 1,
-    "stayDuration": 8,
-    "dayOfBooking": "2025-06-27",
+    "stayDuration": 9,
+    "dayOfBooking": "2025-05-05",
     "preference": {
       "beds": "s1q0"
     }
   },
   {
-    "checkInDate": "2025-01-17",
-    "checkOutDate": "2025-01-31",
-    "guestsNumber": 4,
-    "stayDuration": 14,
-    "dayOfBooking": "2025-01-07",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-04-23",
-    "checkOutDate": "2025-04-28",
-    "guestsNumber": 4,
-    "stayDuration": 5,
-    "dayOfBooking": "2025-04-07",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-08-30",
-    "checkOutDate": "2025-09-02",
-    "guestsNumber": 4,
-    "stayDuration": 3,
-    "dayOfBooking": "2025-08-07",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-07-22",
-    "checkOutDate": "2025-07-24",
+    "checkInDate": "2025-04-22",
+    "checkOutDate": "2025-04-23",
     "guestsNumber": 2,
-    "stayDuration": 2,
-    "dayOfBooking": "2025-07-03",
-    "preference": {
-      "beds": "s2q0"
-    }
-  },
-  {
-    "checkInDate": "2025-04-07",
-    "checkOutDate": "2025-04-19",
-    "guestsNumber": 2,
-    "stayDuration": 12,
+    "stayDuration": 1,
     "dayOfBooking": "2025-03-29",
     "preference": {
       "beds": "s2q0"
     }
   },
   {
-    "checkInDate": "2025-08-09",
-    "checkOutDate": "2025-08-28",
-    "guestsNumber": 2,
-    "stayDuration": 19,
-    "dayOfBooking": "2025-08-07",
-    "preference": {
-      "beds": "s0q1"
-    }
-  },
-  {
-    "checkInDate": "2025-01-01",
-    "checkOutDate": "2025-01-10",
+    "checkInDate": "2025-11-12",
+    "checkOutDate": "2025-11-29",
     "guestsNumber": 4,
-    "stayDuration": 9,
-    "dayOfBooking": "2024-12-10",
+    "stayDuration": 17,
+    "dayOfBooking": "2025-10-15",
     "preference": {
       "beds": "s0q2"
     }
   },
   {
-    "checkInDate": "2025-05-01",
-    "checkOutDate": "2025-05-10",
+    "checkInDate": "2025-07-12",
+    "checkOutDate": "2025-07-22",
+    "guestsNumber": 3,
+    "stayDuration": 10,
+    "dayOfBooking": "2025-06-25",
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-04-30",
+    "checkOutDate": "2025-05-07",
     "guestsNumber": 2,
-    "stayDuration": 9,
-    "dayOfBooking": "2025-04-03",
+    "stayDuration": 7,
+    "dayOfBooking": "2025-04-29",
+    "preference": {
+      "beds": "s2q0"
+    }
+  },
+  {
+    "checkInDate": "2025-12-25",
+    "checkOutDate": "2025-12-30",
+    "guestsNumber": 2,
+    "stayDuration": 5,
+    "dayOfBooking": "2025-11-27",
     "preference": {
       "beds": "s0q1"
     }
   },
   {
-    "checkInDate": "2025-11-14",
-    "checkOutDate": "2025-11-21",
-    "guestsNumber": 2,
-    "stayDuration": 7,
-    "dayOfBooking": "2025-11-04",
+    "checkInDate": "2025-05-08",
+    "checkOutDate": "2025-05-09",
+    "guestsNumber": 4,
+    "stayDuration": 1,
+    "dayOfBooking": "2025-04-11",
     "preference": {
-      "beds": "s0q1",
-      "floor": 1
+      "beds": "s0q2"
     }
   },
   {
-    "checkInDate": "2025-01-21",
-    "checkOutDate": "2025-02-06",
-    "guestsNumber": 3,
-    "stayDuration": 16,
-    "dayOfBooking": "2025-01-05",
+    "checkInDate": "2025-11-22",
+    "checkOutDate": "2025-12-02",
+    "guestsNumber": 4,
+    "stayDuration": 10,
+    "dayOfBooking": "2025-10-28",
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q2",
+      "floor": 3
+    }
+  },
+  {
+    "checkInDate": "2025-06-19",
+    "checkOutDate": "2025-06-24",
+    "guestsNumber": 1,
+    "stayDuration": 5,
+    "dayOfBooking": "2025-06-10",
+    "preference": {
+      "beds": "s1q0"
     }
   },
   {
     "checkInDate": "2025-06-15",
-    "checkOutDate": "2025-06-22",
-    "guestsNumber": 4,
-    "stayDuration": 7,
-    "dayOfBooking": "2025-05-16",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-02-19",
-    "checkOutDate": "2025-03-06",
-    "guestsNumber": 3,
-    "stayDuration": 15,
-    "dayOfBooking": "2025-02-01",
-    "preference": {
-      "beds": "s1q1"
-    }
-  },
-  {
-    "checkInDate": "2025-04-17",
-    "checkOutDate": "2025-04-25",
+    "checkOutDate": "2025-06-18",
     "guestsNumber": 2,
-    "stayDuration": 8,
-    "dayOfBooking": "2025-04-07",
+    "stayDuration": 3,
+    "dayOfBooking": "2025-06-08",
     "preference": {
-      "beds": "s0q1"
-    }
-  },
-  {
-    "checkInDate": "2025-08-25",
-    "checkOutDate": "2025-09-06",
-    "guestsNumber": 4,
-    "stayDuration": 12,
-    "dayOfBooking": "2025-07-31",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-05-29",
-    "checkOutDate": "2025-06-04",
-    "guestsNumber": 4,
-    "stayDuration": 6,
-    "dayOfBooking": "2025-05-24",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-05-31",
-    "checkOutDate": "2025-06-13",
-    "guestsNumber": 1,
-    "stayDuration": 13,
-    "dayOfBooking": "2025-05-25",
-    "preference": {
-      "beds": "s1q0"
-    }
-  },
-  {
-    "checkInDate": "2025-06-26",
-    "checkOutDate": "2025-07-04",
-    "guestsNumber": 2,
-    "stayDuration": 8,
-    "dayOfBooking": "2025-06-03",
-    "preference": {
-      "beds": "s0q1"
+      "beds": "s2q0"
     }
   },
   {
     "checkInDate": "2025-04-07",
-    "checkOutDate": "2025-04-24",
+    "checkOutDate": "2025-04-08",
     "guestsNumber": 4,
-    "stayDuration": 17,
+    "stayDuration": 1,
+    "dayOfBooking": "2025-03-10",
+    "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-12-11",
+    "checkOutDate": "2025-12-16",
+    "guestsNumber": 1,
+    "stayDuration": 5,
+    "dayOfBooking": "2025-12-10",
+    "preference": {
+      "beds": "s1q0"
+    }
+  },
+  {
+    "checkInDate": "2025-03-22",
+    "checkOutDate": "2025-04-03",
+    "guestsNumber": 2,
+    "stayDuration": 12,
     "dayOfBooking": "2025-03-11",
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q1"
     }
   },
   {
-    "checkInDate": "2025-12-01",
-    "checkOutDate": "2025-12-20",
-    "guestsNumber": 2,
-    "stayDuration": 19,
-    "dayOfBooking": "2025-11-27",
+    "checkInDate": "2025-01-06",
+    "checkOutDate": "2025-01-14",
+    "guestsNumber": 1,
+    "stayDuration": 8,
+    "dayOfBooking": "2024-12-19",
     "preference": {
-      "beds": "s2q0"
+      "beds": "s1q0"
     }
   },
   {
-    "checkInDate": "2025-04-21",
-    "checkOutDate": "2025-05-02",
-    "guestsNumber": 3,
-    "stayDuration": 11,
-    "dayOfBooking": "2025-04-17",
-    "preference": {
-      "beds": "s1q1"
-    }
-  },
-  {
-    "checkInDate": "2025-06-20",
-    "checkOutDate": "2025-06-21",
-    "guestsNumber": 2,
-    "stayDuration": 1,
-    "dayOfBooking": "2025-06-14",
-    "preference": {
-      "beds": "s2q0"
-    }
-  },
-  {
-    "checkInDate": "2025-06-05",
-    "checkOutDate": "2025-06-22",
-    "guestsNumber": 4,
-    "stayDuration": 17,
-    "dayOfBooking": "2025-05-11",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-08-29",
+    "checkInDate": "2025-09-08",
     "checkOutDate": "2025-09-16",
     "guestsNumber": 3,
-    "stayDuration": 18,
-    "dayOfBooking": "2025-08-10",
-    "preference": {
-      "beds": "s1q1"
-    }
-  },
-  {
-    "checkInDate": "2025-06-20",
-    "checkOutDate": "2025-07-04",
-    "guestsNumber": 3,
-    "stayDuration": 14,
-    "dayOfBooking": "2025-06-06",
-    "preference": {
-      "beds": "s1q1"
-    }
-  },
-  {
-    "checkInDate": "2025-04-29",
-    "checkOutDate": "2025-05-07",
-    "guestsNumber": 1,
     "stayDuration": 8,
-    "dayOfBooking": "2025-04-23",
-    "preference": {
-      "beds": "s1q0"
-    }
-  },
-  {
-    "checkInDate": "2025-07-04",
-    "checkOutDate": "2025-07-15",
-    "guestsNumber": 1,
-    "stayDuration": 11,
-    "dayOfBooking": "2025-06-21",
-    "preference": {
-      "beds": "s1q0"
-    }
-  },
-  {
-    "checkInDate": "2025-03-19",
-    "checkOutDate": "2025-03-26",
-    "guestsNumber": 2,
-    "stayDuration": 7,
-    "dayOfBooking": "2025-02-23",
-    "preference": {
-      "beds": "s2q0"
-    }
-  },
-  {
-    "checkInDate": "2025-04-15",
-    "checkOutDate": "2025-04-27",
-    "guestsNumber": 4,
-    "stayDuration": 12,
-    "dayOfBooking": "2025-03-25",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-11-08",
-    "checkOutDate": "2025-11-19",
-    "guestsNumber": 2,
-    "stayDuration": 11,
-    "dayOfBooking": "2025-11-02",
-    "preference": {
-      "beds": "s0q1",
-      "floor": 2
-    }
-  },
-  {
-    "checkInDate": "2025-09-15",
-    "checkOutDate": "2025-10-01",
-    "guestsNumber": 2,
-    "stayDuration": 16,
-    "dayOfBooking": "2025-09-05",
-    "preference": {
-      "beds": "s0q1"
-    }
-  },
-  {
-    "checkInDate": "2025-11-11",
-    "checkOutDate": "2025-11-27",
-    "guestsNumber": 1,
-    "stayDuration": 16,
-    "dayOfBooking": "2025-11-05",
-    "preference": {
-      "beds": "s1q0"
-    }
-  },
-  {
-    "checkInDate": "2025-06-23",
-    "checkOutDate": "2025-07-01",
-    "guestsNumber": 4,
-    "stayDuration": 8,
-    "dayOfBooking": "2025-06-06",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-09-16",
-    "checkOutDate": "2025-09-20",
-    "guestsNumber": 4,
-    "stayDuration": 4,
-    "dayOfBooking": "2025-08-18",
-    "preference": {
-      "beds": "s0q2"
-    }
-  },
-  {
-    "checkInDate": "2025-05-23",
-    "checkOutDate": "2025-06-06",
-    "guestsNumber": 3,
-    "stayDuration": 14,
-    "dayOfBooking": "2025-04-30",
+    "dayOfBooking": "2025-08-12",
     "preference": {
       "beds": "s1q1"
     }
   },
   {
-    "checkInDate": "2025-01-01",
-    "checkOutDate": "2025-01-03",
-    "guestsNumber": 2,
-    "stayDuration": 2,
-    "dayOfBooking": "2024-12-03",
+    "checkInDate": "2025-10-27",
+    "checkOutDate": "2025-11-06",
+    "guestsNumber": 4,
+    "stayDuration": 10,
+    "dayOfBooking": "2025-10-04",
     "preference": {
-      "beds": "s0q1"
+      "beds": "s0q2",
+      "floor": 1
     }
   },
   {
-    "checkInDate": "2025-03-04",
-    "checkOutDate": "2025-03-08",
+    "checkInDate": "2025-08-08",
+    "checkOutDate": "2025-08-12",
     "guestsNumber": 3,
     "stayDuration": 4,
-    "dayOfBooking": "2025-02-05",
+    "dayOfBooking": "2025-07-14",
     "preference": {
       "beds": "s1q1"
-    }
-  },
-  {
-    "checkInDate": "2025-07-28",
-    "checkOutDate": "2025-08-05",
-    "guestsNumber": 2,
-    "stayDuration": 8,
-    "dayOfBooking": "2025-07-06",
-    "preference": {
-      "beds": "s2q0"
     }
   },
   {
     "checkInDate": "2025-01-02",
-    "checkOutDate": "2025-01-04",
-    "guestsNumber": 3,
-    "stayDuration": 2,
+    "checkOutDate": "2025-01-13",
+    "guestsNumber": 4,
+    "stayDuration": 11,
     "dayOfBooking": "2024-12-06",
     "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-06-18",
+    "checkOutDate": "2025-07-05",
+    "guestsNumber": 2,
+    "stayDuration": 17,
+    "dayOfBooking": "2025-05-31",
+    "preference": {
+      "beds": "s0q1"
+    }
+  },
+  {
+    "checkInDate": "2025-03-20",
+    "checkOutDate": "2025-04-05",
+    "guestsNumber": 3,
+    "stayDuration": 16,
+    "dayOfBooking": "2025-02-18",
+    "preference": {
       "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-10-03",
+    "checkOutDate": "2025-10-10",
+    "guestsNumber": 3,
+    "stayDuration": 7,
+    "dayOfBooking": "2025-09-10",
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-08-03",
+    "checkOutDate": "2025-08-22",
+    "guestsNumber": 1,
+    "stayDuration": 19,
+    "dayOfBooking": "2025-07-06",
+    "preference": {
+      "beds": "s1q0"
+    }
+  },
+  {
+    "checkInDate": "2025-04-22",
+    "checkOutDate": "2025-05-05",
+    "guestsNumber": 2,
+    "stayDuration": 13,
+    "dayOfBooking": "2025-03-23",
+    "preference": {
+      "beds": "s0q1"
+    }
+  },
+  {
+    "checkInDate": "2025-03-11",
+    "checkOutDate": "2025-03-19",
+    "guestsNumber": 2,
+    "stayDuration": 8,
+    "dayOfBooking": "2025-03-02",
+    "preference": {
+      "beds": "s0q1"
+    }
+  },
+  {
+    "checkInDate": "2025-10-15",
+    "checkOutDate": "2025-10-26",
+    "guestsNumber": 3,
+    "stayDuration": 11,
+    "dayOfBooking": "2025-10-02",
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-12-28",
+    "checkOutDate": "2026-01-12",
+    "guestsNumber": 4,
+    "stayDuration": 15,
+    "dayOfBooking": "2025-12-11",
+    "preference": {
+      "beds": "s0q2",
+      "floor": 4
+    }
+  },
+  {
+    "checkInDate": "2025-02-09",
+    "checkOutDate": "2025-02-20",
+    "guestsNumber": 4,
+    "stayDuration": 11,
+    "dayOfBooking": "2025-02-06",
+    "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-02-16",
+    "checkOutDate": "2025-03-06",
+    "guestsNumber": 4,
+    "stayDuration": 18,
+    "dayOfBooking": "2025-02-01",
+    "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-03-27",
+    "checkOutDate": "2025-04-10",
+    "guestsNumber": 3,
+    "stayDuration": 14,
+    "dayOfBooking": "2025-03-07",
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-10-02",
+    "checkOutDate": "2025-10-16",
+    "guestsNumber": 4,
+    "stayDuration": 14,
+    "dayOfBooking": "2025-09-27",
+    "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-09-12",
+    "checkOutDate": "2025-09-27",
+    "guestsNumber": 1,
+    "stayDuration": 15,
+    "dayOfBooking": "2025-09-02",
+    "preference": {
+      "beds": "s1q0"
+    }
+  },
+  {
+    "checkInDate": "2025-06-11",
+    "checkOutDate": "2025-06-22",
+    "guestsNumber": 2,
+    "stayDuration": 11,
+    "dayOfBooking": "2025-05-20",
+    "preference": {
+      "beds": "s2q0"
+    }
+  },
+  {
+    "checkInDate": "2025-12-28",
+    "checkOutDate": "2026-01-11",
+    "guestsNumber": 1,
+    "stayDuration": 14,
+    "dayOfBooking": "2025-12-01",
+    "preference": {
+      "beds": "s1q0"
     }
   }
 ]
