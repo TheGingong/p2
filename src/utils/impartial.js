@@ -1,8 +1,10 @@
 import fs from 'fs/promises'
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
+import { extendGrid, bookingRange, availabilityGrid } from '../scripts/availabilityMatrix.js';
+import { roomsInfo, loadBookings } from './getInfo.js';
 import dayjs from 'dayjs';
-import { loadBookings } from './getInfo.js';
 export { storeBatch365 }
+
 
 function createBookingBatch(batch) {
     let checkInMonth, checkInDate, stayDuration, checkOutDate, 
@@ -64,6 +66,13 @@ function createBookingBatch(batch) {
             }    
             // Resolves if no errors and returns array of booking batches
             // Creates JSON return from the array of objects bookingBatches
+            //let jsonBookingBatches = JSON.stringify(bookingBatches, null, 2);
+
+            console.log("before " + availabilityGrid);
+            console.log(bookingBatches)
+            extendGrid(roomsInfo, bookingRange(bookingBatches));
+            console.log("after " + availabilityGrid);
+
             resolve(bookingBatches);
         } catch (error) {
             // Catches any errors there might be
@@ -85,3 +94,4 @@ async function storeBatch365() {
         return { error: "Batch generation failed." };
     }
 }
+

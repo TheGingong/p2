@@ -4,11 +4,18 @@ import {buildingFloors, roomsPerFloor, maxGuests} from '../utils/globalVariables
 import { bookingsInfo, loadBookings } from '../utils/getInfo.js';
 export {generateRoomNumber, generateRooms, generateGuests}
 
-// Function that will generate all rooms using other functions, 
+
+// variables
+let buildingFloors = 1; // floors in the hotel
+let roomsPerFloor = 4; // how many rooms to generate for every floor
+let maxGuests = 5; // maximum guests for largest room (-1 because we add in the random)
+
+// function that will generate all rooms using other functions, 
 // and write them into the json file through an array
 async function generateRooms () {
-    // Define file path for rooms.json file
-    const roomsPath = 'src/json/rooms.json';
+    // define file path for rooms.json file
+    const roomsPath = "src/json/rooms.json";
+
 
     // prepare to write a bunch of data 
     await fs.writeFile(roomsPath, "[\n", "utf8");
@@ -50,6 +57,10 @@ function generateGuests (maximumGuests) {
     return Math.floor((Math.random() * maximumGuests) + 1);
 }
 
+
+// run the function
+//generateRooms();
+
 function generateRoomTypes(numberOfGuests) {
     let preference = {};
     
@@ -68,3 +79,4 @@ function generateRoomTypes(numberOfGuests) {
     }
 
 }
+
