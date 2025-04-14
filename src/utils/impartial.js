@@ -1,10 +1,10 @@
 import fs from 'fs/promises'
-import { generateRoomNumber } from '../scripts/roomGenerator.js';
 import { extendGrid, bookingRange, availabilityGrid } from '../scripts/availabilityMatrix.js';
 import { roomsInfo, loadBookings } from './getInfo.js';
+import { generateRoomNumber } from '../scripts/roomGenerator.js';
 import dayjs from 'dayjs';
+import { roomTypes } from './globalVariables.js';
 export { storeBatch365 }
-import { roomtypes } from './globalVariables.js';
 
 function createBookingBatch(batch) {
     let checkInMonth, checkInDate, stayDuration, checkOutDate, 
@@ -41,38 +41,50 @@ function createBookingBatch(batch) {
                 // Generate room preference
                 switch(guestsNumber) {
                     case 1:
-                        preference.beds = roomtypes[0]; // One single bed
+                        preference.beds = roomTypes[0]; // One single bed
                         break;
                     case 2:
-                        preference.beds = roomtypes[Math.ceil(Math.random() * 2)]; // 2 single bed or 1 queen bed
+                        preference.beds = roomTypes[Math.ceil(Math.random() * 2)]; // 2 single bed or 1 queen bed
                         break;
                     case 3:
-                        preference.beds = roomtypes[3]; // One single bed and 1 queen bed
+                        preference.beds = roomTypes[3]; // One single bed and 1 queen bed
                         break;
                     case 4:
-                        preference.beds = roomtypes[4]; // One single bed and 1 queen bed
+                        preference.beds = roomTypes[4]; // One single bed and 1 queen bed
                         break;
                     default:
                         console.log("Something went wrong. Too many guests.");
                 }
 
-                if ((i % 20) === 0) {
+                let chanceForFloorPref = Math.floor(Math.random() * 20); // Generates a number from 0-19 (5% chance for 0)
+                // Runs if chanceForFloorPref = 0
+                if (!chanceForFloorPref) {
                     preference.floor = Math.ceil(Math.random() * 5);
                 }
-                
+
+                // Needs to be deleted later
+                let room = i % 11
+                let resourceIds;
+                if (room === 0){
+                    j += 1
+                    i++
+                    resourceIds = generateRoomNumber(j,room+1)
+                } else {
+                    resourceIds = generateRoomNumber(j,room)
+                }
+
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, preference};
+                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, preference, resourceIds};
                 bookingBatches.push(currentBookingObject);
             }    
-            // Resolves if no errors and returns array of booking batches
-            // Creates JSON return from the array of objects bookingBatches
+            
             //let jsonBookingBatches = JSON.stringify(bookingBatches, null, 2);
-
-            console.log("before " + availabilityGrid);
-            console.log(bookingBatches)
+            //console.log("before " + availabilityGrid);
+            //console.log(bookingBatches)
             extendGrid(roomsInfo, bookingRange(bookingBatches));
-            console.log("after " + availabilityGrid);
+            //console.log("after " + availabilityGrid);
 
+            // Resolves if no errors and returns array of booking batches
             resolve(bookingBatches);
         } catch (error) {
             // Catches any errors there might be
@@ -94,6 +106,3 @@ async function storeBatch365() {
         return { error: "Batch generation failed." };
     }
 }
-
-
-

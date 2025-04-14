@@ -7,19 +7,25 @@ async function scoring(bookingsInfo, roomsInfo) {
         return hash;
     }, {});
 
-    let score = 0;
+    let sumOfScores = 0;
 
     for (let assignment of bookingsInfo) {
+        let score = 1;
         const roomDetails = roomsHashTable[assignment.resourceIds];
         if (roomDetails) { // If the resourceId exists in the hash table
             // Check if roomGuests match guestsNumber
-            if (roomDetails.roomGuests === assignment.guestsNumber) {
-                score += 1;
+            if (roomDetails.preference.beds != assignment.preference.beds) {
+                score -= 0.5;
             }
+            if (assignment.preference.hasOwnProperty('floor') && assignment.preference.floor != roomDetails.preference.floor) {
+                score -= 0.5;
+            }
+
+            sumOfScores += score;
+
         } else {
             console.log(`Room ${assignment.resourceIds} not found in roomsInfo`);
         }
     }
-
-    console.log("Average score is", score / 50);
+    console.log("Average score is", sumOfScores / bookingsInfo.length);
 }
