@@ -1,12 +1,12 @@
 [
 {
   "roomNumber": "101",
-  "roomGuests": 4,
-  "roomTypeshi": "s0q2"
+  "roomGuests": 3,
+  "roomTypeshi": "s1q1"
 },
 {
   "roomNumber": "102",
-  "roomGuests": 3,
-  "roomTypeshi": "s1q1"
+  "roomGuests": 4,
+  "roomTypeshi": "s0q2"
 }
 ]
