@@ -13,7 +13,15 @@ async function matchBookingsToRooms() {
 
         // Sort bookings by earliest enddate
         //await sortBookings(bookingsInfo);
-        getBookingsAtDate(bookingsInfo, today);
+
+        // Loop through the bookings by dayOfBooking
+        for (today=0; today <= 365; today++){
+            const bookingsAtDate = getBookingsAtDate(bookingsInfo, today);
+            console.log("Bookings at date: ", bookingsAtDate);
+            for (booking of bookingsAtDate){
+                if booking.avalible === 0){
+            }
+        }
 //
         // Match bookings to rooms
         for (const booking of bookingsInfo) {
@@ -60,7 +68,9 @@ function getBookingsAtDate(bookingsInfo,date){
     const visibleBookings = bookingsInfo.filter((booking) => bookingsInfo.dayOfBooking === date);
     return visibleBookings
 }
-
+function getVisibleBookings(bookingsInfo, date){
+    for()
+}
 matchBookingsToRooms();
 
 
