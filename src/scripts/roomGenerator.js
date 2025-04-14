@@ -1,5 +1,9 @@
 import fs from 'fs/promises'
-export {generateRoomNumber}
+import { roomtypes } from '../utils/globalVariables.js';
+import {buildingFloors, roomsPerFloor, maxGuests} from '../utils/globalVariables.js'
+import { bookingsInfo, loadBookings } from '../utils/getInfo.js';
+export {generateRoomNumber, generateRooms, generateGuests}
+
 
 // variables
 let buildingFloors = 1; // floors in the hotel
@@ -12,6 +16,7 @@ async function generateRooms () {
     // define file path for rooms.json file
     const roomsPath = "src/json/rooms.json";
 
+
     // prepare to write a bunch of data 
     await fs.writeFile(roomsPath, "[\n", "utf8");
 
@@ -19,9 +24,11 @@ async function generateRooms () {
     for (let i=1; i <= buildingFloors; i++){
         for (let j=1; j<= roomsPerFloor; j++) {
             console.log(`Room Number (${i}, ${j}):`, generateRoomNumber(i, j));
+            let guests = generateGuests(maxGuests);
             let roomObject = {
                 "roomNumber" : generateRoomNumber(i, j),
-                "roomGuests" : generateGuests(maxGuests)
+                "roomGuests" : guests,
+                "roomTypeshi": generateRoomTypes(guests)
             };
 
             // convert to json string
@@ -50,5 +57,26 @@ function generateGuests (maximumGuests) {
     return Math.floor((Math.random() * maximumGuests) + 1);
 }
 
+
 // run the function
-////generateRooms();
+//generateRooms();
+
+function generateRoomTypes(numberOfGuests) {
+    let preference = {};
+    
+    // Generate room preference
+    switch(numberOfGuests) {
+        case 1:
+            return preference.beds = roomtypes[0]; // One single bed
+        case 2:
+            return preference.beds = roomtypes[Math.ceil(Math.random() * 2)]; // 2 single bed or 1 queen bed
+        case 3:
+            return preference.beds = roomtypes[3]; // One single bed and 1 queen bed
+        case 4:
+            return preference.beds = roomtypes[4]; // One single bed and 1 queen bed
+        default:
+            console.log("Something went wrong. Too many guests.");
+    }
+
+}
+

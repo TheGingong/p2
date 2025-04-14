@@ -7,14 +7,15 @@ function allocate(bookings){
     for (let i = 0; i < bookings.length; i++){
         calendar.addEvent({
             title: `Booking ${bookings[i].resourceIds}`,
-            start: bookings[i].startDate,
-            end: bookings[i].endDate,
+            start: bookings[i].checkInDate,
+            end: bookings[i].checkOutDate,
             resourceIds: [bookings[i].resourceIds],
             extendedProps: {
                 guestsNumber: bookings[i].guestsNumber,
+                daysOfBooking: bookings[i].daysOfBooking,
               },
               description: `Stay Duration: ${bookings[i].stayDuration} days`,
             
         });
     }
-}
+} 

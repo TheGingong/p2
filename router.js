@@ -1,9 +1,11 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
-import {allocate} from "./public/js/allocation.js"
-import { roomsInfo, bookingsInfo, loadBookings } from "./src/utils/getInfo.js"
-import { storeBatch } from "./src/utils/impartial.js";
 import { extendGrid, insertBookings, checkAvailability, loopAvailability } from "./src/scripts/availabilityMatrix.js";
+import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
+import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
+import { storeBatch365 } from "./src/utils/impartial.js";
+import { scoring } from "./src/utils/prefScores.js";
+import { json } from "stream/consumers";
 
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
@@ -29,6 +31,8 @@ startServer();
 /* *********************************************************************
    Setup HTTP route handling: Called when a HTTP request is received 
    ******************************************************************** */
+    generateRooms();
+
    function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
   
@@ -44,8 +48,8 @@ startServer();
          switch(pathElements[1]){
           // ADD CASES FOR POST
           // Post endpoint for the generation of batches
-          case "batch":
-            storeBatch()
+          case "batch365":
+            storeBatch365()
             .then((result) => {
               jsonResponse(res, result);
             })
@@ -66,7 +70,7 @@ startServer();
         switch(pathElements[1]){     
           case "": // "/"
              // Load bookings at startup - promisebased (can be used later as a database maybe?)
-             loadBookings()
+             loadRooms()
              .then(() => {
                  console.log("Rooms and Bookings loaded successfully.");
              })
@@ -76,18 +80,15 @@ startServer();
              fileResponse(res,"/html/index.html");
              break;
           case "allocate":
-            loadBookings()
-            .then(() => {
+          try {
               insertBookings(bookingsInfo)
-              jsonResponse(res, bookingsInfo);
-           
-                    })
-            .catch((err) => {
-              console.error("Error loading bookings:", err);
-              reportError(res, new Error("Failed to load bookings."));
-          });
-
-            break;
+              scoring(bookingsInfo, roomsInfo); // Perform scoring
+              jsonResponse(res, bookingsInfo); // Send the response
+          } catch (error) {
+              console.error("Error in allocate case:", error);
+              reportError(res, error); // Send error response
+          }
+          break;
           case "rooms":
             if (roomsInfo) {
                 extendGrid
