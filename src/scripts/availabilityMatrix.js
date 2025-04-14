@@ -1,6 +1,6 @@
 import { bookingsInfo, roomsInfo } from "../utils/getInfo.js";
 import dayjs from "dayjs";
-//import 'dayjs/plugin/duration';
+import { currentDay } from "../utils/globalVariables.js"
 export {
   extendGrid,
   bookingRange,
@@ -9,16 +9,11 @@ export {
   checkAvailability,
 };
 
-const d = new Date();
-const todayish = dayjs(d); // Get today's date
-const today = todayish.subtract(1, "day");
+const today = dayjs(currentDay); // Get today's date
 
 let availabilityGrid = {}; // global matrix
 
 let temp_min = today;
-
-let test1 = [{ endDate: "2025-04-11" }];
-let test2 = [{ endDate: "2025-04-20" }];
 
 // temp_min: Den "tidligere" last booking
 // 20240422
