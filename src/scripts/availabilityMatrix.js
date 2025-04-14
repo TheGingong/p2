@@ -26,8 +26,8 @@ function bookingRange(newBookings) {
     to be the differnce between the last end date and the new */
   for (let i of newBookings) {
     //console.log("i.enddate:" + i.endDate + "temp_max" + temp_max )
-    if (dateIndex(i.endDate) > dateIndex(temp_max)) {
-      temp_max = i.endDate;
+    if (dateIndex(i.checkOutDate) > dateIndex(temp_max)) {
+      temp_max = i.checkOutDate;
     }
   }
   range = dateDifference(temp_min, temp_max);
@@ -96,8 +96,8 @@ function extendGrid(rooms, date_range) {
 function insertBookings(newBookings) {
   // for each booking
   newBookings.forEach((booking) => {
-    let startDate = new Date(booking.startDate);
-    let endDate = new Date(booking.endDate);
+    let startDate = new Date(booking.checkinDate);
+    let endDate = new Date(booking.cheackOutDate);
     let roomNumber = booking.resourceIds; // Room ID
 
     // Calculate the index in the array (days from today)
@@ -109,6 +109,7 @@ function insertBookings(newBookings) {
       availabilityGrid[roomNumber][i] = 1; // Mark as occupied
     }
   });
+  console.log("hej")
   console.log(availabilityGrid);
 
   return availabilityGrid;
@@ -132,3 +133,5 @@ console.log("hej");
   console.log("length = " + availabilityGrid[101].length);
   console.log(bookedDates);
 }
+
+//testAvailability()

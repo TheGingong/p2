@@ -93,7 +93,6 @@ startServer();
           break;
           case "rooms":
             if (roomsInfo) {
-                extendGrid
                 jsonResponse(res, roomsInfo);
             } else {
                 console.error("Rooms data is not loaded yet.");
