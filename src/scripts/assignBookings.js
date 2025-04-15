@@ -8,14 +8,15 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
 async function matchBookingsToRooms() {   
-
     try {
+        // load data regarding bookings and room types
         const { bookingsInfo } = await loadBookings();
         const { roomsInfo } = await loadRooms();
-        //console.log(bookingsInfo);
+        // use function to create array of the bookings that should be visible for a given date
         const visibleBookings = await getVisibleBookings(bookingsInfo, "2025-03-09");
-        // filter bookings by given Booking date
         
+        
+        // filter bookings by given Booking date
 
         // Sort bookings by earliest enddate
         //await sortBookings(bookingsInfo);
@@ -28,7 +29,7 @@ async function matchBookingsToRooms() {
         //        if booking.avalible === 0){
         //    }
         //}
-//
+
         // Match bookings to rooms
         for (const booking of bookingsInfo) {
             booking.resourceIds = await assignResId(booking, roomsInfo);
