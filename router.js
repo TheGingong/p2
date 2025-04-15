@@ -1,5 +1,6 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
+import { extendGrid, insertBookings, checkAvailability } from "./src/scripts/availabilityMatrix.js";
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBatch365 } from "./src/utils/impartial.js";
@@ -30,7 +31,9 @@ startServer();
 /* *********************************************************************
    Setup HTTP route handling: Called when a HTTP request is received 
    ******************************************************************** */
-    generateRooms();
+   
+   // Fills the rooms! 
+   generateRooms();
 
    function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
@@ -79,9 +82,15 @@ startServer();
              fileResponse(res,"/html/index.html");
              break;
           case "allocate":
-            jsonResponse(res, bookingsInfo);
-            scoring(bookingsInfo, roomsInfo)
-            break;
+          try {
+              insertBookings(bookingsInfo)
+              scoring(bookingsInfo, roomsInfo); // Perform scoring
+              jsonResponse(res, bookingsInfo); // Send the response
+          } catch (error) {
+              console.error("Error in allocate case:", error);
+              reportError(res, error); // Send error response
+          }
+          break;
           case "rooms":
             if (roomsInfo) {
                 jsonResponse(res, roomsInfo);
