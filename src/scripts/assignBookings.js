@@ -1,36 +1,43 @@
 import fs from 'fs/promises';
-import { bookingsInfo } from '../utils/getInfo.js';
+import dayjs from 'dayjs';
+import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 async function matchBookingsToRooms() {   
-    // Defining paths to JSON files
-    const roomsPath = "../json/rooms.json";
-    const bookingsPath = "../json/bookings.json";
-
     try {
-        // Reads from JSON files and checks for errors
-        const bookingsRaw = await fs.readFile(bookingsPath, 'utf-8');
-        const roomsRaw = await fs.readFile(roomsPath, 'utf-8');
-
-        if (!bookingsRaw.trim() || !roomsRaw.trim()) {
-            console.error("Error: One or more files are empty.");
-            return;
-        }
+        // load data regarding bookings and room types
+        const { bookingsInfo } = await loadBookings();
+        const { roomsInfo } = await loadRooms();
+        // use function to create array of the bookings that should be visible for a given date
+        const visibleBookings = await getVisibleBookings(bookingsInfo, "2025-03-09");
         
-        // Parses the JSON content 
-        const allBookings = JSON.parse(bookingsRaw);
-        const rooms = JSON.parse(roomsRaw);
+        
+        // filter bookings by given Booking date
+
         // Sort bookings by earliest enddate
-        sortBookings(bookings);
+        //await sortBookings(bookingsInfo);
+
+        // Loop through the bookings by dayOfBooking
+        //for (today=0; today <= 365; today++){
+        //    const bookingsAtDate = getBookingsAtDate(bookingsInfo, today);
+        //    console.log("Bookings at date: ", bookingsAtDate);
+        //    for (booking of bookingsAtDate){
+        //        if booking.avalible === 0){
+        //    }
+        //}
 
         // Match bookings to rooms
-        for (const booking of bookings) {
-            booking.resourceIds = await assignResId(booking, rooms);
-        }
+        for (const booking of bookingsInfo) {
+            booking.resourceIds = await assignResId(booking, roomsInfo);
+        } 
 
         // Updating resourceIds in bookings, to the newly assigned rooms
-        await fs.writeFile(bookingsPath, JSON.stringify(bookings, null, 2));
-        await fs.writeFile(roomsPath, JSON.stringify(rooms, null, 2));
+        await fs.writeFile(bookingsPath, JSON.stringify(bookingsInfo, null, 2));
+        await fs.writeFile(roomsPath, JSON.stringify(roomsInfo, null, 2));
 
     } catch (error) {
         console.error("Error updating bookings:", error);
@@ -58,17 +65,37 @@ async function assignResId(booking, rooms) {
 }
 
 // Function for sorting the bookings
-function sortBookings(bookings){
-    bookings.sort((a,b) => {
-        const endDiff = new Date(a.dayOfbooking) - new Date(b.dayOfBooking)
+function sortBookings(bookingsInfo){
+    bookingsInfo.sort((a,b) => {
+        const endDiff = new Date(a.checkOutDate) - new Date(b.checkOutDate)
     })
 }
 
-function getBookingsAtDate(bookings,date){
-    const visibleBookings = bookings.filter((booking) => bookings.dayOfBooking === date);
+function getBookingsAtDate(bookingsInfo,date){
+    const visibleBookings = bookingsInfo.filter((booking) => bookingsInfo.dayOfBooking === date);
     return visibleBookings
 }
 
+async function getVisibleBookings(bookingsInfo, date) {
+    // Parse the input date using dayjs
+    let today = dayjs(date);
+
+    // Initialize array for visible bookings
+    let allocationArray = [];
+
+    // For hver booking checker vi constrains
+    for (let x of bookingsInfo){
+        let bookings = dayjs(x.dayOfBooking);
+        let checkdate = dayjs(x.checkInDate);
+        if (bookings <= today && checkdate >= today) {
+            allocationArray.push(x)
+        }
+    }
+
+    console.log("allocationArray:");
+    console.log(allocationArray);
+    return allocationArray;
+}
+
+
 matchBookingsToRooms();
-
-
