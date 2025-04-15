@@ -5,7 +5,7 @@ export {
   extendGrid,
   bookingRange,
   availabilityGrid,
-  insertBookings,
+  insertBooking,
   checkAvailability,
 };
 
@@ -93,12 +93,10 @@ function extendGrid(rooms, date_range) {
   console.log(availabilityGrid);
 }
 
-function insertBookings(newBookings) {
-  // for each booking
-  newBookings.forEach((booking) => {
-    let startDate = new Date(booking.checkinDate);
-    let endDate = new Date(booking.cheackOutDate);
-    let roomNumber = booking.resourceIds; // Room ID
+function insertBooking(newBooking) {
+    let startDate = new Date(newBooking.checkInDate);
+    let endDate = new Date(newBooking.checkOutDate);
+    let roomNumber = newBooking.resourceIds; // Room ID
 
     // Calculate the index in the array (days from today)
     let startIndex = dateIndex(startDate);
@@ -108,7 +106,6 @@ function insertBookings(newBookings) {
     for (let i = startIndex; i <= endIndex; i++) {
       availabilityGrid[roomNumber][i] = 1; // Mark as occupied
     }
-  });
   console.log("hej")
   console.log(availabilityGrid);
 
@@ -117,9 +114,11 @@ function insertBookings(newBookings) {
 
 function checkAvailability(room, date) {
   const realDate = dayjs(date);
-  return availabilityGrid[room][dateIndex(realDate)] === 1 ? 1 : 0;
+  return availabilityGrid[room][dateIndex(realDate)] !== 0 ? 0 : 1;
 }
 
+
+// test
 function testAvailability() {
 console.log("hej");
   const bookedDates = [];
