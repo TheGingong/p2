@@ -68,13 +68,14 @@ function createBookingBatch(batch) {
                 if (room === 0){
                     j += 1
                     i++
-                    resourceIds = generateRoomNumber(j,room+1)
+                    //resourceIds = generateRoomNumber(j,room+1)
                 } else {
-                    resourceIds = generateRoomNumber(j,room)
+                    //resourceIds = generateRoomNumber(j,room)
                 }
+                resourceIds = 0;
 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, preference};
+                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, preference, resourceIds};
                 bookingBatches.push(currentBookingObject);
             }    
             
