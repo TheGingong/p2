@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import dayjs from 'dayjs';
-import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
+import { bookingsPath, roomsPath, visibleJsonPath, loadBookings, loadRooms } from '../utils/getInfo.js';
 import { checkAvailability, availabilityGrid, insertBooking, extendGrid, bookingRange } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
@@ -26,7 +26,7 @@ async function matchBookingsToRooms() {
         } 
 
         // Updating resourceIds in bookings, to the newly assigned rooms
-        await fs.writeFile(bookingsPath, JSON.stringify(bookingsInfo, null, 2));
+        await fs.writeFile(visibleJsonPath, JSON.stringify(visibleBookings, null, 2));
         await fs.writeFile(roomsPath, JSON.stringify(roomsInfo, null, 2));
     
         // Inserts bookings in the Matrix where checkInDate === today
@@ -57,6 +57,7 @@ async function assignResId(booking, rooms) {
             continue;
         }
     }
+    console.log("didn't find any available rooms")
 }
 
 // Function for sorting the bookings
