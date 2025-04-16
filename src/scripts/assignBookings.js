@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import dayjs from 'dayjs';
 import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
-import { checkAvailability, availabilityGrid, insertBooking } from './availabilityMatrix.js';
+import { checkAvailability, availabilityGrid, insertBooking, extendGrid, bookingRange } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
@@ -14,8 +14,11 @@ async function matchBookingsToRooms() {
         // load data regarding bookings and room types
         const { bookingsInfo } = await loadBookings();
         const { roomsInfo } = await loadRooms();
+        extendGrid(roomsInfo, bookingRange(bookingsInfo));
         // use function to create array of the bookings that should be visible for a given date
-        const visibleBookings = await getVisibleBookings(bookingsInfo, "2025-01-09");
+        const visibleBookings = await getVisibleBookings(bookingsInfo, '2025-02-09');
+        console.log("visible:");
+        console.log(visibleBookings);
         
         // Match bookings to rooms
         for (const booking of visibleBookings) {
@@ -27,6 +30,7 @@ async function matchBookingsToRooms() {
         await fs.writeFile(roomsPath, JSON.stringify(roomsInfo, null, 2));
     
         // Inserts bookings in the Matrix where checkInDate === today
+        const today = dayjs("2025-01-09");
         visibleBookings.forEach(booking => {
             if (booking.checkInDate === today){
                 insertBookings(booking);
@@ -82,8 +86,8 @@ async function getVisibleBookings(bookingsInfo, date) {
         }
     }
 
-    console.log("allocationArray:");
-    console.log(allocationArray);
+    //console.log("allocationArray:");
+    //console.log(allocationArray);
     return allocationArray;
 }
 

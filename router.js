@@ -83,7 +83,7 @@ startServer();
              break;
           case "allocate":
           try {
-              insertBookings(bookingsInfo)
+              insertBooking(bookingsInfo)
               scoring(bookingsInfo, roomsInfo); // Perform scoring
               jsonResponse(res, bookingsInfo); // Send the response
           } catch (error) {
