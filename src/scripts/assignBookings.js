@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import dayjs from 'dayjs';
 import { bookingsPath, roomsPath, visibleJsonPath, loadBookings, loadRooms } from '../utils/getInfo.js';
-import { checkAvailability, availabilityGrid, insertBooking, extendGrid, bookingRange } from './availabilityMatrix.js';
+import { checkAvailability, availabilityGrid, insertBookings, extendGrid, bookingRange } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
@@ -30,12 +30,16 @@ async function matchBookingsToRooms() {
         await fs.writeFile(roomsPath, JSON.stringify(roomsInfo, null, 2));
     
         // Inserts bookings in the Matrix where checkInDate === today
+        const finalarray = []
         const today = dayjs("2025-01-09");
         visibleBookings.forEach(booking => {
             if (booking.checkInDate === today){
-                insertBookings(booking);
+                finalarray.push(booking);
             }
         });
+        insertBookings(finalarray);
+        console.log("finalarray:");
+        console.log(finalarray);
 
     } catch (error) {
         console.error("Error updating bookings:", error);
