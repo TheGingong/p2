@@ -7,7 +7,7 @@ import { storeBatch365 } from "./src/utils/impartial.js";
 import { scoring } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
 import { easyalg } from "./src/utils/DaveTest.js";
-import { getVisibleBookings } from "./src/scripts/assignBookings.js";
+import { getVisibleBookings, matchBookingsToRooms } from "./src/scripts/assignBookings.js";
 import {globalState } from "./src/utils/globalVariables.js";
 import dayjs from "dayjs";
 
@@ -120,9 +120,10 @@ async function allocate(res){
     let allocationArray = []
     let assignedBookings = []
 
-    for (let i = 0; i < 365; i++){
-    allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
-    assignedBookings = await easyalg(allocationArray)
+    for (let i = 0; i < 356; i++){
+    //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
+    //assignedBookings = await easyalg(allocationArray)
+    assignedBookings = await matchBookingsToRooms() || [];
 
     globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
     console.log("currentDay" + globalState.currentDay)

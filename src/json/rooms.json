@@ -22,7 +22,7 @@
 },
 {
   "roomNumber": "104",
-  "roomGuests": 1,
+  "roomGuests": 2,
   "preference": {
     "beds": "s1q0"
   }

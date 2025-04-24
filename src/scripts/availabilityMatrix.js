@@ -72,8 +72,8 @@ function extendGrid(rooms, date_range) {
     rooms.forEach((room) => {
       tempGrid[room.roomNumber] = new Array(date_range).fill(0);
     });
-    console.log("avtempGRidailabilityGrid");
-    console.log(tempGrid);
+    //console.log("avtempGRidailabilityGrid");
+    //console.log(tempGrid);
 
     // Appends the temp grid to the total grid
     // the format and syntax to push might be wrong atm..
