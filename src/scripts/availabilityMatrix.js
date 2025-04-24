@@ -1,15 +1,16 @@
 import { bookingsInfo, roomsInfo } from "../utils/getInfo.js";
 import dayjs from "dayjs";
-import { currentDay } from "../utils/globalVariables.js"
+import { globalState } from "../utils/globalVariables.js"
 export {
   extendGrid,
   bookingRange,
   availabilityGrid,
   insertBookings,
   checkAvailability,
+  dateDifference
 };
 
-const today = dayjs(currentDay); // Get today's date
+let today = dayjs(globalState.currentDay); // Get today's date
 
 let availabilityGrid = {}; // global matrix
 
@@ -95,17 +96,17 @@ function extendGrid(rooms, date_range) {
 
 function insertBookings(newBookings) {
   // for each booking
+  //console.log("New Bookings:", newBookings);
   newBookings.forEach((booking) => {
-    let startDate = new Date(booking.checkinDate);
-    let endDate = new Date(booking.cheackOutDate);
+    let startDate = new Date(booking.checkInDate);
+    let endDate = new Date(booking.checkOutDate);
     let roomNumber = booking.resourceIds; // Room ID
 
     // Calculate the index in the array (days from today)
     let startIndex = dateIndex(startDate);
     let endIndex = dateIndex(endDate);
-
     // Fill the grid for the room
-    for (let i = startIndex; i <= endIndex; i++) {
+    for (let i = startIndex; i < endIndex; i++) {
       availabilityGrid[roomNumber][i] = 1; // Mark as occupied
     }
   });

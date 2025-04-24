@@ -4,6 +4,11 @@ import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getIn
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 
+export {getVisibleBookings}
+
+const { bookingsInfo } = await loadBookings();
+//console.log("Loaded bookingsInfo:", bookingsInfo);
+
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
@@ -98,4 +103,4 @@ async function getVisibleBookings(bookingsInfo, date) {
 }
 
 
-matchBookingsToRooms();
+//matchBookingsToRooms();

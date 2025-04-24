@@ -1,11 +1,15 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
-import { extendGrid, insertBookings, checkAvailability } from "./src/scripts/availabilityMatrix.js";
+import { extendGrid, insertBookings, checkAvailability, availabilityGrid } from "./src/scripts/availabilityMatrix.js";
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBatch365 } from "./src/utils/impartial.js";
 import { scoring } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
+import { easyalg } from "./src/utils/DaveTest.js";
+import { getVisibleBookings } from "./src/scripts/assignBookings.js";
+import {globalState } from "./src/utils/globalVariables.js";
+import dayjs from "dayjs";
 
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
@@ -35,7 +39,7 @@ startServer();
    // Fills the rooms! 
    generateRooms();
 
-   function processReq(req,res){
+   async function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
   
     let baseURL = 'https://' + req.headers.host + '/';    //https://github.com/nodejs/node/issues/12682
@@ -83,9 +87,9 @@ startServer();
              break;
           case "allocate":
           try {
-              insertBookings(bookingsInfo)
-              scoring(bookingsInfo, roomsInfo); // Perform scoring
-              jsonResponse(res, bookingsInfo); // Send the response
+            await allocate(res)
+
+
           } catch (error) {
               console.error("Error in allocate case:", error);
               reportError(res, error); // Send error response
@@ -109,3 +113,20 @@ startServer();
        reportError(res, new Error(NoResourceError)); 
     } //end switch method
   }
+
+
+async function allocate(res){
+    let lastArray = []
+
+    for (let i = 0; i > 365; i++){
+    let allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
+    let assignedBookings = await easyalg(allocationArray)
+
+    globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
+    console.log("currentDay" + globalState.currentDay)
+    lastArray.push(assignedBookings)          
+  }   
+    //scoring(bookingsInfo, roomsInfo); // Perform scoring
+
+    await jsonResponse(res, lastArray ); // Send the response
+}
