@@ -28,6 +28,7 @@ async function matchBookingsToRooms() {
         // Match bookings to rooms
         for (const booking of visibleBookings) {
             booking.resourceIds = await assignResId(booking, roomsInfo);
+
             if (booking.resourceIds !== 0){
                 if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){
                     arr.push(booking)
@@ -69,7 +70,6 @@ async function assignResId(booking, rooms) {
         if (booking.guestsNumber === room.roomGuests) {
             // Check occupation
             if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate) === 1){
-                
                 return room.roomNumber;
             }
         }
