@@ -117,16 +117,21 @@ startServer();
 
 async function allocate(res){
     let lastArray = []
+    let allocationArray = []
+    let assignedBookings = []
 
-    for (let i = 0; i > 365; i++){
-    let allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
-    let assignedBookings = await easyalg(allocationArray)
+    for (let i = 0; i < 365; i++){
+    allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
+    assignedBookings = await easyalg(allocationArray)
 
     globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
     console.log("currentDay" + globalState.currentDay)
-    lastArray.push(assignedBookings)          
-  }   
+    lastArray.push(...assignedBookings);
+    }   
     //scoring(bookingsInfo, roomsInfo); // Perform scoring
 
+    //await jsonResponse(res, lastArray ); // Send the response
+    console.log("lastArray")
+    console.log(lastArray)
     await jsonResponse(res, lastArray ); // Send the response
 }

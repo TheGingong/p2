@@ -1,37 +1,37 @@
 [
 {
   "roomNumber": "101",
-  "roomGuests": 1,
-  "preference": {
-    "beds": "s1q0"
-  }
-},
-{
-  "roomNumber": "102",
-  "roomGuests": 4,
-  "preference": {
-    "beds": "s0q2"
-  }
-},
-{
-  "roomNumber": "103",
   "roomGuests": 2,
   "preference": {
     "beds": "s0q1"
   }
 },
 {
-  "roomNumber": "104",
-  "roomGuests": 4,
+  "roomNumber": "102",
+  "roomGuests": 1,
   "preference": {
-    "beds": "s0q2"
+    "beds": "s1q0"
+  }
+},
+{
+  "roomNumber": "103",
+  "roomGuests": 1,
+  "preference": {
+    "beds": "s1q0"
+  }
+},
+{
+  "roomNumber": "104",
+  "roomGuests": 1,
+  "preference": {
+    "beds": "s1q0"
   }
 },
 {
   "roomNumber": "105",
-  "roomGuests": 3,
+  "roomGuests": 4,
   "preference": {
-    "beds": "s1q1"
+    "beds": "s0q2"
   }
 }
 ]
