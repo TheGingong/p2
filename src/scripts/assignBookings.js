@@ -1,8 +1,10 @@
 import fs from 'fs/promises';
 import dayjs from 'dayjs';
-import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
+import { bookingsPath, roomsPath, visibleJsonPath, loadBookings, loadRooms } from '../utils/getInfo.js';
+import { checkAvailability, availabilityGrid, insertBookings, extendGrid, bookingRange } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
+import { start } from 'repl';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -12,32 +14,32 @@ async function matchBookingsToRooms() {
         // load data regarding bookings and room types
         const { bookingsInfo } = await loadBookings();
         const { roomsInfo } = await loadRooms();
+        extendGrid(roomsInfo, bookingRange(bookingsInfo));
         // use function to create array of the bookings that should be visible for a given date
-        const visibleBookings = await getVisibleBookings(bookingsInfo, "2025-03-09");
+        const visibleBookings = await getVisibleBookings(bookingsInfo, '2025-02-09');
+        console.log("visible:");
+        console.log(visibleBookings);
         
-        
-        // filter bookings by given Booking date
-
-        // Sort bookings by earliest enddate
-        //await sortBookings(bookingsInfo);
-
-        // Loop through the bookings by dayOfBooking
-        //for (today=0; today <= 365; today++){
-        //    const bookingsAtDate = getBookingsAtDate(bookingsInfo, today);
-        //    console.log("Bookings at date: ", bookingsAtDate);
-        //    for (booking of bookingsAtDate){
-        //        if booking.avalible === 0){
-        //    }
-        //}
-
         // Match bookings to rooms
-        for (const booking of bookingsInfo) {
+        for (const booking of visibleBookings) {
             booking.resourceIds = await assignResId(booking, roomsInfo);
         } 
 
         // Updating resourceIds in bookings, to the newly assigned rooms
-        await fs.writeFile(bookingsPath, JSON.stringify(bookingsInfo, null, 2));
+        await fs.writeFile(visibleJsonPath, JSON.stringify(visibleBookings, null, 2));
         await fs.writeFile(roomsPath, JSON.stringify(roomsInfo, null, 2));
+    
+        // Inserts bookings in the Matrix where checkInDate === today
+        const finalarray = []
+        const today = dayjs("2025-01-09");
+        visibleBookings.forEach(booking => {
+            if (booking.checkInDate === today){
+                finalarray.push(booking);
+            }
+        });
+        insertBookings(finalarray);
+        console.log("finalarray:");
+        console.log(finalarray);
 
     } catch (error) {
         console.error("Error updating bookings:", error);
@@ -49,19 +51,17 @@ async function matchBookingsToRooms() {
 async function assignResId(booking, rooms) {
     // Loop through
     for (const room of rooms) {
-        // Check occupation
-        if (room.roomOcc === 1){
-            continue;
-        }
         if (booking.guestsNumber === room.roomGuests) {
-            // Return room number or some other identifier
-            room.roomOcc = 1;
-            return room.roomNumber;
+            // Check occupation
+            if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate) === 1){
+                return room.roomNumber;
+            }
         }
         else {
             continue;
         }
     }
+    console.log("didn't find any available rooms")
 }
 
 // Function for sorting the bookings
@@ -70,7 +70,6 @@ function sortBookings(bookingsInfo){
         const endDiff = new Date(a.checkOutDate) - new Date(b.checkOutDate)
     })
 }
-
 function getBookingsAtDate(bookingsInfo,date){
     const visibleBookings = bookingsInfo.filter((booking) => bookingsInfo.dayOfBooking === date);
     return visibleBookings
@@ -92,10 +91,23 @@ async function getVisibleBookings(bookingsInfo, date) {
         }
     }
 
-    console.log("allocationArray:");
-    console.log(allocationArray);
+    //console.log("allocationArray:");
+    //console.log(allocationArray);
     return allocationArray;
 }
 
+// function that checks for availability given a booking and a room over a span of time
+function timespanAvailability(roomNumber, startDate, endDate){
+    let dayToCheck = dayjs(startDate)
+    while (dayToCheck <= dayjs(endDate)){
+        if (checkAvailability(roomNumber, dayToCheck) === 1) {
+            dayToCheck = dayToCheck.add(1, 'day')
+            continue;
+        } else {
+            return 0; // return 0 if span of time is OCCUPIED
+        }
+    }
+    return 1; // return 1 if span of time is UNoccupied
+}
 
 matchBookingsToRooms();

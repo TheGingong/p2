@@ -1,6 +1,6 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
-import { extendGrid, insertBookings, checkAvailability } from "./src/scripts/availabilityMatrix.js";
+import { extendGrid, insertBooking, checkAvailability } from "./src/scripts/availabilityMatrix.js";
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBatch365 } from "./src/utils/impartial.js";
@@ -83,7 +83,7 @@ startServer();
              break;
           case "allocate":
           try {
-              insertBookings(bookingsInfo)
+              insertBooking(bookingsInfo)
               scoring(bookingsInfo, roomsInfo); // Perform scoring
               jsonResponse(res, bookingsInfo); // Send the response
           } catch (error) {

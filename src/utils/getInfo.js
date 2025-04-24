@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises'; // Imports function readFile from File System library
 import path from 'path'
 import { fileURLToPath } from 'url';
-export { roomsInfo, bookingsInfo, loadBookings, loadRooms, bookingsPath, roomsPath};
+export { roomsInfo, bookingsInfo, loadBookings, loadRooms, bookingsPath, roomsPath,visibleJsonPath};
 
 // Get the directory of the current file
 const __filename = fileURLToPath(import.meta.url);
@@ -12,7 +12,7 @@ let bookingsInfo = null;
 // Use absolute paths for the JSON files
 const bookingsPath = path.resolve(__dirname, '../json/bookings.json')
 const roomsPath = path.resolve(__dirname, '../json/rooms.json');
-
+const visibleJsonPath = path.resolve(__dirname, '../json/visibleBookings.json')
 
 async function loadBookings() {
     try {
