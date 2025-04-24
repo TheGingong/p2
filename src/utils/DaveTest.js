@@ -54,6 +54,7 @@ function insertBookingsTemp(newBookings) {
 
 function easyalg(newBookings) {
 	let assignedBookings = [];
+	
 
 	sortByBooking(newBookings)
 	newBookings.forEach((booking) => {
@@ -67,16 +68,19 @@ function easyalg(newBookings) {
 		for (let i = 0; i < dateDifference(booking.checkInDate, booking.checkOutDate); i++) {
 		  let dag = dayjs(booking.checkInDate).add(i, 'day').format('YYYY-MM-DD');
   
-		  if (checkAvailability(room.roomNumber, dag) === 1) {
-			console.log(room.roomNumber + "is not available for dag" + dag)
-			roomAvailable = false;
-			break; // Stop checking this room — it's unavailable for one of the days
-		  }
+
+		  if ((booking.guestsNumber !== room.roomGuests) || (checkAvailability(room.roomNumber, dag) === 1)) {
+
+				console.log(room.roomNumber + "is not available for dag" + dag)
+				roomAvailable = false;
+				break; // Stop checking this room — it's unavailable for one of the days
+			
+		}
 		}
 		if (roomAvailable) {
 			if (booking.checkInDate == globalState.currentDay){
 				booking.resourceIds = room.roomNumber;
-				booking.title = booking.dayOfBooking//`${booking.checkInDate} + ${booking.checkOutDate}`;
+				booking.title = booking.guestsNumber//`${booking.checkInDate} + ${booking.checkOutDate}`;
 				assignedBookings.push(booking);
 			 	insertBookings(assignedBookings) // insert after 1 booking is pushed so that room is unavailable
 				break; // Booking is assigned, move on to next booking

@@ -37,7 +37,7 @@ startServer();
    ******************************************************************** */
    
    // Fills the rooms! 
-   generateRooms();
+   //generateRooms();
 
    async function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
