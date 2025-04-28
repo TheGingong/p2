@@ -74,3 +74,5 @@ function generateRoomTypes(numberOfGuests) {
 function veryImportant() {
     preference.sinFull = "HasJumboDildo"
 }
+
+await generateRooms()

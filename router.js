@@ -121,9 +121,9 @@ async function allocate(res){
     let assignedBookings = []
 
     for (let i = 0; i < 356; i++){
-    //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
-    //assignedBookings = await easyalg(allocationArray)
-    assignedBookings = await matchBookingsToRooms() || [];
+    allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
+    assignedBookings = await easyalg(allocationArray)
+    //assignedBookings = await matchBookingsToRooms() || [];
 
     globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
     console.log("currentDay" + globalState.currentDay)

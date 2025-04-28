@@ -62,7 +62,7 @@ function easyalg(newBookings) {
   
 	  for (let room of roomsInfo) {
 		let roomAvailable = true;
-		console.log("checking for room" + room.roomNumber)
+		//console.log("checking for room" + room.roomNumber)
   
 		// Check each day in the booking range
 		for (let i = 0; i < dateDifference(booking.checkInDate, booking.checkOutDate); i++) {
@@ -71,7 +71,7 @@ function easyalg(newBookings) {
 
 		  if ((booking.guestsNumber !== room.roomGuests) || (checkAvailability(room.roomNumber, dag) === 1)) {
 
-				console.log(room.roomNumber + "is not available for dag" + dag)
+				//console.log(room.roomNumber + "is not available for dag" + dag)
 				roomAvailable = false;
 				break; // Stop checking this room — it's unavailable for one of the days
 			
