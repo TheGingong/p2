@@ -37,7 +37,7 @@ async function matchBookingsToRooms() {
                 finalarray.push(booking);
             }
         });
-        insertBookings(finalarray);
+        insertBookings(finalarray, availabilityGrid);
         console.log("finalarray:");
         console.log(finalarray);
 
@@ -100,7 +100,7 @@ async function getVisibleBookings(bookingsInfo, date) {
 function timespanAvailability(roomNumber, startDate, endDate){
     let dayToCheck = dayjs(startDate)
     while (dayToCheck <= dayjs(endDate)){
-        if (checkAvailability(roomNumber, dayToCheck) === 1) {
+        if (checkAvailability(roomNumber, dayToCheck, availabilityGrid) === 1) {
             dayToCheck = dayToCheck.add(1, 'day')
             continue;
         } else {
