@@ -1,11 +1,12 @@
 import fs from 'fs/promises';
 import dayjs from 'dayjs';
 import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
-import { checkAvailability, availabilityGrid, insertBookings, extendGrid, bookingRange, dateDifference } from './availabilityMatrix.js';
+import { checkAvailability, availabilityGrid, insertBookings, extendGrid, bookingRange, dateDifference, dateIndex } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
 import { globalState } from "../utils/globalVariables.js";
+import { sortByBookingByCheckInDate } from '../utils/impartial.js';
 export {getVisibleBookings, matchBookingsToRooms}
 
 dayjs.extend(isSameOrBefore); 
@@ -18,10 +19,18 @@ async function matchBookingsToRooms() {
         const { roomsInfo } = await loadRooms();
         //extendGrid(roomsInfo, bookingRange(bookingsInfo));
         // use function to create array of the bookings that should be visible for a given date
+        
+        await sortByBookingByCheckInDate(bookingsInfo)
         const visibleBookings = await getVisibleBookings(bookingsInfo, globalState.currentDay);
         console.log(globalState.currentDay)
-        console.log("visible:");
-        console.log(visibleBookings);
+        //console.log("visible:");
+        //console.log(visibleBookings);
+
+
+        console.log("BESTFIT_____________________________________")
+        for (const booking of visibleBookings) {
+            bestFit(booking, roomsInfo);
+        }
 
 
         let arr = []
@@ -33,7 +42,7 @@ async function matchBookingsToRooms() {
                 if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){
                     arr.push(booking)
                     //console.log(arr)
-                    insertBookings(arr)
+                    insertBookings(arr, availabilityGrid)
             }
             }
 
@@ -41,11 +50,12 @@ async function matchBookingsToRooms() {
 
         } 
         console.log("visible2.0:");
-        console.log(visibleBookings);
+        //console.log(visibleBookings);
     
         // Inserts bookings in the Matrix where checkInDate === today
         let finalarray = []
         const today = dayjs(globalState.currentDay);
+
         visibleBookings.forEach(booking => {
             if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){
                 finalarray.push(booking);
@@ -54,8 +64,8 @@ async function matchBookingsToRooms() {
         });
         //insertBookings(finalarray);
         console.log("finalarray:");
-        console.log(finalarray);
-        return (finalarray)
+        //console.log(finalarray);
+        return finalarray
 
     } catch (error) {
         console.error("Error updating bookings:", error);
@@ -66,6 +76,7 @@ async function matchBookingsToRooms() {
 // Function that finds the best fit room, and returns its room number
 async function assignResId(booking, rooms) {
     // Loop through
+
     for (const room of rooms) {
         if (booking.guestsNumber === room.roomGuests) {
             // Check occupation
@@ -81,12 +92,27 @@ async function assignResId(booking, rooms) {
     return 0
 }
 
-// Function for sorting the bookings
-function sortBookings(bookingsInfo){
-    bookingsInfo.sort((a,b) => {
-        const endDiff = new Date(a.checkOutDate) - new Date(b.checkOutDate)
-    })
+function bestFit(booking, rooms){
+    let options = [];
+    for(const room of rooms){
+        if(booking.guestsNumber !== room.roomGuests){
+            continue;
+        }
+        if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate) === 1){
+            let dag = dayjs(booking.checkInDate)
+            let count = 0;
+            while(checkAvailability(room.roomNumber, dag, availabilityGrid) === 0){
+                dag = dag.subtract(1, 'day')
+                count += 1;
+            }
+            options.push(count);
+        }
+    }
+    console.log("bestfit ting");
+    console.log(options);
 }
+
+
 function getBookingsAtDate(bookingsInfo,date){
     const visibleBookings = bookingsInfo.filter((booking) => bookingsInfo.dayOfBooking === date);
     return visibleBookings
@@ -113,29 +139,13 @@ async function getVisibleBookings(bookingsInfo, date) {
     return allocationArray;
 }
 
-// function that checks for availability given a booking and a room over a span of time
-function timespanAvailability1(roomNumber, startDate, endDate){
-    let dayToCheck = dayjs(startDate)
-    while (dayToCheck <= dayjs(endDate)){
-        if (checkAvailability(roomNumber, dayToCheck) === 0) {
-            dayToCheck = dayToCheck.add(1, 'day')
-            continue;
-        } else {
-            return 0; // return 0 if span of time is OCCUPIED
-        }
-    }
-    return 1; // return 1 if span of time is UNoccupied
-}
-
-
-
 
 // function that checks for availability given a booking and a room over a span of time
 function timespanAvailability(roomNumber, startDate, endDate){
     let dayToCheck = dayjs(startDate)
     for (let i = 0; i < dateDifference(startDate, endDate); i++) {
         let dag = dayjs(startDate).add(i, 'day').format('YYYY-MM-DD');
-        if (checkAvailability(roomNumber, dag) === 0) {
+        if (checkAvailability(roomNumber, dag, availabilityGrid) === 0) {
             continue;
         } else {
             return 0; // return 0 if span of time is OCCUPIED
@@ -143,9 +153,5 @@ function timespanAvailability(roomNumber, startDate, endDate){
     }
     return 1; // return 1 if span of time is UNoccupied
 }
-
-
-
-
 
 //matchBookingsToRooms();

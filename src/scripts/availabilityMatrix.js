@@ -7,7 +7,8 @@ export {
   availabilityGrid,
   insertBookings,
   checkAvailability,
-  dateDifference
+  dateDifference,
+  dateIndex
 };
 
 let today = dayjs(globalState.currentDay); // Get today's date
@@ -72,8 +73,8 @@ function extendGrid(rooms, date_range) {
     rooms.forEach((room) => {
       tempGrid[room.roomNumber] = new Array(date_range).fill(0);
     });
-    //console.log("avtempGRidailabilityGrid");
-    //console.log(tempGrid);
+    console.log("avtempGRidailabilityGrid");
+    console.log(tempGrid);
 
     // Appends the temp grid to the total grid
     // the format and syntax to push might be wrong atm..
@@ -94,7 +95,7 @@ function extendGrid(rooms, date_range) {
   console.log(availabilityGrid);
 }
 
-function insertBookings(newBookings) {
+function insertBookings(newBookings, grid) {
   // for each booking
   //console.log("New Bookings:", newBookings);
   newBookings.forEach((booking) => {
@@ -106,20 +107,27 @@ function insertBookings(newBookings) {
     let startIndex = dateIndex(startDate);
     let endIndex = dateIndex(endDate);
     // Fill the grid for the room
-    for (let i = startIndex; i < endIndex; i++) {
-      availabilityGrid[roomNumber][i] = 1; // Mark as occupied
+    grid[roomNumber][startIndex] = 1
+    for (let i = startIndex+1; i < endIndex; i++) {
+      grid[roomNumber][i] = 1; // Mark as occupied
     }
   });
   console.log("hej")
-  console.log(availabilityGrid);
+  console.log(grid);
 
-  return availabilityGrid;
+  return grid;
 }
 
-function checkAvailability(room, date) {
+function checkAvailability(room, date, grid) {
   const realDate = dayjs(date);
-  return availabilityGrid[room][dateIndex(realDate)] === 1 ? 1 : 0;
+
+  if (dateIndex(realDate) < 0){
+    return 1;
+  }
+  
+  return grid[room][dateIndex(realDate)] === 1 ? 1 : 0;
 }
+
 
 function testAvailability() {
 console.log("hej");
@@ -134,5 +142,4 @@ console.log("hej");
   console.log("length = " + availabilityGrid[101].length);
   console.log(bookedDates);
 }
-
 //testAvailability()

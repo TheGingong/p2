@@ -18,8 +18,8 @@ let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]
 
 // roomGeneration
 let buildingFloors = 1; // floors in the hotel
-let roomsPerFloor = 5; // how many rooms to generate for every floor
-let maxGuests = 3; // maximum guests for largest room (-1 because we add in the random)
+let roomsPerFloor = 3; // how many rooms to generate for every floor
+let maxGuests = 2; // maximum guests for largest room (-1 because we add in the random)
 
 export {
     buildingFloors,

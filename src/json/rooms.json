@@ -1,9 +1,9 @@
 [
 {
   "roomNumber": "101",
-  "roomGuests": 3,
+  "roomGuests": 1,
   "preference": {
-    "beds": "s1q1"
+    "beds": "s1q0"
   }
 },
 {
@@ -15,23 +15,9 @@
 },
 {
   "roomNumber": "103",
-  "roomGuests": 1,
+  "roomGuests": 3,
   "preference": {
-    "beds": "s1q0"
-  }
-},
-{
-  "roomNumber": "104",
-  "roomGuests": 2,
-  "preference": {
-    "beds": "s0q1"
-  }
-},
-{
-  "roomNumber": "105",
-  "roomGuests": 2,
-  "preference": {
-    "beds": "s0q1"
+    "beds": "s2q0"
   }
 }
 ]

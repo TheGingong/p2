@@ -75,4 +75,4 @@ function veryImportant() {
     preference.sinFull = "HasJumboDildo"
 }
 
-await generateRooms()
+//await generateRooms()
