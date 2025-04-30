@@ -71,13 +71,11 @@ startServer();
              fileResponse(res,"/html/index.html");
              break;
           case "allocate":
-          try {
-
-            const daysParam = searchParms.get("days");
-            const days = parseInt(daysParam, 10);
-            await allocate(res, days);
-
-
+            try {
+              const daysParam = searchParms.get("days");
+              const days = parseInt(daysParam, 10);
+              await allocate(res, days);
+              scoring(bookingsInfo, roomsInfo); // Perform scoring
           } catch (error) {
               console.error("Error in allocate case:", error);
               reportError(res, error); // Send error response

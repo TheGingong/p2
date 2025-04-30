@@ -107,7 +107,9 @@ function insertBookings(newBookings, grid) {
     let startIndex = dateIndex(startDate);
     let endIndex = dateIndex(endDate);
     // Fill the grid for the room
+
     grid[roomNumber][startIndex] = 1
+    
     for (let i = startIndex+1; i < endIndex; i++) {
       grid[roomNumber][i] = 1; // Mark as occupied
     }

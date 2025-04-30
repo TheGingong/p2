@@ -69,7 +69,6 @@ async function matchBookingsToRooms() {
         //console.log(finalarray);
         return visibleBookings
         //return finalarray
-
     } catch (error) {
         console.error("Error updating bookings:", error);
     }
@@ -91,7 +90,7 @@ async function assignResId(booking, rooms, tempMatrix) {
             continue;
         }
     }
-    console.log("didn't find any available rooms")
+    console.log("Didn't find any available rooms")
     return 0
 }
 
@@ -114,7 +113,6 @@ function bestFit(booking, rooms){
     console.log("bestfit ting");
     console.log(options);
 }
-
 
 function getBookingsAtDate(bookingsInfo,date){
     const visibleBookings = bookingsInfo.filter((booking) => bookingsInfo.dayOfBooking === date);
@@ -142,7 +140,6 @@ async function getVisibleBookings(bookingsInfo, date) {
     return allocationArray;
 }
 
-
 // function that checks for availability given a booking and a room over a span of time
 function timespanAvailability(roomNumber, startDate, endDate, tempMatrix){
     let dayToCheck = dayjs(startDate)
@@ -156,5 +153,3 @@ function timespanAvailability(roomNumber, startDate, endDate, tempMatrix){
     }
     return 1; // return 1 if span of time is UNoccupied
 }
-
-//matchBookingsToRooms();

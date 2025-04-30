@@ -62,20 +62,17 @@ function createBookingBatch(batch) {
                     preference.floor = Math.ceil(Math.random() * 5);
                 }
 
-                // Needs to be deleted later
-                let room = i % 11
-                let resourceIds;
-                if (room === 0){
-                    j += 1
-                    i++
-                    //resourceIds = generateRoomNumber(j,room+1)
-                } else {
-                    //resourceIds = generateRoomNumber(j,room)
-                }
-                resourceIds = 0;
+                let resourceIds = "0";
+                //if (room === 0){
+                //    j += 1
+                //    i++
+                //    resourceIds = generateRoomNumber(j,room+1)
+                //} else {
+                //    resourceIds = generateRoomNumber(j,room)
+                //}
 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, preference, resourceIds};
+                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, resourceIds, preference};
                 bookingBatches.push(currentBookingObject);
             }    
             
