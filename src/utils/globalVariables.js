@@ -11,7 +11,6 @@ export {
     buildingFloors,
     roomsPerFloor,
     maxGuests,
-    globalState,
     roomTypes,
     globalState,
 } 
