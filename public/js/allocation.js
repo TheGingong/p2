@@ -6,7 +6,7 @@ function allocate(bookings){
     console.log(bookings)
     for (let i = 0; i < bookings.length; i++){
         calendar.addEvent({
-            title: `Booking ${bookings[i].resourceIds}`,
+            title: `Booking ${bookings[i].title}`,
             start: bookings[i].checkInDate,
             end: bookings[i].checkOutDate,
             resourceIds: [bookings[i].resourceIds],

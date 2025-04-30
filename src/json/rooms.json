@@ -8,7 +8,7 @@
 },
 {
   "roomNumber": "102",
-  "roomGuests": 1,
+  "roomGuests": 2,
   "preference": {
     "beds": "s1q0"
   }
@@ -29,9 +29,9 @@
 },
 {
   "roomNumber": "105",
-  "roomGuests": 1,
+  "roomGuests": 3,
   "preference": {
-    "beds": "s1q0"
+    "beds": "s2q0"
   }
 }
 ]

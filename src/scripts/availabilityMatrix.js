@@ -7,7 +7,8 @@ export {
   availabilityGrid,
   insertBookings,
   checkAvailability,
-  dateDifference
+  dateDifference,
+  dateIndex
 };
 
 let today = dayjs(globalState.currentDay); // Get today's date
@@ -106,7 +107,9 @@ function insertBookings(newBookings, grid) {
     let startIndex = dateIndex(startDate);
     let endIndex = dateIndex(endDate);
     // Fill the grid for the room
-    grid[roomNumber][startIndex] = 2
+
+    grid[roomNumber][startIndex] = 1
+    
     for (let i = startIndex+1; i < endIndex; i++) {
       grid[roomNumber][i] = 1; // Mark as occupied
     }
@@ -119,8 +122,14 @@ function insertBookings(newBookings, grid) {
 
 function checkAvailability(room, date, grid) {
   const realDate = dayjs(date);
+
+  if (dateIndex(realDate) < 0){
+    return 1;
+  }
+  
   return grid[room][dateIndex(realDate)] === 1 ? 1 : 0;
 }
+
 
 function testAvailability() {
 console.log("hej");
