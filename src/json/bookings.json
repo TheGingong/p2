@@ -7,7 +7,7 @@
     "dayOfBooking": "2024-11-27",
     "resourceIds": "0",
     "preference": {
-      "beds": "s0q2"
+      "beds": "s2q0"
     }
   },
   {
@@ -96,6 +96,7 @@
     "resourceIds": "0",
     "preference": {
       "beds": "s0q2"
+      "beds": "s0q2"
     }
   },
   {
@@ -106,7 +107,7 @@
     "dayOfBooking": "2025-02-02",
     "resourceIds": "0",
     "preference": {
-      "beds": "s2q0"
+      "beds": "s0q1"
     }
   },
   {
@@ -128,7 +129,7 @@
     "dayOfBooking": "2025-02-13",
     "resourceIds": "0",
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1"
     }
   },
   {
@@ -184,6 +185,7 @@
     "resourceIds": "0",
     "preference": {
       "beds": "s1q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -227,7 +229,8 @@
     "dayOfBooking": "2025-05-19",
     "resourceIds": "0",
     "preference": {
-      "beds": "s0q1"
+      "beds": "s0q2",
+      "floor": 2
     }
   },
   {
@@ -238,7 +241,7 @@
     "dayOfBooking": "2025-05-21",
     "resourceIds": "0",
     "preference": {
-      "beds": "s2q0"
+      "beds": "s1q1"
     }
   },
   {
@@ -282,7 +285,7 @@
     "dayOfBooking": "2025-06-11",
     "resourceIds": "0",
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -359,7 +362,7 @@
     "dayOfBooking": "2025-07-28",
     "resourceIds": "0",
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q2"
     }
   },
   {
@@ -403,7 +406,7 @@
     "dayOfBooking": "2025-08-22",
     "resourceIds": "0",
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1"
     }
   },
   {
@@ -425,6 +428,7 @@
     "dayOfBooking": "2025-08-29",
     "resourceIds": "0",
     "preference": {
+      "beds": "s0q2"
       "beds": "s0q2"
     }
   },
@@ -470,6 +474,7 @@
     "resourceIds": "0",
     "preference": {
       "beds": "s0q1"
+      "beds": "s0q1"
     }
   },
   {
@@ -480,6 +485,7 @@
     "dayOfBooking": "2025-09-29",
     "resourceIds": "0",
     "preference": {
+      "beds": "s0q1"
       "beds": "s0q1"
     }
   },
@@ -535,6 +541,7 @@
     "dayOfBooking": "2025-11-25",
     "resourceIds": "0",
     "preference": {
+      "beds": "s0q1"
       "beds": "s0q1"
     }
   }

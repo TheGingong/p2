@@ -13,6 +13,7 @@ export {
     maxGuests,
     globalState,
     roomTypes,
+    globalState,
 } 
 let globalState = {
     currentDay: dayjs('2025-01-01')
