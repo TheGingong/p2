@@ -14,22 +14,7 @@ import dayjs from "dayjs";
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
 
-// Delete soon
-let testarray = [
-  {
-    startDate: '2025-03-11',
-    endDate: '2025-03-27',
-    resourceIds: '101',
-    preferences: [ 'Possible preferences' ],
-    stayDuration: 4
-  },
-  {
-    startDate: '2025-03-19',
-    endDate: '2025-03-22',
-    resourceIds: '102',
-    preferences: [ 'Possible preferences' ],
-    stayDuration: 3
-  }] 
+let startvalue = 0;
 
 startServer();
 /* *********************************************************************
@@ -87,7 +72,10 @@ startServer();
              break;
           case "allocate":
           try {
-            await allocate(res)
+
+            const daysParam = searchParms.get("days");
+            const days = parseInt(daysParam, 10);
+            await allocate(res, days);
 
 
           } catch (error) {
@@ -115,12 +103,13 @@ startServer();
   }
 
 
-async function allocate(res){
+async function allocate(res, days){
     let lastArray = []
     let allocationArray = []
     let assignedBookings = []
+    days += startvalue
 
-    for (let i = 0; i < 100; i++){
+    for (let i = startvalue; i < days; i++){
     //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
     //assignedBookings = await easyalg(allocationArray)
     assignedBookings = await matchBookingsToRooms() || [];
@@ -129,6 +118,8 @@ async function allocate(res){
     console.log("currentDay" + globalState.currentDay)
     lastArray.push(...assignedBookings);
     }   
+    startvalue = days
+
     //scoring(bookingsInfo, roomsInfo); // Perform scoring
 
     //await jsonResponse(res, lastArray ); // Send the response

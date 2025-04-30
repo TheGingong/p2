@@ -27,22 +27,27 @@ async function matchBookingsToRooms() {
         //console.log(visibleBookings);
 
 
-        console.log("BESTFIT_____________________________________")
-        for (const booking of visibleBookings) {
-            bestFit(booking, roomsInfo);
-        }
+        //console.log("BESTFIT_____________________________________")
+        //for (const booking of visibleBookings) {
+        //    bestFit(booking, roomsInfo);
+        //}
 
+        let tempMatrix = availabilityGrid
+        console.log("BRRRRRRRRRR")
+        console.log(tempMatrix['101'])
+        
 
         let arr = []
         // Match bookings to rooms
         for (const booking of visibleBookings) {
-            booking.resourceIds = await assignResId(booking, roomsInfo);
+            booking.resourceIds = await assignResId(booking, roomsInfo, tempMatrix);
+            booking.title = booking.guestsNumber
 
             if (booking.resourceIds !== 0){
                 if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){
                     arr.push(booking)
                     //console.log(arr)
-                    insertBookings(arr, availabilityGrid)
+                    insertBookings(arr, tempMatrix)
             }
             }
 
@@ -64,7 +69,7 @@ async function matchBookingsToRooms() {
         });
         //insertBookings(finalarray);
         console.log("finalarray:");
-        //console.log(finalarray);
+        console.log(finalarray);
         return finalarray
 
     } catch (error) {
@@ -74,13 +79,13 @@ async function matchBookingsToRooms() {
 
 
 // Function that finds the best fit room, and returns its room number
-async function assignResId(booking, rooms) {
+async function assignResId(booking, rooms, tempMatrix) {
     // Loop through
 
     for (const room of rooms) {
-        if (booking.guestsNumber === room.roomGuests) {
+        if (booking.guestsNumber <= room.roomGuests) {
             // Check occupation
-            if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate) === 1){
+            if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate, tempMatrix) === 1){
                 return room.roomNumber;
             }
         }
@@ -98,10 +103,10 @@ function bestFit(booking, rooms){
         if(booking.guestsNumber !== room.roomGuests){
             continue;
         }
-        if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate) === 1){
+        if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate, tempMatrix) === 1){
             let dag = dayjs(booking.checkInDate)
             let count = 0;
-            while(checkAvailability(room.roomNumber, dag, availabilityGrid) === 0){
+            while(checkAvailability(room.roomNumber, dag, tempMatrix) === 0){
                 dag = dag.subtract(1, 'day')
                 count += 1;
             }
@@ -141,11 +146,11 @@ async function getVisibleBookings(bookingsInfo, date) {
 
 
 // function that checks for availability given a booking and a room over a span of time
-function timespanAvailability(roomNumber, startDate, endDate){
+function timespanAvailability(roomNumber, startDate, endDate, tempMatrix){
     let dayToCheck = dayjs(startDate)
     for (let i = 0; i < dateDifference(startDate, endDate); i++) {
         let dag = dayjs(startDate).add(i, 'day').format('YYYY-MM-DD');
-        if (checkAvailability(roomNumber, dag, availabilityGrid) === 0) {
+        if (checkAvailability(roomNumber, dag, tempMatrix) === 0) {
             continue;
         } else {
             return 0; // return 0 if span of time is OCCUPIED

@@ -98,7 +98,7 @@ function createBookingBatch(batch) {
 async function storeBatch365() {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(200);
+        const data = await createBookingBatch(300);
         console.log("data")
         console.log(data);
         await sortByBooking(data);
