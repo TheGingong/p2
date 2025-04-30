@@ -41,15 +41,12 @@ async function matchBookingsToRooms() {
             booking.title = booking.guestsNumber
 
             if (booking.resourceIds !== 0){
-                if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){
+                //if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){ // Old check if we were to send final array (day of checkin)
                     arr.push(booking)
                     //console.log(arr)
                     insertBookings(arr, tempMatrix)
+            //}
             }
-            }
-
-
-
         } 
         console.log("visible2.0:");
         //console.log(visibleBookings);

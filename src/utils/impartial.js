@@ -4,7 +4,7 @@ import { roomsInfo, loadBookings } from './getInfo.js';
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
 import dayjs from 'dayjs';
 import { roomTypes } from './globalVariables.js';
-export { storeBatch365 }
+export { storeBatch365, sortByBooking, sortByBookingByCheckInDate }
 
 function createBookingBatch(batch) {
     let checkInMonth, checkInDate, stayDuration, checkOutDate, 
@@ -71,8 +71,10 @@ function createBookingBatch(batch) {
                 //    resourceIds = generateRoomNumber(j,room)
                 //}
 
+                let bookingId = i;
+
                 // Appends the properties to the current booking object and pushes it into the array of booking batches
-                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, resourceIds, preference};
+                currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, resourceIds, bookingId, preference};
                 bookingBatches.push(currentBookingObject);
             }    
             
@@ -136,6 +138,3 @@ async function sortByBookingByCheckInDate(data){
   //  } 
 )
 }
-
-
-export{sortByBooking, sortByBookingByCheckInDate}

@@ -112,9 +112,12 @@ async function allocate(res, days){
     //assignedBookings = await easyalg(allocationArray)
     assignedBookings = await matchBookingsToRooms() || [];
 
+    // Call our algorithm function
+    // Final array gets defined
+
     globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
     console.log("currentDay" + globalState.currentDay)
-    lastArray.push(...assignedBookings);
+    lastArray.push(...assignedBookings); // Push our array we made in algorithm
     }   
     startvalue = days
 
@@ -123,5 +126,5 @@ async function allocate(res, days){
     //await jsonResponse(res, lastArray ); // Send the response
     console.log("lastArray")
     console.log(lastArray)
-    await jsonResponse(res, lastArray ); // Send the response
+    jsonResponse(res, lastArray ); // Send the response
 }
