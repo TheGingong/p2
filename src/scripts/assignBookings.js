@@ -33,9 +33,6 @@ async function matchBookingsToRooms() {
         //}
 
         let tempMatrix = availabilityGrid
-        console.log("BRRRRRRRRRR")
-        console.log(tempMatrix['101'])
-        
 
         let arr = []
         // Match bookings to rooms
@@ -68,9 +65,10 @@ async function matchBookingsToRooms() {
             }
         });
         //insertBookings(finalarray);
-        console.log("finalarray:");
-        console.log(finalarray);
-        return finalarray
+        //console.log("finalarray:");
+        //console.log(finalarray);
+        return visibleBookings
+        //return finalarray
 
     } catch (error) {
         console.error("Error updating bookings:", error);
