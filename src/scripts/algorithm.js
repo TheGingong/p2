@@ -1,35 +1,33 @@
 import { availabilityGrid, checkAvailability, insertBookings } from "./availabilityMatrix";
 import { globalState } from "../utils/globalVariables";
 
-// Input visible bookings!!¨
-
 const ghostMatrix = initGhostMatrix(visibleBookings);
 
+// Function that inserts the visible bookings for today into a pliable 'ghost' matrix
 function initGhostMatrix(visibleBookings) {
     let tempMatrix = availabilityGrid;
     insertBookings(visibleBookings, tempMatrix);
+    console.log(tempMatrix);
     return tempMatrix;
 }
 
-function validSwaps(bookingId, ghostMatrix) {
+
+// Function that evaluates bookings, and returns an array of possible/valid swaps for a single input booking 
+function validSwaps(booking, checkRoom, ghostMatrix) {
+    let arrayHoldingIndexes = [];
+
+    // Has the same start date as t
+    if (booking.startDate === checkRoom.startDate)
+
+}
+
+// Main optimzation function, which will call on subfunctions to optimize hotel bookings according to certain variables
+function preferenceOptimization(visibleBookings, leniency) {    
 
     
 
-}
-// wtf
 
 
-// Array that will consist of bookings that start today
-let bookingsToday = [];
-
-// Fill finalArray with the right bookings
-visibleBookings.forEach(booking => {
-    if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')) {
-        bookingsToday.push(booking);
-    }
-})
-
-function preferenceOptimization(visibleBookings, leniency) {    
     for (booking of bookingsToday) {
         for (let i = 0; i <= bookingsToday; i++) {
             if (Math.abs(booking.stayDuration - bookingsToday[i].stayDuration) <= leniency) { // First constraint, checks for stayDuration
@@ -39,6 +37,21 @@ function preferenceOptimization(visibleBookings, leniency) {
             }
         }
     }
+}
 
+
+
+// NOT NEEDED FOR NOW
+// function that ...
+function bookingsToday() {
+    // Array that will consist of bookings that start today
+    let bookingsToday = [];
+
+    // Fill finalArray with the right bookings
+    visibleBookings.forEach(booking => {
+        if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')) {
+            bookingsToday.push(booking);
+        }
+    })
 
 }

@@ -126,8 +126,8 @@ async function getVisibleBookings(bookingsInfo, date) {
     // For hver booking checker vi constrains
     for (let x of bookingsInfo){
         let bookings = dayjs(x.dayOfBooking);
-        let checkdate = dayjs(x.checkInDate);
-        if (bookings <= today && checkdate >= today) {
+        let checkdate = dayjs(x.checkInDate); 
+        if (bookings <= today && checkdate >= today) { // Maybe change this to checkOutDate > today
             allocationArray.push(x)
         }
     }

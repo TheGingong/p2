@@ -1,10 +1,11 @@
 import fs from 'fs/promises'
 import { roomTypes } from '../utils/globalVariables.js';
-import {buildingFloors, roomsPerFloor, maxGuests} from '../utils/globalVariables.js'
+import { buildingFloors, roomsPerFloor, maxGuests } from '../utils/globalVariables.js'
 import { bookingsInfo, loadBookings } from '../utils/getInfo.js';
-export {generateRoomNumber, generateRooms, generateGuests}
+export { generateRoomNumber, generateRooms, generateGuests }
 
 let preference = {};
+let roomTypeCounter = [length.roomTypes][];
 
 // Function that will generate all rooms using other functions, 
 // and write them into the json file through an array
@@ -68,7 +69,6 @@ function generateRoomTypes(numberOfGuests) {
         default:
             console.log("Something went wrong. Too many guests.");
     }
-
 }
 
 function veryImportant() {
