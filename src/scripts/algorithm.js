@@ -16,8 +16,7 @@ function validSwaps(bookingId, ghostMatrix) {
     
 
 }
-
-function ()
+// wtf
 
 
 // Array that will consist of bookings that start today
