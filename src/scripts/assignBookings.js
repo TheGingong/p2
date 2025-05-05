@@ -6,8 +6,8 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
 import { globalState } from "../utils/globalVariables.js";
-import { sortByBookingByCheckInDate, sortByBookingByStay} from '../utils/impartial.js';
-export {getVisibleBookings, matchBookingsToRooms, matchBookingsRandom}
+import { sortByBookingByCheckInDate, sortByBookingByStay, sortByBookingByStayMinus} from '../utils/impartial.js';
+export {getVisibleBookings, matchBookingsToRooms}
 
 dayjs.extend(isSameOrBefore); 
 dayjs.extend(isSameOrAfter);
@@ -21,20 +21,18 @@ async function matchBookingsToRooms(version) {
         // use function to create array of the bookings that should be visible for a given date
         
         //await sortByBookingByCheckInDate(bookingsInfo)
-       
+       const visibleBookings = await getVisibleBookings(bookingsInfo, globalState.currentDay);
+
 
         if (version === 0){
-            await sortByBookingByStay(bookingsInfo)
+            await sortByBookingByStay(visibleBookings)
         } else if (version === 1){
-            await sortByBookingByCheckInDate(bookingsInfo)
+            //await sortByBookingByCheckInDate(bookingsInfo)
+            await sortByBookingByStayMinus(visibleBookings)
         } else { // else random
         }
 
-         const visibleBookings = await getVisibleBookings(bookingsInfo, globalState.currentDay);
-
-
-
-
+         
         console.log(globalState.currentDay)
         //console.log("visible:");
         //console.log(visibleBookings);
@@ -160,53 +158,4 @@ function timespanAvailability(roomNumber, startDate, endDate, tempMatrix){
         }
     }
     return 1; // return 1 if span of time is UNoccupied
-}
-
-// function that takes bookings from impartial and shuffles them. Then matches resourceIds randomly
-async function matchBookingsRandom(){
-    const { bookingsInfo } = await loadBookings();
-    const { roomsInfo } = await loadRooms();
-
-    const visibleBookings = await getVisibleBookings(bookingsInfo, globalState.currentDay);
-
-
-    let tempMatrix = availabilityGrid
-
-    let arr = []
-    // Match bookings to rooms
-    for (const booking of visibleBookings) {
-        booking.resourceIds = await assignResId(booking, roomsInfo, tempMatrix);
-        booking.title = booking.guestsNumber
-
-        if (booking.resourceIds !== 0){
-            if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){
-                arr.push(booking)
-                //console.log(arr)
-                insertBookings(arr, tempMatrix)
-        }
-        }
-
-
-
-    } 
-    console.log("visible2.0:");
-    //console.log(visibleBookings);
-
-    // Inserts bookings in the Matrix where checkInDate === today
-    let finalarray = []
-    const today = dayjs(globalState.currentDay);
-
-    visibleBookings.forEach(booking => {
-        if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){
-            finalarray.push(booking);
-
-        }
-    });
-    //insertBookings(finalarray);
-    //console.log("finalarray:");
-    //console.log(finalarray);
-    //return visibleBookings
-    return finalarray
-
-
 }

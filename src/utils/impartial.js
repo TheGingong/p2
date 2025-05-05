@@ -142,6 +142,20 @@ async function sortByBookingByStay(data){
     })
 }
 
+async function sortByBookingByStayMinus(data) {
+    data.sort((a, b) => {
+        let checkoutDiff = dateDifference(a.checkOutDate, b.checkOutDate);
+        
+        // If the dates are equal, sort by stay duration (longer stays first)
+        if (checkoutDiff === 0) {
+            return b.stayDuration - a.stayDuration;  // Longer stays first if same checkout date
+        }
+
+        // If checkoutDiff is positive (i.e., a is later than b), swap the order
+        return -checkoutDiff;  // Invert the sign to ensure earliest checkout comes first
+    });
+}
 
 
-export{sortByBooking, sortByBookingByCheckInDate, sortByBookingByStay}
+
+export{sortByBooking, sortByBookingByCheckInDate, sortByBookingByStay, sortByBookingByStayMinus}

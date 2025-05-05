@@ -7,7 +7,7 @@ import { storeBatch365 } from "./src/utils/impartial.js";
 import { scoring } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
 import { easyalg } from "./src/utils/DaveTest.js";
-import { getVisibleBookings, matchBookingsToRooms, matchBookingsRandom } from "./src/scripts/assignBookings.js";
+import { getVisibleBookings, matchBookingsToRooms} from "./src/scripts/assignBookings.js";
 import {globalState } from "./src/utils/globalVariables.js";
 import dayjs from "dayjs";
 
