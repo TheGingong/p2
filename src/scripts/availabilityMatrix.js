@@ -152,7 +152,4 @@ function createSlice(matrix, sliceStartDate, sliceEndDate) {
 );
 const sliceMatrix = [];
 const sliceEndIndex = sliceEndDate + 1;
-for (let i = 0; i < )
-
 }
-

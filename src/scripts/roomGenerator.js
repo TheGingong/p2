@@ -5,7 +5,6 @@ import { bookingsInfo, loadBookings } from '../utils/getInfo.js';
 export { generateRoomNumber, generateRooms, generateGuests }
 
 let preference = {};
-let roomTypeCounter = [length.roomTypes][];
 
 // Function that will generate all rooms using other functions, 
 // and write them into the json file through an array

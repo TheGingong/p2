@@ -7,7 +7,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
 import { globalState } from "../utils/globalVariables.js";
 import { sortByBookingByCheckInDate } from '../utils/impartial.js';
-export {getVisibleBookings, matchBookingsToRooms}
+export { getVisibleBookings, matchBookingsToRooms }
 
 dayjs.extend(isSameOrBefore); 
 dayjs.extend(isSameOrAfter);

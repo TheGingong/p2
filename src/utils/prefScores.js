@@ -29,3 +29,27 @@ async function scoring(bookingsInfo, roomsInfo) {
     }
     console.log("Average score is", sumOfScores / bookingsInfo.length);
 }
+
+async function scoring(booking, room) {
+    // Create a hash table for roomsInfo
+    const roomsHashTable = roomsInfo.reduce((hash, room) => {
+        hash[room.roomNumber] = room;
+        return hash;
+    }, {});
+
+    let score = 1;
+
+    const roomDetails = roomsHashTable[assignment.resourceIds];
+
+    const amountOfPreferences = Object.keys(booking.preference);
+    for (let key of amountOfPreferences) {
+        console.log(key); // logs "beds"
+        console.log(booking.preference[key]); // logs "s1q0"
+
+        // Check if preferences are equal to preferences in the room
+        if (!roomDetails.hasOwnProperty(key) || roomDetails[key] !== booking.preference[key]) {
+            score -= 1 / amountOfPreferences.length;
+        }
+    }
+    return score;
+}
