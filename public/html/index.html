@@ -4,79 +4,57 @@
     <meta charset='utf-8' />
     <link rel="stylesheet" href="css/allocate.css">
     <!--<script src="https://unpkg.com/@popperjs/core@2"></script>-->
-    <input type="button" id="allocateButton_id" value="allocate">
-    <input type="button" id="batchButton_id" value="generate batch">
+    <input type="button" id="allocateButton_sort1" value="Allocate_stay">
+    <input type="button" id="allocateButton_sort2" value="Allocate_checkin">
+    <input type="button" id="allocateRandom_id" value="Allocate_random">
+    <input type="button" id="batchButton_id" value="Generate bookings">
     <label for="dayInput">Number of days:</label>
     <input type="number" id="dayInput" name="dayInput" value="0" min="0" step="1" />
+    <input type="button" id="resetMatrix" value="Reset Matrix">
+    <input type="button" id="resetEverything" value="Reset Everything">
 
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.15/index.global.min.js'></script>
     <script src="js/calendar.js"></script>
   </head>
   <body>
-    <div id='calendar'></div>
+    <div id='calendar'></div
   </body>
   <script type="module">
     // Import needed for allocate (use of calendar in html file)
-    import { allocate } from './js/allocation.js';
+    import {allocate, allocateAction, generateBatches, 
+    resetMatrix, allocateRandom, resetEverything, allocateActioncheckDate}
+    from './js/allocation.js';
 
     // Event listeners and handlers for the buttons
-    let allocateElem = document.querySelector("#allocateButton_id");
-    allocateElem.addEventListener("click", allocateAction);
-
-
+    
+    // Generate batch of bookings button
     let batchElem = document.querySelector("#batchButton_id");
     batchElem.addEventListener("click", generateBatches);
 
-    // Allocate function called upon button click. Used later to allocate bookings into calendar.
-    function allocateAction() {
+    // Reset Matrix button
+    let resetMatrixElem = document.querySelector("#resetMatrix");
+    resetMatrixElem.addEventListener("click", resetMatrix);
+    
+    // Reset Everything button
+    let resetAllElem = document.querySelector("#resetEverything");
+    resetAllElem.addEventListener("click", resetEverything);
 
-      const dayInput = document.querySelector("#dayInput");
-      const days = parseInt(dayInput.value, 10) || 0; // fallback to 0 if input is empty or invalid
 
-      let url = `allocate?days=${days}`;
+    // AllocateRandom button
+    let randomElem = document.querySelector("#allocateRandom_id");
+    randomElem.addEventListener("click", allocateRandom);
 
-      fetch(url, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      })
-          .then((response) => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              return response.json();
-          })
-          .then((data) => {
-              // Call the allocate function with the fetched data, that allocates bookings into calendar
-              allocate(data);
-          })
-          .catch((error) => {
-              console.error('There was a problem with the fetch operation:', error);
-          });
-    }
-    window.allocateAction = allocateAction;
+    // Allocate and sort by stay duration
+    let allocateElem = document.querySelector("#allocateButton_sort1");
+    allocateElem.addEventListener("click", allocateAction);
 
-    function generateBatches() {
-      // Sending POST request to router.js, as we are creating batches on the server side
-      fetch('batch365', {
-        method: "POST"
-      })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then((result) => {
-            // Reponse in form of text that the batch was generated
-            console.log('Batch generated:', result);
-        })
-        .catch((error) => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-      }
+    // Allocate and sort by checkin/outday duration
+    let allocate2Elem = document.querySelector("#allocateButton_sort2");
+    allocate2Elem.addEventListener("click", allocateActioncheckDate);
 
+
+    
+    //window.allocateAction = allocateAction;
       
   </script>
 </html>

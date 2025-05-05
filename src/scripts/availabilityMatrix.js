@@ -8,7 +8,8 @@ export {
   insertBookings,
   checkAvailability,
   dateDifference,
-  dateIndex
+  dateIndex,
+  resetMatrix
 };
 
 let today = dayjs(globalState.currentDay); // Get today's date
@@ -145,3 +146,14 @@ console.log("hej");
   console.log(bookedDates);
 }
 //testAvailability()
+
+
+function resetMatrix(){
+  for (const key in availabilityGrid) {
+    for (let i = 0; i < availabilityGrid[key].length; i++) {
+      availabilityGrid[key][i] = 0;
+    }
+  }
+  //console.log("matrix after reset")
+  //console.log(availabilityGrid)
+}

@@ -10,7 +10,7 @@
   "roomNumber": "102",
   "roomGuests": 2,
   "preference": {
-    "beds": "s1q0"
+    "beds": "s0q1"
   }
 },
 {
@@ -31,7 +31,14 @@
   "roomNumber": "105",
   "roomGuests": 3,
   "preference": {
-    "beds": "s2q0"
+    "beds": "s1q1"
+  }
+},
+{
+  "roomNumber": "106",
+  "roomGuests": 1,
+  "preference": {
+    "beds": "s1q0"
   }
 }
 ]

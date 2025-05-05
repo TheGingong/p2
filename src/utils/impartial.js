@@ -95,10 +95,10 @@ function createBookingBatch(batch) {
 async function storeBatch365() {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(300);
+        const data = await createBookingBatch(1000);
         console.log("data")
         console.log(data);
-        await sortByBooking(data);
+        //await sortByBooking(data);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
         await loadBookings(); // Loading bookings into array after its been written into bookings.json
@@ -136,6 +136,12 @@ async function sortByBookingByCheckInDate(data){
   //  } 
 )
 }
+async function sortByBookingByStay(data){
+    data.sort((a,b) =>{
+    return b.stayDuration - a.stayDuration;
+    })
+}
 
 
-export{sortByBooking, sortByBookingByCheckInDate}
+
+export{sortByBooking, sortByBookingByCheckInDate, sortByBookingByStay}
