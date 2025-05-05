@@ -98,7 +98,6 @@ async function storeBatch365() {
         const data = await createBookingBatch(1000);
         console.log("data")
         console.log(data);
-        //await sortByBooking(data);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
         await loadBookings(); // Loading bookings into array after its been written into bookings.json
@@ -107,55 +106,3 @@ async function storeBatch365() {
         return { error: "Batch generation failed." };
     }
 }
-
-async function sortByBooking(data){
-    data.sort((a,b) =>{
-        //let bookingDiff = new Date(a.dayOfBooking) - new Date(b.dayOfBooking);
-        //if(bookingDiff === 0){
-            //let checkoutDiff = Date(a.checkOutDate) - Date(b.checkOutDate);
-            let checkoutDiff = dateDifference(a.checkOutDate, b.checkOutDate)
-            if(checkoutDiff === 0){
-                return b.stayDuration - a.stayDuration;
-            } else return checkoutDiff;
-        } 
-  //  } 
-)
-}
-
-
-async function sortByBookingByCheckInDate(data){
-    data.sort((a,b) =>{
-        //let bookingDiff = new Date(a.dayOfBooking) - new Date(b.dayOfBooking);
-        //if(bookingDiff === 0){
-            //let checkoutDiff = Date(a.checkOutDate) - Date(b.checkOutDate);
-            let checkoutDiff = dateDifference(a.checkInDate, b.checkInDate)
-            if(checkoutDiff === 0){
-                return b.stayDuration - a.stayDuration;
-            } else return checkoutDiff;
-        } 
-  //  } 
-)
-}
-async function sortByBookingByStay(data){
-    data.sort((a,b) =>{
-    return b.stayDuration - a.stayDuration;
-    })
-}
-
-async function sortByBookingByStayMinus(data) {
-    data.sort((a, b) => {
-        let checkoutDiff = dateDifference(a.checkOutDate, b.checkOutDate);
-        
-        // If the dates are equal, sort by stay duration (longer stays first)
-        if (checkoutDiff === 0) {
-            return b.stayDuration - a.stayDuration;  // Longer stays first if same checkout date
-        }
-
-        // If checkoutDiff is positive (i.e., a is later than b), swap the order
-        return -checkoutDiff;  // Invert the sign to ensure earliest checkout comes first
-    });
-}
-
-
-
-export{sortByBooking, sortByBookingByCheckInDate, sortByBookingByStay, sortByBookingByStayMinus}

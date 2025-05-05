@@ -19,8 +19,8 @@ let availabilityGrid = {}; // global matrix
 let temp_min = today;
 
 // temp_min: Den "tidligere" last booking
-// 20240422
 // temp_max: Den nye last booking
+// bookingRange takes an array of bookings and finds the booking with the longest checkOutDate, this value is given to extendGrid.
 function bookingRange(newBookings) {
   let temp_max = temp_min;
   let range = 0;
@@ -45,6 +45,7 @@ function dateIndex(date) {
   return futureDate.diff(today, "day");
 }
 
+// function that returns the difference between 2 days in a number
 function dateDifference(date1, date2) {
   return dayjs(date2).diff(dayjs(date1), "day");
 }
@@ -54,6 +55,7 @@ function dateDifference(date1, date2) {
 	return date2.diff(date1, "day");
 }*/
 
+// extends matrix for a given set of data with amount of rooms and the range of dates in the data set
 function extendGrid(rooms, date_range) {
   if (date_range === 0) {
     console.log(availabilityGrid);
@@ -96,6 +98,7 @@ function extendGrid(rooms, date_range) {
   console.log(availabilityGrid);
 }
 
+// takes an array of bookings (newBookings) and inserts it into the given matrix (grid)
 function insertBookings(newBookings, grid) {
   // for each booking
   //console.log("New Bookings:", newBookings);
@@ -114,39 +117,22 @@ function insertBookings(newBookings, grid) {
       grid[roomNumber][i] = 1; // Mark as occupied
     }
   });
-  //console.log("hej")
   //console.log(grid);
 
   return grid;
 }
-
+// checks avalibility for a given room and date, in a specific grid (either avalibilityGrid or tempMatrix).
 function checkAvailability(room, date, grid) {
   const realDate = dayjs(date);
 
   if (dateIndex(realDate) < 0){
     return 1;
   }
-  
   return grid[room][dateIndex(realDate)] === 1 ? 1 : 0;
 }
 
 
-function testAvailability() {
-console.log("hej");
-  const bookedDates = [];
-  const date_range = availabilityGrid[101].length;
-
-  for (let i = 0; i < date_range; i++) {
-    if (checkAvailability(101, i) === 1) {
-      bookedDates.push(i);
-    }
-  }
-  console.log("length = " + availabilityGrid[101].length);
-  console.log(bookedDates);
-}
-//testAvailability()
-
-
+// resets the matrix (avalibilityGrid) so new data can be inputted
 function resetMatrix(){
   for (const key in availabilityGrid) {
     for (let i = 0; i < availabilityGrid[key].length; i++) {
