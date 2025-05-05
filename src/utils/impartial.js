@@ -21,7 +21,7 @@ function createBookingBatch(batch) {
                 daysInMonth = dayjs().year('2025').month(checkInMonth).daysInMonth();
                 randomCheckInDay = Math.ceil(Math.random() * daysInMonth); // Generates a random number from [0 - intervalLenth], and shifts nr of days in controlDate
                 checkInDate = dayjs().year('2025').month(checkInMonth).date(randomCheckInDay); 
-                stayDuration = Math.ceil((Math.random() * 19));
+                stayDuration = Math.ceil((Math.random() * 8));
                 checkOutDate = checkInDate.add(stayDuration, 'day');
                 
                 // Generating day of booking
