@@ -105,18 +105,17 @@ function insertBookings(newBookings, grid) {
     let roomNumber = booking.resourceIds; // Room ID
 
     // Calculate the index in the array (days from today)
-    let startIndex = dateIndex(startDate);
-    let endIndex = dateIndex(endDate);
+    let startIndex = parseInt(dateIndex(startDate));
+    let endIndex = parseInt(dateIndex(endDate));
     // Fill the grid for the room
-
     grid[roomNumber][startIndex] = 1
     
     for (let i = startIndex+1; i < endIndex; i++) {
       grid[roomNumber][i] = 1; // Mark as occupied
     }
   });
-  console.log("hej")
-  console.log(grid);
+  //console.log("hej")
+  //console.log(grid);
 
   return grid;
 }

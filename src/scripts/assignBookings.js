@@ -43,43 +43,33 @@ async function matchBookingsToRooms(version) {
         //    bestFit(booking, roomsInfo);
         //}
 
-        let tempMatrix = availabilityGrid
+        let tempMatrix = JSON.parse(JSON.stringify(availabilityGrid));
 
+        let finalArray = []
         let arr = []
         // Match bookings to rooms
         for (const booking of visibleBookings) {
             booking.resourceIds = await assignResId(booking, roomsInfo, tempMatrix);
-            booking.title = booking.guestsNumber
+            //booking.title = booking.guestsNumber
+            booking.title = booking.dayOfBooking
 
-            if (booking.resourceIds !== 0){
-                if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){
-                    arr.push(booking)
-                    //console.log(arr)
-                    insertBookings(arr, tempMatrix)
+            if (booking.resourceIds !== "0") {
+                tempMatrix = insertBookings([booking], tempMatrix);
+                
+                // If this booking starts today, add it to our final array
+                if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')) {
+                    finalArray.push(booking);
+                }
+            } else {
+                console.log(`No room found for booking ${booking.id}`);
             }
-            }
-
-
-
-        } 
-        console.log("visible2.0:");
-        //console.log(visibleBookings);
-    
-        // Inserts bookings in the Matrix where checkInDate === today
-        let finalarray = []
-        const today = dayjs(globalState.currentDay);
-
-        visibleBookings.forEach(booking => {
-            if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')){
-                finalarray.push(booking);
-
-            }
-        });
-        //insertBookings(finalarray);
-        //console.log("finalarray:");
-        //console.log(finalarray);
-        //return visibleBookings
-        return finalarray
+        }
+        
+        // Update the real availability grid with today's new bookings
+        insertBookings(finalArray, availabilityGrid);
+        
+        //console.log("Final bookings to display:", finalArray.length);
+        return finalArray;
     } catch (error) {
         console.error("Error updating bookings:", error);
     }
@@ -102,7 +92,7 @@ async function assignResId(booking, rooms, tempMatrix) {
         }
     }
     console.log("Didn't find any available rooms")
-    return 0
+    return "0";
 }
 
 function bestFit(booking, rooms){
@@ -158,4 +148,55 @@ function timespanAvailability(roomNumber, startDate, endDate, tempMatrix){
         }
     }
     return 1; // return 1 if span of time is UNoccupied
+}
+
+
+
+
+// Improved findGap function to accurately locate the last occupied day
+function findGap(roomNumber, checkInDate, tempMatrix) {
+    let currentDate = dayjs(checkInDate).subtract(1, 'day');
+    let gap = Infinity;
+    
+    // Scan backward to find the last occupied day
+    while (currentDate.isSameOrAfter(dayjs('2000-01-01'))) {
+        if (checkAvailability(roomNumber, currentDate.format('YYYY-MM-DD'), tempMatrix) === 0) {
+            gap = dayjs(checkInDate).diff(currentDate, 'day');
+            break;
+        }
+        currentDate = currentDate.subtract(1, 'day');
+    }
+    return gap;
+}
+async function assignResId2(booking, rooms, tempMatrix) {
+    // Get all possible rooms that fit requirements
+    const possibleRooms = rooms.filter(room => 
+        booking.guestsNumber <= room.roomGuests &&
+        timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate, tempMatrix)
+    );
+
+    // No available rooms
+    if (possibleRooms.length === 0) {
+        console.log("No available rooms found");
+        return 0;
+    }
+
+    // Calculate gaps and find the BEST fit
+    let bestRoom = possibleRooms[0];
+    let smallestGap = Infinity;
+
+    for (const room of possibleRooms) {
+        const gap = findGap(room.roomNumber, booking.checkInDate, tempMatrix);
+        
+        // Priority 1: Smallest gap
+        // Priority 2: Smallest room size (if gaps are equal)
+        if (gap < smallestGap || 
+           (gap === smallestGap && room.roomGuests < bestRoom.roomGuests)) {
+            smallestGap = gap;
+            bestRoom = room;
+        }
+    }
+
+    console.log(`Assigned to room ${bestRoom.roomNumber} with gap ${smallestGap} days`);
+    return bestRoom.roomNumber;
 }
