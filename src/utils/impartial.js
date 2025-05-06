@@ -1,3 +1,8 @@
+/**
+ * This file contains the function and subfunctions for generating the hotel's bookings. 
+ * createBookingBatch is the main function here, and ultimately returns an array containing all the generated bookings. 
+ */
+
 import fs from 'fs/promises'
 import { extendGrid, bookingRange, availabilityGrid, dateDifference } from '../scripts/availabilityMatrix.js';
 import { roomsInfo, loadBookings } from './getInfo.js';
@@ -7,6 +12,7 @@ import { roomTypes } from './globalVariables.js';
 export { storeBatch365, sortByBooking, sortByBookingByCheckInDate }
 
 function createBookingBatch(batch) {
+    // Initialization of all the variables which will be needed for the code below. 
     let checkInMonth, checkInDate, stayDuration, checkOutDate, 
     currentBookingObject, guestsNumber, daysInMonth, 
     dayOfBooking, daysBeforeCheckIn, randomCheckInDay, preference;
@@ -17,28 +23,39 @@ function createBookingBatch(batch) {
     return new Promise((resolve, reject) => {
         try {
             for (let i = 1, j = 1; i < batch; i++) {
-                checkInMonth = Math.floor(Math.random() * 12); // Generates random number 1-12
+                // Generates random number 1-12 to set a month for the booking
+                checkInMonth = Math.floor(Math.random() * 12);
+
+                /** 
+                 * Based on the month found above, the days in the month is found, 
+                 * and then a random day is decided within the month. */
                 daysInMonth = dayjs().year('2025').month(checkInMonth).daysInMonth();
-                randomCheckInDay = Math.ceil(Math.random() * daysInMonth); // Generates a random number from [0 - intervalLenth], and shifts nr of days in controlDate
+                randomCheckInDay = Math.ceil(Math.random() * daysInMonth); // Generates a random number [0 - intervalLenth], and shifts nr of days in controlDate
+                
+                // The checkInDate is set based on the month and day found in the two generations above. 
                 checkInDate = dayjs().year('2025').month(checkInMonth).date(randomCheckInDay); 
+                
+                // A stayduratino is found, and the checkOutDate is found based on this. 
                 stayDuration = Math.ceil((Math.random() * 19));
                 checkOutDate = checkInDate.add(stayDuration, 'day');
                 
-                // Generating day of booking
+                /** 
+                 * Generates the day that the booking was made, such that not all booknings are made the same day, 
+                 * but rather any random day before the checkInDate (but at most 60 days before) */
                 daysBeforeCheckIn = Math.ceil(Math.random() * 60);
                 dayOfBooking = checkInDate.subtract(daysBeforeCheckIn, 'day').format('YYYY-MM-DD');
 
-                // Correct the format
+                // The format of the dates is changed to match our programming, and how we may want to read the data. 
                 checkInDate = checkInDate.format('YYYY-MM-DD');
                 checkOutDate = checkOutDate.format('YYYY-MM-DD'); 
                
-                // Generating guests
+                // The amount of guests who will attend the generated booking is determined (at most 4 guests)
                 guestsNumber = Math.ceil(Math.random() * 4);
 
-                // Initialize the preference object for current booking
+                // The 'preference' parameter of the booking object is initialized as an object within the booking object. 
                 preference = {}
 
-                // Generate room preference
+                // Room preferences are generated - WIP
                 switch(guestsNumber) {
                     case 1:
                         preference.beds = roomTypes[0]; // One single bed

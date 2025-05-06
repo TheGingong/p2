@@ -1,5 +1,6 @@
 //import { availabilityGrid, checkAvailability, insertBookings } from "./availabilityMatrix";
-//import { globalState } from "../utils/globalVariables";
+import { globalState, roomsIndexToResourceId } from "../utils/globalVariables.js";
+import { calculatePrefScore } from "../utils/prefScores.js";
 
 let ghostMatrixTwo = [
     ["e7", "s1", "1", "e1"],
@@ -18,12 +19,13 @@ let visibleBookings = [
       "checkInDate": "2025-02-19",
       "checkOutDate": "2025-02-28",
       "guestsNumber": 4,
-      "stayDuration": 9,
+      "stayDuration": 13,
       "dayOfBooking": "2025-01-10",
       "resourceIds": "103",
       "bookingId": "s5",
       "preference": {
-        "beds": "s0q2"
+        "beds": "s0q2",
+        "view": "seaview"
       }
     },
     {
@@ -42,7 +44,7 @@ let visibleBookings = [
       "checkInDate": "2025-02-26",
       "checkOutDate": "2025-03-15",
       "guestsNumber": 2,
-      "stayDuration": 17,
+      "stayDuration": 15,
       "dayOfBooking": "2025-01-23",
       "resourceIds": "101",
       "bookingId": "s16",
@@ -73,28 +75,42 @@ function preferenceOptimization(visibleBookings, leniency) {
 
     // Finds bookings starting today and placing them in an array
     let bookingsStartingToday = findWholeBooking(ghostMatrixTwo, visibleBookings);
-
-    // Function that prioritizes the order to allocate in
-    //let prioritizedSwapList = prioritySwaps(bookingsStartingToday, visibleBookings);
     
-    // Iterate through the bookings in the bookings starting today
+    // Initializations
+    let bookingPrefScore = 0;
+    let prefScoreTable = [];
+    let bestMatch = 0;
+    
+    // Iterate through the bookings in the bookings starting today array
     for (let booking of bookingsStartingToday) {
         for (let room = 0; room < ghostMatrixTwo.length; room++) {
             if (validSwaps(booking.bookingId, room, ghostMatrixTwo)) {
+                bookingPrefScore = calculatePrefScore(booking, room);
+
+                // Ensure the room index in prefScoreTable is initialized
+                if (!prefScoreTable[room]) {
+                    prefScoreTable[room] = [];
+                }
+
+                // Push the preference score at the right room index to the booking that will get that specific score at that location
+                prefScoreTable[room].push([booking.id, bookingPrefScore])
+                
+                // Delete this
                 console.log(`Booking ${booking.bookingId} can be swapped into room ${room}`);
 
                 // Find the location/resourceId of where the booking it wants to swap with is located - get this from pinu
-
-                // Call preference score function and collect indecies and scores in array - freddy und ich has been working on this
-                
-
-
-                // Start allocating based of prioritization array and preference scores - vic has been working on dis
-
                 
             }
         }
     }
+    // Find the right prioritization of the bookings starting today array
+    prioritySwaps(bookingsStartingToday);
+        // For loop that iterates over the sortedBookings to find the best matches and assigning resourceIds
+        for (booking of sortedBookings) {
+            bestMatch = locateBestMatches(booking.id, prefScoreTable);
+            assignResourceIds(booking, bestMatch, visibleBookings) // bestMatch needs to be converted to resourceId
+        }
+        // Do the swap - need from pinu
 }
 
 //const ghostMatrix = initGhostMatrix(visibleBookings);
@@ -147,11 +163,58 @@ function prioritySwaps(booksStarting2day) {
     booksStarting2day.sort((booking1,booking2) => {
         // If the two bookings are not of the same stayduration, sort them longest to shortest
         if (booking1.stayDuration !== booking2.stayDuration){
-            return booking2.stayDuration - booking2.stayDuration
+            return booking2.stayDuration - booking1.stayDuration
         }
         // Else, we sort them based on how many preferences the bookings have.
-        // Least preferences come first (as a single one carries more weight here) 
+        // Bookings with the least prefs come first (as a single pref carries more weight for these) 
         // followed by bookings with more preferences
         return Object.keys(booking1.preference).length - Object.keys(booking2.preference).length;
     })
+    return booksStarting2day;
+}
+
+function locateBestMatches(booking, prefScoreTable) {
+    // Iterate through the elements and find the spot where the preference score is highest for the booking
+    let currentBest = -Infinity;
+    let currentBestIndex = 0;
+    let counter = 0;
+    
+    for (let outerArray of prefScoreTable) {
+        for (let pair of outerArray) {
+            if (pair[0] === booking && pair[1] > currentBest) {
+                // Element was found in the table, and the value is larger, so update current best
+                currentBest = pair[1];
+                currentBestIndex = counter;
+            } else {
+                console.error("Booking was not found in the array");            
+            }
+        }
+        counter++;
+    }
+
+    // Set all other pairs at this location to null, so the room wont be assigned twice or more.
+    prefScoreTable[currentBestIndex] = [];
+
+    return currentBestIndex;
+}
+
+function assignResourceIds(booking, bestMatchFound, visibleBookings) {
+    const roomDetails = roomsIndexToResourceId[bestMatchFound];
+    
+    // Find booking in visible bookings and visiblebooking[i] = booking
+
+
+    // Update bookings resource id with the id at the correct index
+    let tempId = booking.resourceIds; // use this temp value to update the other bookings
+    booking.resourceIds = roomDetails.roomNumber;
+    
+    const VBHashMap = roomsInfoo.reduce((hash, booking) => {
+        hash[booking.resourceIds] = booking;
+        return hash;
+    }, {});
+    
+
+    // Look through visible bookings to update the bookings with the one you want to swap with
+
+    // Change the resource ids in visible bookings and return the new updated visible bookings array that will be allocated
 }

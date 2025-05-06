@@ -1,3 +1,10 @@
+/**
+ * This file contains the two functions loadBookings and loadRooms, which will open the JSON files
+ * containing the generated bookings and all individual rooms of the hotel. 
+ * In both cases, the loaded and then returned data is an array 
+ * containing objects with the necessary information for a room or booking. 
+ */
+
 import { readFile } from 'fs/promises'; // Imports function readFile from File System library
 import path from 'path'
 import { fileURLToPath } from 'url';
@@ -9,6 +16,7 @@ const __dirname = path.dirname(__filename);
 
 let roomsInfo = null;
 let bookingsInfo = null;
+
 // Use absolute paths for the JSON files
 const bookingsPath = path.resolve(__dirname, '../json/bookings.json')
 const roomsPath = path.resolve(__dirname, '../json/rooms.json');
