@@ -6,6 +6,10 @@ import dayjs from 'dayjs';
 import { roomTypes } from './globalVariables.js';
 export { storeBatch365 }
 
+/**
+ * Creates batch of bookings, objects with information about the simulated bookings
+ * @param {Integer} batch - Desired number of bookings to create
+ */
 function createBookingBatch(batch) {
     let checkInMonth, checkInDate, stayDuration, checkOutDate, 
     currentBookingObject, guestsNumber, daysInMonth, 
