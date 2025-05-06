@@ -93,7 +93,7 @@ function allocateAction() {
         })
         .then((data) => {
             // Call the allocate function with the fetched data, that allocates bookings into calendar
-            allocate(data, "pink");
+            allocate(data, "blue");
         })
         .catch((error) => {
             console.error('There was a problem with the fetch operation: during allocate', error);
@@ -121,7 +121,7 @@ function allocateRandom(){
         })
         .then((data) => {
             // Call the allocate function with the fetched data, that allocates bookings into calendar
-            allocate(data, "green");
+            allocate(data, "pink");
         })
         .catch((error) => {
             console.error('There was a problem with the fetch operation: during allocate', error);
@@ -151,7 +151,7 @@ function allocateActioncheckDate() {
         })
         .then((data) => {
             // Call the allocate function with the fetched data, that allocates bookings into calendar
-            allocate(data, "red");
+            allocate(data, "green");
         })
         .catch((error) => {
             console.error('There was a problem with the fetch operation: during allocate', error);
