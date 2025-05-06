@@ -108,7 +108,7 @@ function preferenceOptimization(visibleBookings, leniency) {
         // For loop that iterates over the sortedBookings to find the best matches and assigning resourceIds
         for (booking of sortedBookings) {
             bestMatch = locateBestMatches(booking.id, prefScoreTable);
-            assignResourceIds(booking, bestMatch, visibleBookings) // bestMatch needs to be converted to resourceId
+            assignResourceIds(booking, bestMatch) // bestMatch needs to be converted to resourceId
         }
         // Do the swap - need from pinu
 }
@@ -198,7 +198,7 @@ function locateBestMatches(booking, prefScoreTable) {
     return currentBestIndex;
 }
 
-function assignResourceIds(booking, bestMatchFound, visibleBookings) {
+function assignResourceIds(booking, bestMatchFound) {
     const roomDetails = roomsIndexToResourceId[bestMatchFound];
     
     // Find booking in visible bookings and visiblebooking[i] = booking
@@ -213,7 +213,6 @@ function assignResourceIds(booking, bestMatchFound, visibleBookings) {
         return hash;
     }, {});
     
-
     // Look through visible bookings to update the bookings with the one you want to swap with
 
     // Change the resource ids in visible bookings and return the new updated visible bookings array that will be allocated
