@@ -21,7 +21,7 @@ function createBookingBatch(batch) {
                 daysInMonth = dayjs().year('2025').month(checkInMonth).daysInMonth();
                 randomCheckInDay = Math.ceil(Math.random() * daysInMonth); // Generates a random number from [0 - intervalLenth], and shifts nr of days in controlDate
                 checkInDate = dayjs().year('2025').month(checkInMonth).date(randomCheckInDay); 
-                stayDuration = Math.ceil((Math.random() * 19));
+                stayDuration = Math.ceil((Math.random() * 8));
                 checkOutDate = checkInDate.add(stayDuration, 'day');
                 
                 // Generating day of booking
@@ -95,10 +95,9 @@ function createBookingBatch(batch) {
 async function storeBatch365() {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(300);
+        const data = await createBookingBatch(1000);
         console.log("data")
         console.log(data);
-        await sortByBooking(data);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
         await loadBookings(); // Loading bookings into array after its been written into bookings.json
@@ -107,35 +106,3 @@ async function storeBatch365() {
         return { error: "Batch generation failed." };
     }
 }
-
-async function sortByBooking(data){
-    data.sort((a,b) =>{
-        //let bookingDiff = new Date(a.dayOfBooking) - new Date(b.dayOfBooking);
-        //if(bookingDiff === 0){
-            //let checkoutDiff = Date(a.checkOutDate) - Date(b.checkOutDate);
-            let checkoutDiff = dateDifference(a.checkOutDate, b.checkOutDate)
-            if(checkoutDiff === 0){
-                return b.stayDuration - a.stayDuration;
-            } else return checkoutDiff;
-        } 
-  //  } 
-)
-}
-
-
-async function sortByBookingByCheckInDate(data){
-    data.sort((a,b) =>{
-        //let bookingDiff = new Date(a.dayOfBooking) - new Date(b.dayOfBooking);
-        //if(bookingDiff === 0){
-            //let checkoutDiff = Date(a.checkOutDate) - Date(b.checkOutDate);
-            let checkoutDiff = dateDifference(a.checkInDate, b.checkInDate)
-            if(checkoutDiff === 0){
-                return b.stayDuration - a.stayDuration;
-            } else return checkoutDiff;
-        } 
-  //  } 
-)
-}
-
-
-export{sortByBooking, sortByBookingByCheckInDate}

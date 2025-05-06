@@ -2,7 +2,7 @@ import { loadRooms, loadBookings } from "./getInfo.js";
 import { availabilityGrid, checkAvailability, dateDifference, insertBookings
 
  } from "../scripts/availabilityMatrix.js";
- import { sortByBooking } from "./impartial.js";
+ import { sortByDuration } from "../scripts/assignBookings.js";
 
  const { bookingsInfo } = await loadBookings();
  //console.log("Loaded bookingsInfo:", bookingsInfo);
