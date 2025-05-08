@@ -46,8 +46,8 @@ async function generateRooms () {
 /**
  * Function that generates a roomnumber adding the floor and the roomnumber,
  * E.g, roomnumber "109" is room 9 on floor 1.
- * @param {Integer} roomFloor - The floor the room i placed on
- * @param {Integer} roomNumber - The rooms number
+ * @param {Integer} roomFloor - The floor the room is placed on
+ * @param {Integer} roomNumber - The room's number
  * @returns {String} - roomnumber string
  */
 function generateRoomNumber(roomFloor, roomNumber) {
