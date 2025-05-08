@@ -1,3 +1,7 @@
+/**
+ * 
+ */
+
 import {bookingsInfo, roomsInfo, loadBookings} from './getInfo.js'
 
 await loadBookings();

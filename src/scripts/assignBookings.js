@@ -1,3 +1,7 @@
+/**
+ * This file . . . 
+ */
+
 import fs from 'fs/promises';
 import dayjs from 'dayjs';
 import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
@@ -6,8 +10,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
 import { globalState } from "../utils/globalVariables.js";
-export { getVisibleBookings, matchBookingsToRooms }
-export { sortByDuration }
+export { getVisibleBookings, matchBookingsToRooms, sortByDuration }
 
 dayjs.extend(isSameOrBefore); 
 dayjs.extend(isSameOrAfter);
@@ -125,7 +128,7 @@ async function getVisibleBookings(bookingsInfo, date) {
     return allocationArray;
 }
 /**
- * Function that checks for availabilty for a given booking and room over a span of time
+ * Function that checks for availabilty for a given booking and room over a span of time.
  * @param {String} roomNumber - Room number corresponding to matrix index
  * @param {String} startDate - dayjs string of booking start date
  * @param {String} endDate - dayjs string of booking end date
@@ -133,52 +136,55 @@ async function getVisibleBookings(bookingsInfo, date) {
  * @returns {Integer} - Returns boolean, 0 if checked space is occupied, 1 if it is free
  */
 function timespanAvailability(roomNumber, startDate, endDate, tempMatrix){
-    // for loop that goes from the startDate to the endDate
+    // for-loop that goes from the startDate to the endDate.
     for (let i = 0; i < dateDifference(startDate, endDate); i++) {
         let dag = dayjs(startDate).add(i, 'day').format('YYYY-MM-DD');
         if (checkAvailability(roomNumber, dag, tempMatrix) === 0) {
             continue;
         } else {
-            return 0; // return 0 if span of time is OCCUPIED
+            return 0; // return 0 if span of time is OCCUPIED.
         }
     }
-    return 1; // return 1 if span of time is UNOCCUPIED
+    return 1; // return 1 if span of time is UNOCCUPIED.
 }
 
 /**
- * BestFit room algorithm that checks the space before and after a booking
+ * BestFit room algorithm that checks the space before and after a booking.
  * @param {Object} booking - The booking to assign a room to
  * @param {Array} rooms - Available room types
  * @param {Object} tempMatrix - Current availability matrix
  * @returns {String} - The room number of the best fit room, or "0" if no room is available
  */
 async function bestFit(booking, rooms, tempMatrix) {
-    // Filter rooms that can accommodate the number of guests
+    // Filter rooms that can accommodate the number of guests.
     let eligibleRooms = rooms.filter(room => booking.guestsNumber <= room.roomGuests);
     
-    // If no eligible rooms, return "0"
+    // If there are no eligible rooms, return "0".
     if (eligibleRooms.length === 0) {
         return "0";
     }
     
-    // Create an array to store potential room matches with their scores
+    // Create an array to store potential room matches, including their scores.
     let potentialMatches = [];
     
-    // Check each eligible room for availability
+    // Check each eligible room for availability.
     for (const room of eligibleRooms) {
-        // Check if room is available for the entire booking period
+        // Check if the room is available for the entire booking period.
         if (timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate, tempMatrix) === 1) {
-            // Calculate various scores (lower is better)
+            // Calculate various scores (the lower, the better).
             const proximityScore = calculateProximityToPreviousBooking(room.roomNumber, booking, tempMatrix);
             const futureAvailabilityScore = calculateFutureAvailabilityScore(room.roomNumber, booking, tempMatrix);
             
-            // Combined weighted score
-            // Proximity to earlier bookings is the more important factor as these are set in stone,
-            // while we already know of some future bookings, it is more important to optimize for known bookings
+            /**
+             * Below is the combined weighted score. Proximity to earlier bookings is the more important factor 
+             * as these are set in stone. While we already know of some future bookings, we prioritize optimizing for current/known bookings.
+             */
             const totalScore = (proximityScore * 0.8)  + (futureAvailabilityScore * 0.2);
             
-            // Push details of checked room to potentialMatches array
-            // keep hold of the roomNumber as this will be used to remember which room is the best
+            /**
+             * Push details of checked room to potentialMatches array. 
+             * Keep hold of the roomNumber, as this will be used to remember which room is the best.
+             */
             potentialMatches.push({
                 roomNumber: room.roomNumber,
                 score: totalScore,
@@ -188,21 +194,21 @@ async function bestFit(booking, rooms, tempMatrix) {
         }
     }
     
-    // If no available rooms were found, return "0"
+    // If no available rooms were found, return "0".
     if (potentialMatches.length === 0) {
         return "0";
     }
     
-    // Sort potential matches by score (ascending - lower is better)
+    // Sort potential matches by score (ascending - the lower, the better).
     potentialMatches.sort((a, b) => a.score - b.score);
     
-    // Return the room number of the best match
+    // Return the room number of the best match.
     return potentialMatches[0].roomNumber;
 }
 
 /**
- * Calculates how close a booking would be to previous bookings in the same room
- * Lower score means better proximity (closer to previous bookings)
+ * Calculates how close a booking would be to previous bookings in the same room.
+ * Lower score means better proximity (closer to previous bookings).
  * @param {String} roomNumber - The room number to check
  * @param {Object} booking - The booking we're trying to place
  * @param {Object} tempMatrix - Current availability matrix
@@ -211,15 +217,15 @@ async function bestFit(booking, rooms, tempMatrix) {
 function calculateProximityToPreviousBooking(roomNumber, booking, tempMatrix) {
     const checkInDate = dayjs(booking.checkInDate);
     
-    // Search backwards from check-in date to find the most recent booking
+    // Search backwards from check-in date to find the most recent booking.
     let daysGap = 0;
-    let maxDaysToCheck = 30; // Limit how far back we check
+    let maxDaysToCheck = 30; // Limit how far back we check.
     let foundPreviousBooking = false;
     
     for (let i = 1; i <= maxDaysToCheck; i++) {
         const prevDay = checkInDate.subtract(i, 'day').format('YYYY-MM-DD');
         
-        // If room was occupied on this day, we've found a previous booking
+        // If room was occupied on this day, we've found a previous booking.
         if (checkAvailability(roomNumber, prevDay, tempMatrix) === 1) {
             daysGap = i;
             foundPreviousBooking = true; 
@@ -227,47 +233,50 @@ function calculateProximityToPreviousBooking(roomNumber, booking, tempMatrix) {
         }
     }
     
-    // If no previous booking was found within our search window,
-    // assign a high score (we prefer rooms with previous bookings)
+    /**
+     * If no previous booking were found within our search window,
+     * assign a high score (we prefer rooms with previous bookings).
+     */
     if (!foundPreviousBooking) {
-        return 100; // High score for no previous bookings
+        return 100; // High score if there were no previous bookings.
     }
-    
-    return daysGap; // Return the number of days gap (smaller is better)
+    return daysGap; // Return the number of days gap (the smaller, the better).
 }
 
 
 /**
- * Evaluates how the booking affects future availability of the room
+ * Evaluates how the booking affects future availability of the room.
  * @param {String} roomNumber - The room number
  * @param {Object} booking - The booking being placed
  * @param {Object} tempMatrix - Current availability matrix
- * @returns {Number} - Score based on future impact (lower is better)
+ * @returns {Number} - Score based on future impact (the lower, the better)
  */
 function calculateFutureAvailabilityScore(roomNumber, booking, tempMatrix) {
     const checkOutDate = dayjs(booking.checkOutDate);
-    let daysToCheck = 14; // Look ahead 2 weeks
+    let daysToCheck = 14; // Look an amount of days ahead. 
     
-    // Check how many days after checkout the room stays empty
-    // This helps identify if this booking creates awkward gaps
+    /**
+     * Check how many days after checkout the room stays empty.
+     * This helps identify if this booking creates awkward gaps.
+     */
     for (let i = 0; i < daysToCheck; i++) {
         const futureDay = checkOutDate.add(i, 'day').format('YYYY-MM-DD');
         
-        // If the day after checkout already has a booking, that's ideal (score stays low)
+        // If the day after checkout already has a booking, that's ideal (the score stays low).
         if (checkAvailability(roomNumber, futureDay, tempMatrix) === 1) {
-            // Room is booked on this future day 
-            return i; // Return the gap size (0 is best - someone checks in right after checkout)
+            // If -> then the room is booked on this future day.
+            return i; // Return the gap size (0 is best - it means someone checks in right after checkout).
         }
     }
     
-    // If we get here, there's at least a 2-week gap after this booking
-    return daysToCheck; // 14
+    // If we reach this point, there's at least a daysToCheck-day long gap after this booking. Return this number. 
+    return daysToCheck;
 }
 
 /**
- * sorting function that sorts given array after the longest stayDuration first.
+ * Sorting function that sorts given array based on longest stayDuration first.
  * @param {Array} data - array that is to be sorted
- * @param {Integer} data.stayDuration an Integer is found between to bookings stayDuration and the value is returned to data.sort and used to sort
+ * @param {Integer} data.stayDuration an int is found between to bookings' stayDuration, and the value is returned to data.sort, then used to sort
  */
 async function sortByDuration(data){
     data.sort((a,b) =>{

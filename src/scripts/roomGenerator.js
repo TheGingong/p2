@@ -2,50 +2,50 @@ import fs from 'fs/promises'
 import { roomTypes } from '../utils/globalVariables.js';
 import { buildingFloors, roomsPerFloor, maxGuests } from '../utils/globalVariables.js'
 import { bookingsInfo, loadBookings } from '../utils/getInfo.js';
-export { generateRoomNumber, generateRooms, generateGuests }
+export { generateRoomNumber, generateRooms, generateGuests, generateRoomTypes }
 
 let preference = {};
 
-// Function that will generate all rooms using other functions, 
-// and write them into the json file through an array
+/** 
+ * Function that will generate all rooms using other functions, 
+ * and write them into the json file through an array.
+ */ 
 async function generateRooms () {
-    // define file path for rooms.json file
+    // Defines the file path for rooms.json file.
     const roomsPath = "src/json/rooms.json";
 
-    // prepare to write a bunch of data 
+    // Prepares to write the data we will generate to the rooms.json file. 
     await fs.writeFile(roomsPath, "[\n", "utf8");
 
-    // loop that makes rooms and inserts them into the array for a said amount of rooms per floor for each floor
+    // Loop that generates rooms, and inserts them into the array for a said amount of rooms per floor for each floor.
     for (let i = 1; i <= buildingFloors; i++) {
         for (let j = 1; j <= roomsPerFloor; j++) {
             console.log(`Room Number (${i}, ${j}):`, generateRoomNumber(i, j));
             let guests = generateGuests(maxGuests);
             generateRoomTypes(guests)
-            //veryImportant()
             let roomObject = {
                 "roomNumber" : generateRoomNumber(i, j),
                 "roomGuests" : guests,
                 "preference" : preference,
             };
 
-            // convert to json string
+            // Convert to JSON string.
             let roomData = JSON.stringify(roomObject, null, 2);
 
-            // if not the first entry, add a comma for valid json
+            // if not the first entry, add a comma for valid JSON.
             if (i !== 1 || j !== 1) {
             roomData = ",\n" + roomData;
             }
 
-            // Append data to the file
+            // Append data to the file.
             await fs.appendFile(roomsPath, roomData, "utf8");
         }
     }
     await fs.appendFile(roomsPath, "\n]", "utf8");
 }
 
-// function that generates a roomnumber s.t. ex "109" is room 9 in floor 1
 /**
- * Function that generates a roomnumber adding the floor and the roomnumber
+ * Function that generates a roomnumber adding the floor and the roomnumber.
  * @param {Integer} roomFloor - The floor the rooms i placed on
  * @param {Integer} roomNumber - The rooms number
  * @returns {String} - roomnumber string
@@ -55,14 +55,18 @@ function generateRoomNumber(roomFloor, roomNumber) {
     else {return roomFloor.toString() + roomNumber.toString()};
 }
 
-// Function that generates a random amount of guest space for a room
+/**
+ * Function that generates a random amount of guest space for a room.
+ */
 function generateGuests (maximumGuests) {
     return Math.floor((Math.random() * maximumGuests) + 1);
 }
 
-// Function that generates the room preferences depending on amount of guests, through af switch case.
+/**
+ * Function that generates the room preferences depending on amount of guests, through use of a switch case.
+ */
 function generateRoomTypes(numberOfGuests) {
-    // Generate room preference
+    // Generate room preference. 
     switch(numberOfGuests) {
         case 1:
             return preference.beds = roomTypes[0]; // One single bed

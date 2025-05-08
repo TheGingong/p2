@@ -1,9 +1,11 @@
+/**
+ * This file . . .
+ */
+
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import { roomsIndexToResourceId } from './globalVariables.js';
 dayjs.extend(utc);
-
-// Testing comment
 
 function loadBookingsFromJSON(jsonData) { //Load directly from json test
           if (typeof dayjs === 'undefined' || typeof dayjs.utc === 'undefined') {
@@ -475,11 +477,65 @@ try {
           //const loadedData = loadBookingsFromJSON(jsonData);
 	        //const bookingCalendar = new Matrix(5, 10);
           //bookingCalendar.printMatrix();
-          const bookingCalendar = new Matrix(5,10);
-          const booking1 = new Booking(1,3,8,"A101", null);
-          bookingCalendar.addBooking(booking1, 3);
-          bookingCalendar.printMatrix();
-          console.log(bookingCalendar.getBooking(3,5));
+          //const bookingCalendar = new Matrix(5,10);
+          //const booking1 = new Booking(1,3,8,"A101", null);
+          //bookingCalendar.addBooking(booking1, 3);
+          //bookingCalendar.printMatrix();
+          //console.log(bookingCalendar.getBooking(3,5));
+
+
+        // Create a matrix with 5 rooms and 15 days
+    const bookingCalendar = new Matrix(5, 15);
+
+    // Add a few room definitions
+    bookingCalendar.orderedRooms = [
+        { roomId: 0, roomGuests: 2 },
+        { roomId: 1, roomGuests: 4 },
+        { roomId: 2, roomGuests: 2 },
+        { roomId: 3, roomGuests: 3 },
+        { roomId: 4, roomGuests: 4 },
+    ];
+
+    // Mock orderedDates (representing 15 consecutive days)
+    bookingCalendar.orderedDates = Array.from({ length: 15 }, (_, i) => `2025-05-${String(i + 1).padStart(2, '0')}`);
+    bookingCalendar.matrixReferenceDate = dayjs.utc("2025-05-01");
+
+    // Add bookings to the matrix
+    const booking1 = new Booking(1, 2, 5, "A101");
+    const booking2 = new Booking(1, 6, 9, "A102");
+    const booking3 = new Booking(1, 4, 7, "A103");
+
+    bookingCalendar.addBooking(booking1, 0); // Room 0 (2 guests)
+    bookingCalendar.addBooking(booking2, 1); // Room 1 (4 guests)
+    bookingCalendar.addBooking(booking3, 2); // Room 2 (2 guests)
+
+    // Print the original matrix
+    console.log("\n--- Original Matrix ---");
+    bookingCalendar.printMatrix();
+
+    // Create a filtered matrix for 2-guest rooms only
+    const filteredMatrixGuests = bookingCalendar.createFilteredMatrix(2);
+    console.log("\n--- Filtered Matrix (2-guest rooms) ---");
+    filteredMatrixGuests.printMatrix();
+
+    // Create a filtered matrix for a specific date range (days 3 to 8)
+    const filteredMatrixDates = bookingCalendar.createFilteredMatrix(null, { startIndex: 3, endIndex: 8 });
+    console.log("\n--- Filtered Matrix (Date range: 2025-05-04 to 2025-05-09) ---");
+    filteredMatrixDates.printMatrix();
+
+    // Create a filtered matrix combining both filters
+    const combinedFilteredMatrix = bookingCalendar.createFilteredMatrix(2, { startIndex: 3, endIndex: 8 });
+    console.log("\n--- Combined Filtered Matrix (2-guest rooms, Date range: 2025-05-04 to 2025-05-09) ---");
+    combinedFilteredMatrix.printMatrix();
+
+
+
+
+
+
+
+
+
           if (loadedData) {
                     const { bookings, baseDate, dateToIndex, indexToDate } = loadedData;
             

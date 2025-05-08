@@ -1,7 +1,15 @@
+/**
+ * The functions in this file are designed to, given a booking and a room, 
+ * figure out how well the allocation accomodates the guest's preferences. 
+ */
+
 import { roomsResourceIdToObject } from "./globalVariables.js";
 export { calculatePrefScore }
 
 // DELETE THIS MBY
+/**
+ * 
+ */
 async function scoringtwo(bookingsInfo, roomsInfo) {
     // Create a hash table for roomsInfo
     const roomsResourceIdToObject = roomsInfo.reduce((hash, room) => {
@@ -11,6 +19,7 @@ async function scoringtwo(bookingsInfo, roomsInfo) {
 
     let sumOfScores = 0;
 
+    // 
     for (let assignment of bookingsInfo) {
         let score = 1;
         const roomDetails = roomsResourceIdToObject[assignment.resourceIds];
@@ -32,22 +41,33 @@ async function scoringtwo(bookingsInfo, roomsInfo) {
     console.log("Average score is", sumOfScores / bookingsInfo.length);
 }
 
+/**
+ * The function loads the needed data, compares the booking and room, and returnd the preference score. 
+ */
 async function calculatePrefScore(booking, room) {
     let score = 1;
-
+    // Load the object containing the data on the parsed room ID.
     const roomDetails = roomsResourceIdToObject[room];
-
+    // Load how many total preferences for the booking.
     const amountOfPreferences = Object.keys(booking.preference);
+
+    // For every preference, we check if they are equal to any preferences in the room.
     for (let key of amountOfPreferences) {
-        // Check if preferences are equal to preferences in the room
         if (!roomDetails.preference.hasOwnProperty(key) || roomDetails.preference[key] !== booking.preference[key]) {
             score -= 1 / amountOfPreferences.length;
         }
     }
+
+    /** 
+     * The resulting preference score for the guest is multiplied by how many days the guest is staying, 
+     * and thus has said preference score. The result is console logged and returned. 
+     */ 
     console.log(score, "*", booking.stayDuration)
     console.log(score * booking.stayDuration)
     return score * booking.stayDuration;
 }
+
+// - test - 
 
 let visibleBookings = [
     {
@@ -65,6 +85,5 @@ let visibleBookings = [
         "pref3": "3",
       }
     }
-  ]
-
+]
 calculatePrefScore(visibleBookings[0], "101")

@@ -24,13 +24,13 @@ let globalState = {
     }
 }
 
-// Array which will hold template of rooms
+// Array which will hold template of rooms.
 let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]
 
-// roomGeneration
-let buildingFloors = 1; // floors in the hotel
-let roomsPerFloor = 3; // how many rooms to generate for every floor
-let maxGuests = 2; // maximum guests for largest room (-1 because we add in the random)
+// Room generation variables
+let buildingFloors = 1; // Floors in the hotel.
+let roomsPerFloor = 3; // Amount of rooms to generate for each floor.
+let maxGuests = 2; // Maximum guests for the largest room (-1 because we add in the random generation in roomGenerator).
 
 // Delete this later
 let roomsInfoo = [
@@ -69,16 +69,28 @@ let roomsInfoo = [
         "beds": "s2q0"
         }
     }
-    ]
+]
     
-// Hash map for roomsInfo
+
+/**
+ * Hash map for roomsInfo, that converts from the resourceID 
+ * to the room's object containing more detailed information.
+ */
 const roomsResourceIdToObject = roomsInfoo.reduce((hash, room) => {
     hash[room.roomNumber] = room;
     return hash;
 }, {});
 
-// Hash map for roomsInfo
+/**
+ * Hash map for roomsInfo, that converts an index (from 0) to the resourceID of a room.
+ */
 const roomsIndexToResourceId = roomsInfoo.reduce((hash, room, index) => {
     hash[index] = room;
     return hash;
 }, {});
+
+// Look up the other room at the location the swap will happen at.
+    //const RIDHashMap = bookingsStartingToday.reduce((hash, booking) => {
+    //    hash[booking.resourceIds] = booking;
+    //    return hash;
+    //}, {});
