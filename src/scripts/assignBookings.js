@@ -31,12 +31,10 @@ async function matchBookingsToRooms(version) {
         } else { // else, do not sort if random allocation is pressed
         }
 
-         
-        console.log(globalState.currentDay)
-
         // Makes a DEEP copy of the availabilityGrid
         let tempMatrix = JSON.parse(JSON.stringify(availabilityGrid));
-
+    
+        let discardedBookings = [];
         let finalArray = []
         // Match bookings to rooms
         for (const booking of visibleBookings) {
@@ -58,7 +56,8 @@ async function matchBookingsToRooms(version) {
                     finalArray.push(booking);
                 }
             } else {
-                console.log(`No room found for booking ${booking.id}`);
+                discardedBookings.push(booking);
+                //console.log(`No room found for booking ${booking.bookingId}`);
             }
         }
         
@@ -94,7 +93,7 @@ async function assignResId(booking, rooms, tempMatrix) {
             continue; // Else, move on to the next room
         }
     }
-    console.log("Didn't find any available rooms")
+    //console.log("Didn't find any available rooms")
     return "0";
 }
 
