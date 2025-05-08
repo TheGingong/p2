@@ -9,7 +9,7 @@ import { roomsInfo, loadBookings } from './getInfo.js';
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
 import dayjs from 'dayjs';
 import { roomTypes } from './globalVariables.js';
-export { storeBatch365 }
+export { storeBookings }
 
 /**
  * @generator Creates batch of bookings, objects with information about the simulated bookings
@@ -26,7 +26,7 @@ function createBookingBatch(batch) {
 
     return new Promise((resolve, reject) => {
         try {
-            for (let i = 1, j = 1; i < batch; i++) {
+            for (let i = 1, j = 1; i <= batch; i++) {
                 // Generates random number 1-12 to set a month for the booking
                 checkInMonth = Math.floor(Math.random() * 12);
 
@@ -110,10 +110,10 @@ function createBookingBatch(batch) {
  * @file {src/json/bookings.json} - The file where the data is stored
  * @returns {Object} Returns a message and the data generated
  */ 
-async function storeBatch365() {
+async function storeBookings(amountOfBookings) {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(1000);
+        const data = await createBookingBatch(amountOfBookings);
         console.log("data");
         console.log(data);
         let jsonBookingBatches = JSON.stringify(data, null, 2);

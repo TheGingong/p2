@@ -3,7 +3,7 @@ import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorRe
 import { extendGrid, insertBookings, checkAvailability, availabilityGrid, resetMatrix } from "./src/scripts/availabilityMatrix.js";
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
-import { storeBatch365 } from "./src/utils/impartial.js";
+import { storeBookings } from "./src/utils/impartial.js";
 import { calculatePrefScore } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
 import { getVisibleBookings, matchBookingsToRooms} from "./src/scripts/assignBookings.js";
@@ -21,7 +21,7 @@ startServer();
    ******************************************************************** */
    
    // Fills the rooms! 
-   //generateRooms();
+   generateRooms();
 
    async function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
@@ -38,8 +38,11 @@ startServer();
          switch(pathElements[1]){
           // ADD CASES FOR POST
           // Post endpoint for the generation of batches
-          case "batch365":
-            storeBatch365()
+          case "generateBookings":
+            // Get the number of bookings from the query parameter
+            const amountOfBookingsParam = searchParms.get("amountOfBookings");
+            const amountOfBookings = parseInt(amountOfBookingsParam, 10);
+            storeBookings(amountOfBookings)
             .then((result) => {
               jsonResponse(res, result);
             })
@@ -75,8 +78,9 @@ startServer();
               });
              fileResponse(res,"/html/index.html");
              break;
-          case "allocate": // sortByStayDuration
+          case "allocate": // sortByDuration and bestfit
             try {
+              // Get the number of days from the query parameter
               const daysParam = searchParms.get("days");
               const days = parseInt(daysParam, 10);
               await allocate(res, days, 0);
@@ -87,7 +91,7 @@ startServer();
               reportError(res, error); // Send error response
           }
           break;
-          case "allocate2": // sortByCheckInDay
+          case "allocate2": // sortByDuration only
             try {
               const daysParam = searchParms.get("days");
               const days = parseInt(daysParam, 10);
@@ -99,7 +103,7 @@ startServer();
               reportError(res, error); // Send error response
           }
           break;
-          case "random":
+          case "random": // allocate without sorting
             try {
               const daysParam = searchParms.get("days");
               const days = parseInt(daysParam, 10);
@@ -132,32 +136,37 @@ startServer();
 
 
 async function allocate(res, days, version){
-    let lastArray = []
+    let succesfulBookings = []
     let allocationArray = []
     let assignedBookings = []
+    let notAssignedBookings = []
+    let failedBookings = []
     days += startValue
 
     for (let i = startValue; i < days; i++){
     //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
-    //assignedBookings = await easyalg(allocationArray)
-    assignedBookings = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
+      [assignedBookings,notAssignedBookings]= await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
 
       
-    // KALD PREFSCORE ALGORITHM MED assignedBookings som parameter
+      // KALD PREFSCORE ALGORITHM MED assignedBookings som parameter
 
-    // Call our algorithm function
-    // Final array gets defined
+      // Call our algorithm function
+      // Final array gets defined
 
-    globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
-    console.log("currentDay" + globalState.currentDay)
-    lastArray.push(...assignedBookings); // Push our array we made in algorithm
+      globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
+      console.log("CurrentDay = " + globalState.currentDay)
+      succesfulBookings.push(...assignedBookings); // Push our array of succesful bookings we made in algorithm
+      failedBookings.push(...notAssignedBookings); // Push our array of failed bookings from algorithm into failedBookings
     }   
     startValue = days
 
     //scoring(bookingsInfo, roomsInfo); // Perform scoring
 
     //await jsonResponse(res, lastArray ); // Send the response
-    console.log("lastArray")
-    console.log(lastArray)
-    jsonResponse(res, lastArray ); // Send the response
+    console.log("Succesful bookings: ")
+    console.log(succesfulBookings)
+    console.log("Assigned bookings: ", succesfulBookings.length)
+    console.log("Failed bookings: ", failedBookings.length)
+    
+    jsonResponse(res, succesfulBookings ); // Send the response
 }
