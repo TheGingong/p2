@@ -2,7 +2,7 @@
  * This file contains the two functions loadBookings and loadRooms, which will open the JSON files
  * containing the generated bookings and all individual rooms of the hotel. 
  * In both cases, the loaded and then returned data is an array 
- * containing objects with the necessary information for a room or booking. 
+ * containing objects with the necessary information for a booking or room. 
  */
 
 import { readFile } from 'fs/promises'; // Imports function readFile from File System library
@@ -14,6 +14,7 @@ export { roomsInfo, bookingsInfo, loadBookings, loadRooms, bookingsPath, roomsPa
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Variables that will hold info of all rooms and all bookings
 let roomsInfo = null;
 let bookingsInfo = null;
 
@@ -31,6 +32,7 @@ async function loadBookings() {
         // Calls readFile on bookings
         const bookingsData = await readFile(bookingsPath, 'utf8');
 
+        // Parses data to bookingsInfo, now in the shape of an array
         bookingsInfo = JSON.parse(bookingsData);
 
         return { bookingsInfo }; // Return the loaded data
@@ -49,6 +51,7 @@ async function loadRooms() {
         // Calls readFile on rooms
         const roomsData = await readFile(roomsPath, 'utf8');
 
+        // Parses data to roomsInfo, in the format of an array
         roomsInfo = JSON.parse(roomsData);
 
         return { roomsInfo }; // Return the loaded data
