@@ -51,6 +51,7 @@ async function matchBookingsToRooms(version) {
             //booking.title = booking.guestsNumber
             booking.title = booking.dayOfBooking + ", Duration =  " + booking.stayDuration
 
+            // Insert into our temporary matrix
             if (booking.resourceIds !== "0") {
                 tempMatrix = insertBookings([booking], tempMatrix);
                 
@@ -92,7 +93,7 @@ async function assignResId(booking, rooms, tempMatrix) {
             }
         }
         else {
-            continue;
+            continue; // Else, move on to the next room
         }
     }
     console.log("Didn't find any available rooms")
