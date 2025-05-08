@@ -14,6 +14,7 @@
  */
 
 import dayjs from "dayjs";
+import { bookingsInfo, roomsInfo } from "./getInfo.js"; // Importing the bookings and rooms info
 export {
     buildingFloors,
     roomsPerFloor,
@@ -38,7 +39,47 @@ let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]
 let buildingFloors = 1; // floors in the hotel
 let roomsPerFloor = 3; // how many rooms to generate for every floor
 let maxGuests = 2; // maximum guests for largest room (-1 because we add in the random)
-    
+
+// Delete this later
+let roomsInfoo = [
+    {
+        "roomNumber": "101",
+        "roomGuests": 4,
+        "preference": {
+        "beds": "s0q2"
+        }
+    },
+    {
+        "roomNumber": "102",
+        "roomGuests": 2,
+        "preference": {
+        "beds": "s1q0"
+        }
+    },
+    {
+        "roomNumber": "103",
+        "roomGuests": 2,
+        "preference": {
+        "beds": "s0q1"
+        }
+    },
+    {
+        "roomNumber": "104",
+        "roomGuests": 4,
+        "preference": {
+        "beds": "s0q2"
+        }
+    },
+    {
+        "roomNumber": "105",
+        "roomGuests": 3,
+        "preference": {
+        "beds": "s2q0"
+        }
+    }
+    ]
+
+
 // Hash map for roomsInfo
 const roomsResourceIdToObject = roomsInfoo.reduce((hash, room) => {
     hash[room.roomNumber] = room;
