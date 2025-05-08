@@ -67,8 +67,8 @@ async function matchBookingsToRooms(version) {
         insertBookings(finalArray, availabilityGrid);
         
         //console.log("Final bookings to display:", finalArray.length);
-        return visibleBookings;
-        //return finalArray;
+        //return visibleBookings;
+        return finalArray;
 
     } catch (error) {
         console.error("Error updating bookings:", error);

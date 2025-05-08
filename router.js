@@ -4,9 +4,8 @@ import { extendGrid, insertBookings, checkAvailability, availabilityGrid, resetM
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBatch365 } from "./src/utils/impartial.js";
-import { scoring } from "./src/utils/prefScores.js";
+import { calculatePrefScore } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
-import { easyalg } from "./src/utils/DaveTest.js";
 import { getVisibleBookings, matchBookingsToRooms} from "./src/scripts/assignBookings.js";
 import {globalState } from "./src/utils/globalVariables.js";
 import dayjs from "dayjs";
@@ -82,7 +81,7 @@ startServer();
               const days = parseInt(daysParam, 10);
               await allocate(res, days, 0);
               //scoring(bookingsInfo, roomsInfo); // Perform scoring
-              console.log("score = " + wastedSpace(availabilityGrid, roomsInfo))
+              //console.log("score = " + wastedSpace(availabilityGrid, roomsInfo))
           } catch (error) {
               console.error("Error in allocate case:", error);
               reportError(res, error); // Send error response
@@ -94,7 +93,7 @@ startServer();
               const days = parseInt(daysParam, 10);
               await allocate(res, days, 1);
               //scoring(bookingsInfo, roomsInfo); // Perform scoring
-              console.log("score = " + wastedSpace(availabilityGrid, roomsInfo))
+              //console.log("score = " + wastedSpace(availabilityGrid, roomsInfo))
           } catch (error) {
               console.error("Error in allocate1 case:", error);
               reportError(res, error); // Send error response
@@ -106,7 +105,7 @@ startServer();
               const days = parseInt(daysParam, 10);
               await allocate(res, days, 2);
               //scoring(bookingsInfo, roomsInfo); // Perform scoring
-              console.log("score = " + wastedSpace(availabilityGrid, roomsInfo))
+              //console.log("score = " + wastedSpace(availabilityGrid, roomsInfo))
           } catch (error) {
               console.error("Error in randomAllocate case:", error);
               reportError(res, error); // Send error response
