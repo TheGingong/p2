@@ -86,4 +86,3 @@ let visibleBookings = [
       }
     }
 ]
-calculatePrefScore(visibleBookings[0], "101")

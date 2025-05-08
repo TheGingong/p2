@@ -106,13 +106,17 @@ function insertBookings(newBookings, grid) {
     // Fill the grid for the room
     grid[roomNumber][startIndex] = "s" + booking.bookingId;
 
-    for (let i = startIndex+1; i < endIndex; i++) {
+    for (let i = startIndex+1; i < endIndex-1; i++) {
       grid[roomNumber][i] = booking.bookingId; // Mark as occupied
     }
 
-    grid[roomNumber][endIndex] = "e" + booking.bookingId;
+    if (booking.stayDuration > 1) {
+      grid[roomNumber][endIndex-1] = "e" + booking.bookingId;
+    }
+
 
   });
+  console.log(grid);
   return grid;
 }
 

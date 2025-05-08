@@ -6,7 +6,7 @@
 //import { availabilityGrid, checkAvailability, insertBookings } from "./availabilityMatrix";
 import { globalState, roomsIndexToResourceId } from "../utils/globalVariables.js";
 import { calculatePrefScore } from "../utils/prefScores.js";
-import { dateIndex, availabilityGrid } from "./availabilityMatrix.js";
+import { dateIndex, availabilityGrid, insertBookings } from "./availabilityMatrix.js";
 import { roomsInfo } from "../utils/getInfo.js";
 export { preferenceOptimization }
 
@@ -25,21 +25,20 @@ let ghostMatrixTwo = [
 
 // Function call - will be moved to router
 //preferenceOptimization(visibleBookings, null);
-let currentDay = dateIndex(globalState.currentDay);
 /**
  * Main optimzation function, which will call on subfunctions to optimize hotel bookings according to certain variables.
  */
-function preferenceOptimization(visibleBookings, leniency) {
+async function preferenceOptimization(visibleBookings, leniency) {
     // Create the ghost matrix consisting of the new bookings from occupancy and the empty spots
     //initGhostMatrix();
     // Delete? !!
+
+    let currentDay = dateIndex(globalState.currentDay);
 
     console.log("HERE IS THE VISIBLEBOOKINGS:");
     console.log(visibleBookings);
 
     let ghostMatrix = JSON.parse(JSON.stringify(availabilityGrid));
-
-    
 
     let roomArray = [];
 
@@ -47,27 +46,28 @@ function preferenceOptimization(visibleBookings, leniency) {
         roomArray.push(room.roomNumber);
     }
 
-    console.log(roomArray);
-
     // Finds bookings starting today and places them in an array.
-    let bookingsStartingToday = findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray);
+    let bookingsStartingToday = findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray, currentDay);
     let bookingPrefScore = 0;
     let prefScoreTable = [];
     let bestSwapMatch = 0;
     
     // Iterate through the bookings in the bookings starting today array.
-    for (const booking of bookingsStartingToday) {
-        for (const i = 0; i < roomArray.length; i++) {
-            if (validSwaps(booking, roomArray[i], ghostMatrix)) {
-                bookingPrefScore = calculatePrefScore(booking, roomArray[i]);
+    for (let booking of bookingsStartingToday) {
+        for (let i = 0; i < roomArray.length; i++) {
+            if (validSwaps(booking, roomArray[i], ghostMatrix, currentDay)) {
+                bookingPrefScore = await calculatePrefScore(booking, roomArray[i]);
 
                 // Ensure the room index in prefScoreTable is initialized.
-                if (!prefScoreTable[roomArray[i]]) {
-                    prefScoreTable[roomArray[i]] = [];
+                if (!prefScoreTable[i]) {
+                    prefScoreTable[i] = [];
                 }
 
                 // Push the preference score at the right room index, to the booking that will get that specific score at that location.
-                prefScoreTable[roomArray[i]].push([booking.id, bookingPrefScore]);
+                console.log("Here is da bookingID")
+                console.log(booking.bookingId);
+                console.log(bookingPrefScore);
+                prefScoreTable[i].push([booking.bookingId, bookingPrefScore]);
                 
                 // Delete this !!
                 console.log(`Booking ${booking.bookingId} can be swapped into room ${roomArray[i]}`);
@@ -82,10 +82,12 @@ function preferenceOptimization(visibleBookings, leniency) {
     let sortedBookings = prioritySwaps(bookingsStartingToday);
 
     // For loop that iterates over the sortedBookings to find the best matches and assigning resourceIds.
-    for (booking of sortedBookings) {
-        bestSwapMatch = locateBestMatches(booking.id, prefScoreTable);
+    for (let booking of sortedBookings) {
+        bestSwapMatch = locateBestMatches(booking, prefScoreTable);
         assignResourceIds(booking, bestSwapMatch, bookingsStartingToday);
     }
+    // Permanent insert into bossman
+    insertBookings(bookingsStartingToday, availabilityGrid);
     return bookingsStartingToday; // This will be used to update the fullCalendar
 }
 
@@ -105,25 +107,25 @@ function initGhostMatrix(visibleBookings) {
  * Helper function to validSwaps. This function will find all the bookings starting today, 
  * and return them in their object form using a hash function, so that we may access all their information. 
  */ 
-function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray) {
+function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray, currentDay) {
     const bookingMap = {};
     
     for (const booking of visibleBookings) {
         bookingMap[booking.bookingId] = booking;
     }
 
-    const bookingsStartingToday = [];
-
+    let bookingsStartingToday = [];
 
     for (let i = 0; i < roomArray.length; i++) {
         if (String(ghostMatrix[roomArray[i]][currentDay]).includes("s")) {
-            console.log(String(ghostMatrix[roomArray[i]][currentDay]));
-            bookingsStartingToday.push(ghostMatrix[roomArray[i]][0].replace('/s/',''));
+            console.log(String(ghostMatrix[roomArray[i]][currentDay])); // Prints the s number
+            bookingsStartingToday.push(String(ghostMatrix[roomArray[i]][currentDay]).replace(/s/g, ""));            
+            console.log(bookingsStartingToday);
         }
     }
 
-    const fullBookings = bookingsStartingToday.map(id => bookingMap[id]).filter(Boolean);
-    console.log(fullBookings);
+    let fullBookings = bookingsStartingToday.map(id => bookingMap[id]).filter(Boolean);
+    //console.log(fullBookings);
 
     // fullBookings array contains all the bookings starting today, represented as full booking objects.
     return fullBookings;
@@ -132,10 +134,10 @@ function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray) {
 /**
  * Function that evaluates bookings, and returns a true or a false of possible/valid swaps for a single input booking.
  */
-function validSwaps(booking, room, matrix) {
+function validSwaps(booking, room, matrix, currentDay) {
     let bookingDuration = booking.stayDuration;
-    if (matrix[room][0].includes("s") || matrix[room][0] === "0") { 
-        if (matrix[room][bookingDuration].includes("e") || matrix[room][bookingDuration] === "0") {
+    if (String(matrix[room][currentDay]).includes("s") || matrix[room][currentDay] === 0) { 
+        if (String(matrix[room][currentDay + bookingDuration]).includes("e") || matrix[room][currentDay + bookingDuration] === 0) {
             // This is now a possible swap for this booking so return true.
             return true;
         }
@@ -169,24 +171,32 @@ function prioritySwaps(booksStarting2day) {
  */ 
 function locateBestMatches(booking, prefScoreTable) {
     let currentBest = -Infinity;
-    let currentBestIndex = 0;
+    let currentBestIndex = -1;
     let counter = 0;
-    
-    // Iterates through the elements and find the spot where the preference score is highest for the booking.
+
+    console.log("Preference Score Table:", prefScoreTable);
+
     for (let outerArray of prefScoreTable) {
+        // Skip if the outer array is empty or not an array
+        if (!Array.isArray(outerArray) || outerArray.length === 0) {
+            counter++;
+            continue;
+        }
+
+        // Loop th
         for (let pair of outerArray) {
-            if (pair[0] === booking && pair[1] > currentBest) {
-                // If the element was found in the table, and the value is larger, update current best. 
+            if (pair[0] === booking.bookingId && pair[1] > currentBest) {
                 currentBest = pair[1];
                 currentBestIndex = counter;
-            } else {
-                console.error("Booking was not found in the array");            
             }
         }
         counter++;
     }
-    // Set all other pairs at this location to an empty array, so the room wont be assigned twice or more.
-    prefScoreTable[currentBestIndex] = [];
+
+    // Check if a valid best match was found. If a valid pair is found, reset the position
+    if (currentBestIndex !== -1) {
+        prefScoreTable[currentBestIndex] = [];
+    }
 
     return currentBestIndex;
 }

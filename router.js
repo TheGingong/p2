@@ -147,7 +147,7 @@ async function allocate(res, days, version){
     // KALD PREFSCORE ALGORITHM MED assignedBookings som parameter
 
     // Call our algorithm function
-    let hej = preferenceOptimization(assignedBookings, null) || [];
+    let hej = await preferenceOptimization(assignedBookings, null) || [];
 
 
     // Final array gets defined

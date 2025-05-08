@@ -62,7 +62,24 @@ function createBookingBatch(batch) {
                 preference = {}
 
                 // Room preferences are generated - WIP
-                generateRoomTypes(guestsNumber);
+                //generateRoomTypes(guestsNumber);
+
+                switch(guestsNumber) {
+                    case 1:
+                        preference.beds = roomTypes[0]; // One single bed.
+                        break;
+                    case 2:
+                        preference.beds = roomTypes[Math.ceil(Math.random() * 2)]; // 2 single beds or 1 queen bed.
+                        break;
+                    case 3:
+                        preference.beds = roomTypes[3]; // One single bed and 1 queen bed. Correct? !!
+                        break;
+                    case 4:
+                        preference.beds = roomTypes[4]; // One single bed and 1 queen bed. Correct? !!
+                        break;
+                    default:
+                        console.log("Something went wrong. Too many guests.");
+                }
 
                 let chanceForFloorPref = Math.floor(Math.random() * 20); // Generates a number from 0 to the specified value.
                 // Runs if chanceForFloorPref = 0.
@@ -109,7 +126,7 @@ function createBookingBatch(batch) {
 async function storeBatch365() {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(50);
+        const data = await createBookingBatch(1500);
         console.log("data")
         console.log(data);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
