@@ -44,16 +44,23 @@ async function generateRooms () {
 }
 
 // function that generates a roomnumber s.t. ex "109" is room 9 in floor 1
+/**
+ * Function that generates a roomnumber adding the floor and the roomnumber
+ * @param {Integer} roomFloor - The floor the rooms i placed on
+ * @param {Integer} roomNumber - The rooms number
+ * @returns {String} - roomnumber string
+ */
 function generateRoomNumber(roomFloor, roomNumber) {
     if (roomNumber < 10) {return roomFloor.toString() +  "0" + roomNumber.toString()}
     else {return roomFloor.toString() + roomNumber.toString()};
 }
 
-// function that generates a random amount of guest space for a room
+// Function that generates a random amount of guest space for a room
 function generateGuests (maximumGuests) {
     return Math.floor((Math.random() * maximumGuests) + 1);
 }
 
+// Function that generates the room preferences depending on amount of guests, through af switch case.
 function generateRoomTypes(numberOfGuests) {
     // Generate room preference
     switch(numberOfGuests) {
@@ -64,15 +71,9 @@ function generateRoomTypes(numberOfGuests) {
         case 3:
             return preference.beds = roomTypes[3]; // One single bed and 1 queen bed
         case 4:
-            return preference.beds = roomTypes[4]; // One single bed and 1 queen bed
+            return preference.beds = roomTypes[4]; // 2 queen beds
         default:
             console.log("Something went wrong. Too many guests.");
     }
 
 }
-
-function veryImportant() {
-    preference.sinFull = "HasJumboDildo"
-}
-
-//await generateRooms()

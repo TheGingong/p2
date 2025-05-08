@@ -1,14 +1,95 @@
 .custom-tooltip {
-    position: absolute;
-    background-color: rgb(255, 255, 128); 
-    color: #333; /* Dark text */
-    padding: 10px;
-    border: 1px solid #ccc; /* Light gray border */
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    font-size: 14px;
-    pointer-events: none; /* Prevent interaction with the tooltip */
-    visibility: hidden; /* Initially hidden */
-    z-index: 1000; /* Ensure it appears in front of other elements */
-    
+  position: absolute;
+  background-color: rgb(255, 255, 128); 
+  color: #333; /* Dark text */
+  padding: 10px;
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  font-size: 14px;
+  pointer-events: none; /* Prevent interaction with the tooltip */
+  visibility: hidden; /* Initially hidden */
+  z-index: 1000; /* Ensure it appears in front of other elements */
+  
+}
+/* Base Styles */
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background-color: #f4f7f9;
+padding: 2rem;
+color: #333;
+}
+
+/* Modern Button Styling */
+button {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+background-color: #ffffff;
+color: #333;
+border: 2px solid #ccc;
+border-radius: 10px;
+padding: 10px 18px;
+margin: 8px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.3s ease;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+background-color: #e9f0ff;
+border-color: #007BFF;
+box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+button:active {
+transform: scale(0.98);
+}
+
+/* Color Indicator Styles */
+.color-indicator {
+display: inline-block;
+width: 12px;
+height: 12px;
+border-radius: 50%;
+}
+
+/* Specific indicator colors (customize as needed) */
+.color-indicator.least-diff {
+background-color: rgb(77, 160, 244); /* blue */
+}
+.color-indicator.duration {
+background-color: rgb(245, 154, 56); /* green */
+}
+.color-indicator.random {
+background-color: rgb(45, 45, 49); /* pink */
+}
+.color-indicator.reset {
+background-color: #dc3545; /* red */
+}
+
+/* Number input and labels */
+label {
+margin: 0 6px 0 12px;
+font-weight: 500;
+}
+
+input[type="number"] {
+padding: 8px;
+font-size: 14px;
+border: 1px solid #ccc;
+border-radius: 6px;
+width: 70px;
+margin-right: 10px;
+}
+
+/* Wrap container */
+#controls {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 12px;
+margin-bottom: 24px;
 }
