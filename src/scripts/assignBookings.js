@@ -6,12 +6,11 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
 import { globalState } from "../utils/globalVariables.js";
-export {getVisibleBookings, matchBookingsToRooms}
-export {sortByDuration}
+export { getVisibleBookings, matchBookingsToRooms }
+export { sortByDuration }
 
 dayjs.extend(isSameOrBefore); 
 dayjs.extend(isSameOrAfter);
-
 
 /**
  * Algorithm that optimizes bookings for occupancy, depending on button pressed case
@@ -43,7 +42,6 @@ async function matchBookingsToRooms(version) {
         let arr = []
         // Match bookings to rooms
         for (const booking of visibleBookings) {
-
             if (version === 0){
                 booking.resourceIds = await bestFit(booking, roomsInfo, tempMatrix);
             } else { // else random
@@ -69,8 +67,8 @@ async function matchBookingsToRooms(version) {
         insertBookings(finalArray, availabilityGrid);
         
         //console.log("Final bookings to display:", finalArray.length);
-        //return visibleBookings;
-        return finalArray;
+        return visibleBookings;
+        //return finalArray;
 
     } catch (error) {
         console.error("Error updating bookings:", error);

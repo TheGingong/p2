@@ -1,8 +1,10 @@
-export { scoring }
+import { roomsResourceIdToObject } from "./globalVariables.js";
+export { calculatePrefScore }
 
-async function scoring(bookingsInfo, roomsInfo) {
+// DELETE THIS MBY
+async function scoringtwo(bookingsInfo, roomsInfo) {
     // Create a hash table for roomsInfo
-    const roomsHashTable = roomsInfo.reduce((hash, room) => {
+    const roomsResourceIdToObject = roomsInfo.reduce((hash, room) => {
         hash[room.roomNumber] = room;
         return hash;
     }, {});
@@ -11,7 +13,7 @@ async function scoring(bookingsInfo, roomsInfo) {
 
     for (let assignment of bookingsInfo) {
         let score = 1;
-        const roomDetails = roomsHashTable[assignment.resourceIds];
+        const roomDetails = roomsResourceIdToObject[assignment.resourceIds];
         if (roomDetails) { // If the resourceId exists in the hash table
             // Check if roomGuests match guestsNumber
             if (roomDetails.preference.beds != assignment.preference.beds) {
@@ -29,3 +31,40 @@ async function scoring(bookingsInfo, roomsInfo) {
     }
     console.log("Average score is", sumOfScores / bookingsInfo.length);
 }
+
+async function calculatePrefScore(booking, room) {
+    let score = 1;
+
+    const roomDetails = roomsResourceIdToObject[room];
+
+    const amountOfPreferences = Object.keys(booking.preference);
+    for (let key of amountOfPreferences) {
+        // Check if preferences are equal to preferences in the room
+        if (!roomDetails.preference.hasOwnProperty(key) || roomDetails.preference[key] !== booking.preference[key]) {
+            score -= 1 / amountOfPreferences.length;
+        }
+    }
+    console.log(score, "*", booking.stayDuration)
+    console.log(score * booking.stayDuration)
+    return score * booking.stayDuration;
+}
+
+let visibleBookings = [
+    {
+      "checkInDate": "2025-02-19",
+      "checkOutDate": "2025-02-28",
+      "guestsNumber": 4,
+      "stayDuration": 9,
+      "dayOfBooking": "2025-01-10",
+      "resourceIds": "103",
+      "bookingId": "s5",
+      "preference": {
+        "beds": "s0q2",
+        "pref1": "1",
+        "pref2": "2",
+        "pref3": "3",
+      }
+    }
+  ]
+
+calculatePrefScore(visibleBookings[0], "101")

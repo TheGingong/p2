@@ -143,10 +143,15 @@ async function allocate(res, days, version){
     //assignedBookings = await easyalg(allocationArray)
     assignedBookings = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
 
+      
+    // KALD PREFSCORE ALGORITHM MED assignedBookings som parameter
+
+    // Call our algorithm function
+    // Final array gets defined
 
     globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
     console.log("currentDay" + globalState.currentDay)
-    lastArray.push(...assignedBookings);
+    lastArray.push(...assignedBookings); // Push our array we made in algorithm
     }   
     startValue = days
 
@@ -155,16 +160,5 @@ async function allocate(res, days, version){
     //await jsonResponse(res, lastArray ); // Send the response
     console.log("lastArray")
     console.log(lastArray)
-    await jsonResponse(res, lastArray ); // Send the response
-}
-
-
-function wastedSpace(){
-  let score = 0
-  for (const key in availabilityGrid) {
-    for (let i = 0; i < availabilityGrid[key].length; i++) {
-      score += availabilityGrid[key][i];
-    }
-  }
-  return score;
+    jsonResponse(res, lastArray ); // Send the response
 }

@@ -114,8 +114,8 @@ function insertBookings(newBookings, grid) {
     let startIndex = parseInt(dateIndex(startDate));
     let endIndex = parseInt(dateIndex(endDate));
     // Fill the grid for the room
-    grid[roomNumber][startIndex] = 1
-    
+    grid[roomNumber][startIndex] = booking.bookingId;
+   
     for (let i = startIndex+1; i < endIndex; i++) {
       grid[roomNumber][i] = 1; // Mark as occupied
     }
@@ -138,7 +138,7 @@ function checkAvailability(room, date, grid) {
   if (dateIndex(realDate) < 0){
     return 1;
   }
-  return grid[room][dateIndex(realDate)] === 1 ? 1 : 0;
+  return grid[room][dateIndex(realDate)] !== 0 ? 1 : 0;
 }
 
 
@@ -149,4 +149,13 @@ function resetMatrix(){
       availabilityGrid[key][i] = 0;
     }
   }
+}
+
+// Function slices availabilitymatrix at todays date, and copies the relevant remains into our ghost matrix
+function createSlice(matrix, sliceStartDate, sliceEndDate) {
+  console.log(
+      `Kopier:${matrix} fra: ${sliceStartDate} til ${sliceEndDate}.`
+);
+const sliceMatrix = [];
+const sliceEndIndex = sliceEndDate + 1;
 }
