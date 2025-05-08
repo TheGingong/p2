@@ -3,15 +3,15 @@
 export {allocate, resetMatrix, resetEverything, generateBatches, allocateAction, allocateRandom, allocateActioncheckDate}
 
 // Function that allocates bookings into the calendar
-// Takes in an array of bookings and adds them to the calendar
-function allocate(bookings, colurValue){
+// Takes in an array of bookings and adds them to the calendar, also takes a color depending on allocation method
+function allocate(bookings, colorValue){
     console.log(bookings)
-    for (let i = 0; i < bookings.length; i++){
+    for (let i = 0; i < bookings.length; i++){ // Loops through all bookings and addEvent to put in calender
         calendar.addEvent({
             title: `Booking ${bookings[i].title}`,
             start: bookings[i].checkInDate,
             end: bookings[i].checkOutDate,
-            color: colurValue,
+            color: colorValue,
             resourceIds: [bookings[i].resourceIds],
             extendedProps: {
                 guestsNumber: bookings[i].guestsNumber,
@@ -22,9 +22,9 @@ function allocate(bookings, colurValue){
     }
 } 
 
+// Function that when pressed, resets both calender and current matrix
 function resetEverything(){
-    // for every event, delete the event
-    calendar.getEvents().forEach(event => event.remove());
+    calendar.getEvents().forEach(event => event.remove()); // For every event, remove from calender
     resetMatrix()
 }
 
@@ -62,7 +62,7 @@ function generateBatches() {
         return response.json();
     })
     .then((result) => {
-        // Reponse in form of text that the batch was generated
+        // Reponse in form of text that tells the batch has been generated
         console.log('Batch generated:', result);
     })
     .catch((error) => {
@@ -75,9 +75,9 @@ function generateBatches() {
 function allocateAction() {
 
     const dayInput = document.querySelector("#dayInput");
-    const days = parseInt(dayInput.value, 10) || 0; // fallback to 0 if input is empty or invalid
+    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
 
-    let url = `allocate?days=${days}`;
+    let url = `allocate?days=${days}`; // Create URL string with days as a query parameter
 
     fetch(url, {
         method: 'GET',
@@ -103,9 +103,9 @@ function allocateAction() {
 // Function that allocates random bookings into the calendar
 function allocateRandom(){
     const dayInput = document.querySelector("#dayInput");
-    const days = parseInt(dayInput.value, 10) || 0; // fallback to 0 if input is empty or invalid
+    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
 
-    let url = `random?days=${days}`;
+    let url = `random?days=${days}`; // Create URL string with days as a query parameter
 
     fetch(url, {
         method: 'GET',
@@ -133,9 +133,9 @@ function allocateRandom(){
 function allocateActioncheckDate() {
 
     const dayInput = document.querySelector("#dayInput");
-    const days = parseInt(dayInput.value, 10) || 0; // fallback to 0 if input is empty or invalid
+    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
 
-    let url = `allocate2?days=${days}`;
+    let url = `allocate2?days=${days}`; // Create URL string with days as a query parameter
 
     fetch(url, {
         method: 'GET',

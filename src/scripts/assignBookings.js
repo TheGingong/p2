@@ -1,10 +1,9 @@
 import fs from 'fs/promises';
 import dayjs from 'dayjs';
-import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
-import { checkAvailability, availabilityGrid, insertBookings, extendGrid, bookingRange, dateDifference, dateIndex } from './availabilityMatrix.js';
+import { loadBookings, loadRooms } from '../utils/getInfo.js';
+import { checkAvailability, availabilityGrid, insertBookings, dateDifference } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
-import { start } from 'repl';
 import { globalState } from "../utils/globalVariables.js";
 export { getVisibleBookings, matchBookingsToRooms }
 export { sortByDuration }
@@ -32,14 +31,11 @@ async function matchBookingsToRooms(version) {
         } else { // else, do not sort if random allocation is pressed
         }
 
-         
-        console.log(globalState.currentDay)
-
         // Makes a DEEP copy of the availabilityGrid
         let tempMatrix = JSON.parse(JSON.stringify(availabilityGrid));
-
+    
+        let discardedBookings = [];
         let finalArray = []
-        let arr = []
         // Match bookings to rooms
         for (const booking of visibleBookings) {
             if (version === 0){
@@ -51,6 +47,7 @@ async function matchBookingsToRooms(version) {
             //booking.title = booking.guestsNumber
             booking.title = booking.dayOfBooking + ", Duration =  " + booking.stayDuration
 
+            // Insert into our temporary matrix
             if (booking.resourceIds !== "0") {
                 tempMatrix = insertBookings([booking], tempMatrix);
                 
@@ -59,7 +56,8 @@ async function matchBookingsToRooms(version) {
                     finalArray.push(booking);
                 }
             } else {
-                console.log(`No room found for booking ${booking.id}`);
+                discardedBookings.push(booking);
+                //console.log(`No room found for booking ${booking.bookingId}`);
             }
         }
         
@@ -92,10 +90,10 @@ async function assignResId(booking, rooms, tempMatrix) {
             }
         }
         else {
-            continue;
+            continue; // Else, move on to the next room
         }
     }
-    console.log("Didn't find any available rooms")
+    //console.log("Didn't find any available rooms")
     return "0";
 }
 
