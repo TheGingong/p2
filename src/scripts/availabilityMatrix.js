@@ -104,11 +104,14 @@ function insertBookings(newBookings, grid) {
     let endIndex = parseInt(dateIndex(endDate));
 
     // Fill the grid for the room
-    grid[roomNumber][startIndex] = booking.bookingId;
+    grid[roomNumber][startIndex] = "s" + booking.bookingId;
 
     for (let i = startIndex+1; i < endIndex; i++) {
-      grid[roomNumber][i] = 1; // Mark as occupied
+      grid[roomNumber][i] = booking.bookingId; // Mark as occupied
     }
+
+    grid[roomNumber][endIndex] = "e" + booking.bookingId;
+
   });
   return grid;
 }

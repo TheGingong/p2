@@ -6,7 +6,9 @@
 //import { availabilityGrid, checkAvailability, insertBookings } from "./availabilityMatrix";
 import { globalState, roomsIndexToResourceId } from "../utils/globalVariables.js";
 import { calculatePrefScore } from "../utils/prefScores.js";
-import { Matrix } from "../utils/matrixFile.js"
+import { dateIndex, availabilityGrid } from "./availabilityMatrix.js";
+import { roomsInfo } from "../utils/getInfo.js";
+export { preferenceOptimization }
 
 // Temp, hardcoded, usable variables
 let ghostMatrixTwo = [
@@ -21,91 +23,54 @@ let ghostMatrixTwo = [
     ["71","71","71","71"]
   ];
 
-let visibleBookings = [
-    {
-      "checkInDate": "2025-02-19",
-      "checkOutDate": "2025-02-28",
-      "guestsNumber": 4,
-      "stayDuration": 13,
-      "dayOfBooking": "2025-01-10",
-      "resourceIds": "103",
-      "bookingId": "s5",
-      "preference": {
-        "beds": "s0q2",
-        "view": "seaview"
-      }
-    },
-    {
-      "checkInDate": "2025-02-17",
-      "checkOutDate": "2025-03-02",
-      "guestsNumber": 1,
-      "stayDuration": 13,
-      "dayOfBooking": "2025-01-19",
-      "resourceIds": "105",
-      "bookingId": "s9",
-      "preference": {
-        "beds": "s1q0"
-      }
-    },
-    {
-      "checkInDate": "2025-02-26",
-      "checkOutDate": "2025-03-15",
-      "guestsNumber": 2,
-      "stayDuration": 15,
-      "dayOfBooking": "2025-01-23",
-      "resourceIds": "101",
-      "bookingId": "s16",
-      "preference": {
-        "beds": "s0q1"
-      }
-    },
-    {
-      "checkInDate": "2025-03-22",
-      "checkOutDate": "2025-04-07",
-      "guestsNumber": 3,
-      "stayDuration": 16,
-      "dayOfBooking": "2025-02-04",
-      "resourceIds": "104",
-      "bookingId": "s13",
-      "preference": {
-        "beds": "s1q1"
-      }
-    }
-]
-
 // Function call - will be moved to router
-preferenceOptimization(visibleBookings, null);
-
+//preferenceOptimization(visibleBookings, null);
+let currentDay = dateIndex(globalState.currentDay);
 /**
  * Main optimzation function, which will call on subfunctions to optimize hotel bookings according to certain variables.
  */
-function preferenceOptimization(visibleBookings, ghostMatrix, leniency) {  
+function preferenceOptimization(visibleBookings, leniency) {
     // Create the ghost matrix consisting of the new bookings from occupancy and the empty spots
     //initGhostMatrix();
     // Delete? !!
 
+    console.log("HERE IS THE VISIBLEBOOKINGS:");
+    console.log(visibleBookings);
+
+    let ghostMatrix = JSON.parse(JSON.stringify(availabilityGrid));
+
+    
+
+    let roomArray = [];
+
+    for (let room of roomsInfo) {
+        roomArray.push(room.roomNumber);
+    }
+
+    console.log(roomArray);
+
     // Finds bookings starting today and places them in an array.
-    let bookingsStartingToday = findBookingsStartingToday(ghostMatrixTwo, visibleBookings);
+    let bookingsStartingToday = findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray);
     let bookingPrefScore = 0;
     let prefScoreTable = [];
     let bestSwapMatch = 0;
     
     // Iterate through the bookings in the bookings starting today array.
     for (const booking of bookingsStartingToday) {
-        for (const room = 0; room < ghostMatrixTwo.length; room++) {
-            if (validSwaps(booking, room, ghostMatrixTwo)) {
-                bookingPrefScore = calculatePrefScore(booking, room);
+        for (const i = 0; i < roomArray.length; i++) {
+            if (validSwaps(booking, roomArray[i], ghostMatrix)) {
+                bookingPrefScore = calculatePrefScore(booking, roomArray[i]);
 
                 // Ensure the room index in prefScoreTable is initialized.
-                if (!prefScoreTable[room]) {
-                    prefScoreTable[room] = [];
+                if (!prefScoreTable[roomArray[i]]) {
+                    prefScoreTable[roomArray[i]] = [];
                 }
 
                 // Push the preference score at the right room index, to the booking that will get that specific score at that location.
-                prefScoreTable[room].push([booking.id, bookingPrefScore]);
+                prefScoreTable[roomArray[i]].push([booking.id, bookingPrefScore]);
                 
                 // Delete this !!
-                console.log(`Booking ${booking.bookingId} can be swapped into room ${room}`);
+                console.log(`Booking ${booking.bookingId} can be swapped into room ${roomArray[i]}`);
 
                 // Find the location/resourceId of where the booking it wants to swap with is located - get this from pinu - WIP
                 
@@ -134,11 +99,13 @@ function initGhostMatrix(visibleBookings) {
     return tempMatrix;
 }
 
+//initGhostMatrix(visibleBookings);
+
 /**
  * Helper function to validSwaps. This function will find all the bookings starting today, 
  * and return them in their object form using a hash function, so that we may access all their information. 
  */ 
-function findBookingsStartingToday(ghostMatrix, visibleBookings) {
+function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray) {
     const bookingMap = {};
     
     for (const booking of visibleBookings) {
@@ -146,10 +113,12 @@ function findBookingsStartingToday(ghostMatrix, visibleBookings) {
     }
 
     const bookingsStartingToday = [];
-  
-    for (let row = 0; row < ghostMatrix.length; row++) {
-        if (ghostMatrix[row][0].includes("s")) {
-            bookingsStartingToday.push(ghostMatrix[row][0].replace('/s/',''));
+
+
+    for (let i = 0; i < roomArray.length; i++) {
+        if (String(ghostMatrix[roomArray[i]][currentDay]).includes("s")) {
+            console.log(String(ghostMatrix[roomArray[i]][currentDay]));
+            bookingsStartingToday.push(ghostMatrix[roomArray[i]][0].replace('/s/',''));
         }
     }
 

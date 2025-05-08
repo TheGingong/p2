@@ -8,6 +8,7 @@ import { calculatePrefScore } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
 import { getVisibleBookings, matchBookingsToRooms} from "./src/scripts/assignBookings.js";
 import {globalState } from "./src/utils/globalVariables.js";
+import { preferenceOptimization } from "./src/scripts/algorithm.js";
 import dayjs from "dayjs";
 
 const ValidationError="Validation Error";
@@ -146,11 +147,14 @@ async function allocate(res, days, version){
     // KALD PREFSCORE ALGORITHM MED assignedBookings som parameter
 
     // Call our algorithm function
+    let hej = preferenceOptimization(assignedBookings, null) || [];
+
+
     // Final array gets defined
 
     globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
     console.log("currentDay" + globalState.currentDay)
-    lastArray.push(...assignedBookings); // Push our array we made in algorithm
+    lastArray.push(...hej); // Push our array we made in algorithm
     }   
     startValue = days
 

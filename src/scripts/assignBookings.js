@@ -62,7 +62,7 @@ async function matchBookingsToRooms(version) {
                     finalArray.push(booking);
                 }
             } else {
-                console.log(`No room found for booking ${booking.id}`);
+                console.log(`No room found for booking ${booking.bookingId}`);
             }
         }
         
@@ -70,8 +70,8 @@ async function matchBookingsToRooms(version) {
         insertBookings(finalArray, availabilityGrid);
         
         //console.log("Final bookings to display:", finalArray.length);
-        //return visibleBookings;
-        return finalArray;
+        return visibleBookings;
+        //return finalArray;
 
     } catch (error) {
         console.error("Error updating bookings:", error);
