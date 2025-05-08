@@ -1,20 +1,20 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
-import { extendGrid, insertBookings, checkAvailability, availabilityGrid } from "./src/scripts/availabilityMatrix.js";
+import { extendGrid, insertBookings, checkAvailability, availabilityGrid, resetMatrix } from "./src/scripts/availabilityMatrix.js";
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBatch365 } from "./src/utils/impartial.js";
 import { scoring } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
 import { easyalg } from "./src/utils/DaveTest.js";
-import { getVisibleBookings, matchBookingsToRooms } from "./src/scripts/assignBookings.js";
+import { getVisibleBookings, matchBookingsToRooms} from "./src/scripts/assignBookings.js";
 import {globalState } from "./src/utils/globalVariables.js";
 import dayjs from "dayjs";
 
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
 
-let startvalue = 0;
+let startValue = 0;
 
 startServer();
 /* *********************************************************************
@@ -48,6 +48,12 @@ startServer();
               reportError(res, new Error(err));          
             })
             break;
+          case "reset":
+            resetMatrix();
+            startValue = 0;
+            globalState.reset();
+            jsonResponse(res, "matrix was succesfully reset");
+            break;
           default: 
             console.error("Resource doesn't exist");
             reportError(res, new Error(NoResourceError)); 
@@ -70,14 +76,39 @@ startServer();
               });
              fileResponse(res,"/html/index.html");
              break;
-          case "allocate":
+          case "allocate": // sortByStayDuration
             try {
               const daysParam = searchParms.get("days");
               const days = parseInt(daysParam, 10);
-              await allocate(res, days);
-              scoring(bookingsInfo, roomsInfo); // Perform scoring
+              await allocate(res, days, 0);
+              //scoring(bookingsInfo, roomsInfo); // Perform scoring
+              console.log("score = " + wastedSpace(availabilityGrid, roomsInfo))
           } catch (error) {
               console.error("Error in allocate case:", error);
+              reportError(res, error); // Send error response
+          }
+          break;
+          case "allocate2": // sortByCheckInDay
+            try {
+              const daysParam = searchParms.get("days");
+              const days = parseInt(daysParam, 10);
+              await allocate(res, days, 1);
+              //scoring(bookingsInfo, roomsInfo); // Perform scoring
+              console.log("score = " + wastedSpace(availabilityGrid, roomsInfo))
+          } catch (error) {
+              console.error("Error in allocate1 case:", error);
+              reportError(res, error); // Send error response
+          }
+          break;
+          case "random":
+            try {
+              const daysParam = searchParms.get("days");
+              const days = parseInt(daysParam, 10);
+              await allocate(res, days, 2);
+              //scoring(bookingsInfo, roomsInfo); // Perform scoring
+              console.log("score = " + wastedSpace(availabilityGrid, roomsInfo))
+          } catch (error) {
+              console.error("Error in randomAllocate case:", error);
               reportError(res, error); // Send error response
           }
           break;
@@ -101,16 +132,19 @@ startServer();
   }
 
 
-async function allocate(res, days){
+async function allocate(res, days, version){
     let lastArray = []
     let allocationArray = []
     let assignedBookings = []
-    days += startvalue
+    days += startValue
 
-    for (let i = startvalue; i < days; i++){
+    for (let i = startValue; i < days; i++){
     //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
     //assignedBookings = await easyalg(allocationArray)
-    assignedBookings = await matchBookingsToRooms() || [];
+    assignedBookings = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
+
+      
+    // KALD PREFSCORE ALGORITHM MED assignedBookings som parameter
 
     // Call our algorithm function
     // Final array gets defined
@@ -119,7 +153,7 @@ async function allocate(res, days){
     console.log("currentDay" + globalState.currentDay)
     lastArray.push(...assignedBookings); // Push our array we made in algorithm
     }   
-    startvalue = days
+    startValue = days
 
     //scoring(bookingsInfo, roomsInfo); // Perform scoring
 

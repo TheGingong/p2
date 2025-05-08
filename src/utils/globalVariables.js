@@ -18,7 +18,10 @@ export {
 } 
 
 let globalState = {
-    currentDay: dayjs('2025-01-01')
+    currentDay: dayjs('2025-01-01'),
+    reset (){
+        this.currentDay = dayjs('2025-01-01')
+    }
 }
 
 // Array which will hold template of rooms

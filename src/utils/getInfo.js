@@ -22,6 +22,10 @@ const bookingsPath = path.resolve(__dirname, '../json/bookings.json')
 const roomsPath = path.resolve(__dirname, '../json/rooms.json');
 const visibleJsonPath = path.resolve(__dirname, '../json/visibleBookings.json')
 
+/**
+ * Reads bookings from json file, parses and returns for export and usage
+ * @returns {Array} - Array of booking objects
+ */
 async function loadBookings() {
     try {
         // Calls readFile on bookings
@@ -36,6 +40,10 @@ async function loadBookings() {
     }
 }
 
+/**
+ * Reads rooms from json file, parses and returns for export and usage
+ * @returns {Array} - Array of room objects
+ */
 async function loadRooms() {
     try {
         // Calls readFile on rooms

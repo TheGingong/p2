@@ -92,6 +92,7 @@ fetch('rooms', {
 
 
 // This function creates tooltips for mousehover over bookings
+// also this doesnt work currently and probably wouldnt
 function tooltipMaker(info) {
   // Create a tooltip element
   let tooltip = document.createElement('div');
@@ -122,3 +123,5 @@ function tooltipMaker(info) {
   });
 }
 
+
+   

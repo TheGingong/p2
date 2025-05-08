@@ -9,8 +9,12 @@ import { roomsInfo, loadBookings } from './getInfo.js';
 import { generateRoomNumber } from '../scripts/roomGenerator.js';
 import dayjs from 'dayjs';
 import { roomTypes } from './globalVariables.js';
-export { storeBatch365, sortByBooking, sortByBookingByCheckInDate }
+export { storeBatch365 }
 
+/**
+ * Creates batch of bookings, objects with information about the simulated bookings
+ * @param {Integer} batch - Desired number of bookings to create
+ */
 function createBookingBatch(batch) {
     // Initialization of all the variables which will be needed for the code below. 
     let checkInMonth, checkInDate, stayDuration, checkOutDate, 
@@ -34,9 +38,9 @@ function createBookingBatch(batch) {
                 
                 // The checkInDate is set based on the month and day found in the two generations above. 
                 checkInDate = dayjs().year('2025').month(checkInMonth).date(randomCheckInDay); 
-                
+               
                 // A stayduratino is found, and the checkOutDate is found based on this. 
-                stayDuration = Math.ceil((Math.random() * 19));
+                stayDuration = Math.ceil((Math.random() * 8));
                 checkOutDate = checkInDate.add(stayDuration, 'day');
                 
                 /** 
@@ -114,10 +118,9 @@ function createBookingBatch(batch) {
 async function storeBatch365() {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(300);
+        const data = await createBookingBatch(1000);
         console.log("data")
         console.log(data);
-        await sortByBooking(data);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
         await loadBookings(); // Loading bookings into array after its been written into bookings.json
@@ -125,33 +128,4 @@ async function storeBatch365() {
     } catch (error) {
         return { error: "Batch generation failed." };
     }
-}
-
-async function sortByBooking(data){
-    data.sort((a,b) =>{
-        //let bookingDiff = new Date(a.dayOfBooking) - new Date(b.dayOfBooking);
-        //if(bookingDiff === 0){
-            //let checkoutDiff = Date(a.checkOutDate) - Date(b.checkOutDate);
-            let checkoutDiff = dateDifference(a.checkOutDate, b.checkOutDate)
-            if(checkoutDiff === 0){
-                return b.stayDuration - a.stayDuration;
-            } else return checkoutDiff;
-        } 
-  //  } 
-)
-}
-
-
-async function sortByBookingByCheckInDate(data){
-    data.sort((a,b) =>{
-        //let bookingDiff = new Date(a.dayOfBooking) - new Date(b.dayOfBooking);
-        //if(bookingDiff === 0){
-            //let checkoutDiff = Date(a.checkOutDate) - Date(b.checkOutDate);
-            let checkoutDiff = dateDifference(a.checkInDate, b.checkInDate)
-            if(checkoutDiff === 0){
-                return b.stayDuration - a.stayDuration;
-            } else return checkoutDiff;
-        } 
-  //  } 
-)
 }
