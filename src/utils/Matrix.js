@@ -285,6 +285,29 @@ class Matrix {
                               console.log(`Created a new matrix with ${this.rooms} rooms and ${this.days} columns.`);
                     }
 	}
+    createFilteredMatrix(guestsNumber = null, sliceConfig = null) {
+        let newFilteredRooms = this.orderedRooms;
+        if (guestsNumber !== null) {
+            newFilteredRooms = this.orderedRooms.filter(room => room.roomGuests === guestsNumber);
+        }
+
+        let newMatrixRefDateStr = this.matrixReferenceDate.format('YYYY-MM-DD');
+        let newMatrixDatesArray = [...this.orderedDates];
+
+        if (sliceConfig && sliceConfig.startIndex !== undefined && sliceConfig.endIndex !== undefined) {
+            const { startIndex, endIndex } = sliceConfig;
+            if (startIndex >= 0 && endIndex < this.orderedDates.length && startIndex <= endIndex) {
+                newMatrixRefDateStr = this.orderedDates[startIndex];
+                newMatrixDatesArray = this.orderedDates.slice(startIndex, endIndex + 1);
+            } else {
+                console.warn("Invalid sliceConfig provided. Using full date range of current matrix.");
+            }
+        }
+        
+        // The new matrix still needs all bookings in the system for context,
+        // as filtering/slicing is about display, not removing booking data from consideration.
+        return new Matrix(newFilteredRooms, Array.from(this.allBookingsInSystem.values()), newMatrixRefDateStr, newMatrixDatesArray);
+    }
           //Initialiser en ny matrice og fyld den ud med 0'er.
           initMatrix() {
                     this.matrix = [];
@@ -486,7 +509,6 @@ try {
                          }
                     });
             
-                    // 6. Print the Matrix
                     bookingCalendar.printMatrix("Booking Matrix with Dates", indexToDate);
             
                     // *** 7. Test the updated getBooking ***
