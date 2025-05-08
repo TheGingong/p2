@@ -73,7 +73,6 @@ function extendGrid(rooms, date_range) {
     rooms.forEach((room) => {
       tempGrid[room.roomNumber] = new Array(date_range).fill(0);
     });
-    console.log("avtempGRidailabilityGrid");
     console.log(tempGrid);
 
     // Appends the temp grid to the total grid
@@ -88,14 +87,12 @@ function extendGrid(rooms, date_range) {
       // ... spread the array from tempgrid and pushes them individually so we dont push the entire array as one element
       availabilityGrid[roomNumber].push(...tempGrid[roomNumber]);
     }
-    // Append each room's temp grid to the existing grid
   }
 
   console.log("availabilityGrid");
   console.log(availabilityGrid);
 }
 
-// takes an array of bookings (newBookings) and inserts it into the given matrix (grid)
 /**
  * Takes an array of bookings and inserts it into the given grid (matrix).
  * @param {Array} newBookings - Array of booking objects
@@ -103,8 +100,7 @@ function extendGrid(rooms, date_range) {
  * @returns {Object} grid - The updated matrix with inserted bookings
  */
 function insertBookings(newBookings, grid) {
-  // for each booking
-  //console.log("New Bookings:", newBookings);
+  // Initialize dates with forEach
   newBookings.forEach((booking) => {
     let startDate = new Date(booking.checkInDate);
     let endDate = new Date(booking.checkOutDate);
@@ -113,6 +109,7 @@ function insertBookings(newBookings, grid) {
     // Calculate the index in the array (days from today)
     let startIndex = parseInt(dateIndex(startDate));
     let endIndex = parseInt(dateIndex(endDate));
+
     // Fill the grid for the room
     grid[roomNumber][startIndex] = booking.bookingId;
    
@@ -123,8 +120,6 @@ function insertBookings(newBookings, grid) {
   return grid;
 }
 
-
-// Checks avalibility for a given room and date, in a specific grid (either avalibilityGrid or tempMatrix).
 /**
  * Checks availability for a given room and date, in a specific grid (either availabilityGrid or tempMatrix).
  * @param {String} room - Room number matching the index of the matrix
@@ -141,10 +136,9 @@ function checkAvailability(room, date, grid) {
   return grid[room][dateIndex(realDate)] !== 0 ? 1 : 0;
 }
 
-
-// Resets the matrix (avalibilityGrid) so new data can be inputted
+// Resets the matrix (avalibilityGrid) so new data can be input
 function resetMatrix(){
-  for (const key in availabilityGrid) {
+  for (const key in availabilityGrid) { // Sets all fields of the matrix to 0
     for (let i = 0; i < availabilityGrid[key].length; i++) {
       availabilityGrid[key][i] = 0;
     }

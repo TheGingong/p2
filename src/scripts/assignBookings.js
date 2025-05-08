@@ -1,10 +1,9 @@
 import fs from 'fs/promises';
 import dayjs from 'dayjs';
-import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
-import { checkAvailability, availabilityGrid, insertBookings, extendGrid, bookingRange, dateDifference, dateIndex } from './availabilityMatrix.js';
+import { loadBookings, loadRooms } from '../utils/getInfo.js';
+import { checkAvailability, availabilityGrid, insertBookings, dateDifference } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
-import { start } from 'repl';
 import { globalState } from "../utils/globalVariables.js";
 export { getVisibleBookings, matchBookingsToRooms }
 export { sortByDuration }
@@ -39,7 +38,6 @@ async function matchBookingsToRooms(version) {
         let tempMatrix = JSON.parse(JSON.stringify(availabilityGrid));
 
         let finalArray = []
-        let arr = []
         // Match bookings to rooms
         for (const booking of visibleBookings) {
             if (version === 0){

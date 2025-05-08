@@ -1,7 +1,6 @@
 import fs from 'fs/promises'
 import { roomTypes } from '../utils/globalVariables.js';
 import { buildingFloors, roomsPerFloor, maxGuests } from '../utils/globalVariables.js'
-import { bookingsInfo, loadBookings } from '../utils/getInfo.js';
 export { generateRoomNumber, generateRooms, generateGuests }
 
 let preference = {};
@@ -9,13 +8,13 @@ let preference = {};
 // Function that will generate all rooms using other functions, 
 // and write them into the json file through an array
 async function generateRooms () {
-    // define file path for rooms.json file
+    // Define file path for rooms.json file
     const roomsPath = "src/json/rooms.json";
 
-    // prepare to write a bunch of data 
+    // Prepare to write a bunch of data 
     await fs.writeFile(roomsPath, "[\n", "utf8");
 
-    // loop that makes rooms and inserts them into the array for a said amount of rooms per floor for each floor
+    // Loop that makes rooms and inserts them into the array for a said amount of rooms per floor for each floor
     for (let i = 1; i <= buildingFloors; i++) {
         for (let j = 1; j <= roomsPerFloor; j++) {
             console.log(`Room Number (${i}, ${j}):`, generateRoomNumber(i, j));
@@ -28,10 +27,10 @@ async function generateRooms () {
                 "preference" : preference,
             };
 
-            // convert to json string
+            // Convert to json string
             let roomData = JSON.stringify(roomObject, null, 2);
 
-            // if not the first entry, add a comma for valid json
+            // If not the first entry, add a comma for valid json format
             if (i !== 1 || j !== 1) {
             roomData = ",\n" + roomData;
             }
@@ -43,10 +42,11 @@ async function generateRooms () {
     await fs.appendFile(roomsPath, "\n]", "utf8");
 }
 
-// function that generates a roomnumber s.t. ex "109" is room 9 in floor 1
+
 /**
- * Function that generates a roomnumber adding the floor and the roomnumber
- * @param {Integer} roomFloor - The floor the rooms i placed on
+ * Function that generates a roomnumber adding the floor and the roomnumber,
+ * E.g, roomnumber "109" is room 9 on floor 1.
+ * @param {Integer} roomFloor - The floor the room i placed on
  * @param {Integer} roomNumber - The rooms number
  * @returns {String} - roomnumber string
  */
