@@ -10,7 +10,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
 import { globalState } from "../utils/globalVariables.js";
-export { getVisibleBookings, matchBookingsToRooms, sortByDuration }
+export { getVisibleBookings, matchBookingsToRooms, sortByDuration, timespanAvailability }
 
 dayjs.extend(isSameOrBefore); 
 dayjs.extend(isSameOrAfter);
@@ -34,7 +34,6 @@ async function matchBookingsToRooms(version) {
             await sortByDuration(visibleBookings) // sort by duration of stay
         } else { // else, do not sort if random allocation is pressed
         }
-
          
         console.log(globalState.currentDay)
 
@@ -52,7 +51,7 @@ async function matchBookingsToRooms(version) {
             }
 
             //booking.title = booking.guestsNumber
-            booking.title = booking.dayOfBooking + ", Duration =  " + booking.stayDuration
+            booking.title = booking.guestsNumber + " " + booking.bookingId + " " + booking.stayDuration
 
             if (booking.resourceIds !== "0") {
                 tempMatrix = insertBookings([booking], tempMatrix);
@@ -62,12 +61,15 @@ async function matchBookingsToRooms(version) {
                     finalArray.push(booking);
                 }
             } else {
-                console.log(`No room found for booking ${booking.bookingId}`);
+                //console.log(`No room found for booking ${booking.bookingId}`);
             }
         }
         
         // Update the real availability grid with today's new bookings
-        insertBookings(finalArray, availabilityGrid);
+        if (version === 2) {
+            insertBookings(finalArray, availabilityGrid);
+            return finalArray;
+        }
         
         //console.log("Final bookings to display:", finalArray.length);
         return visibleBookings;
@@ -98,7 +100,7 @@ async function assignResId(booking, rooms, tempMatrix) {
             continue;
         }
     }
-    console.log("Didn't find any available rooms")
+    //console.log("Didn't find any available rooms")
     return "0";
 }
 

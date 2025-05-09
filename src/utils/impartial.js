@@ -26,7 +26,7 @@ function createBookingBatch(batch) {
 
     return new Promise((resolve, reject) => {
         try {
-            for (let i = 1, j = 1; i < batch; i++) {
+            for (let i = 1, j = 1; i <= batch; i++) {
                 // Generates random number 1-12 to set a month for the booking.
                 checkInMonth = Math.floor(Math.random() * 12);
 
@@ -81,7 +81,7 @@ function createBookingBatch(batch) {
                         console.log("Something went wrong. Too many guests.");
                 }
 
-                let chanceForFloorPref = Math.floor(Math.random() * 20); // Generates a number from 0 to the specified value.
+                let chanceForFloorPref = Math.floor(Math.random() * 1); // Generates a number from 0 to the specified value.
                 // Runs if chanceForFloorPref = 0.
                 if (!chanceForFloorPref) {
                     preference.floor = Math.ceil(Math.random() * 5);
@@ -126,7 +126,7 @@ function createBookingBatch(batch) {
 async function storeBatch365() {
     try {
         console.log("Calling promise");
-        const data = await createBookingBatch(1500);
+        const data = await createBookingBatch(500);
         console.log("data")
         console.log(data);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
@@ -137,21 +137,3 @@ async function storeBatch365() {
         return { error: "Batch generation failed." };
     }
 }
-
-// Previous switch - now a function - saved in case - !!
-//switch(guestsNumber) {
-//    case 1:
-//        preference.beds = roomTypes[0]; // One single bed.
-//        break;
-//    case 2:
-//        preference.beds = roomTypes[Math.ceil(Math.random() * 2)]; // 2 single beds or 1 queen bed.
-//        break;
-//    case 3:
-//        preference.beds = roomTypes[3]; // One single bed and 1 queen bed. Correct? !!
-//        break;
-//    case 4:
-//        preference.beds = roomTypes[4]; // One single bed and 1 queen bed. Correct? !!
-//        break;
-//    default:
-//        console.log("Something went wrong. Too many guests.");
-//}

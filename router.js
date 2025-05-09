@@ -145,23 +145,26 @@ async function allocate(res, days, version){
 
       
     // KALD PREFSCORE ALGORITHM MED assignedBookings som parameter
+    let preferenceOptimized = assignedBookings
+    if (version !== 2){
+        preferenceOptimized = await preferenceOptimization(assignedBookings, null) || [];
+    }
 
     // Call our algorithm function
-    let hej = await preferenceOptimization(assignedBookings, null) || [];
 
 
     // Final array gets defined
 
     globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
     console.log("currentDay" + globalState.currentDay)
-    lastArray.push(...hej); // Push our array we made in algorithm
+    lastArray.push(...preferenceOptimized); // Push our array we made in algorithm
     }   
     startValue = days
 
     //scoring(bookingsInfo, roomsInfo); // Perform scoring
 
     //await jsonResponse(res, lastArray ); // Send the response
-    console.log("lastArray")
-    console.log(lastArray)
+    //console.log("lastArray")
+    //console.log(lastArray)
     jsonResponse(res, lastArray ); // Send the response
 }

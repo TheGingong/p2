@@ -103,6 +103,11 @@ function insertBookings(newBookings, grid) {
     let startIndex = parseInt(dateIndex(startDate));
     let endIndex = parseInt(dateIndex(endDate));
 
+    if (!grid[roomNumber]) {
+      console.error(`Room number ${roomNumber} not found in grid.`);
+      return;
+    }
+
     // Fill the grid for the room
     grid[roomNumber][startIndex] = "s" + booking.bookingId;
 
@@ -116,7 +121,6 @@ function insertBookings(newBookings, grid) {
 
 
   });
-  console.log(grid);
   return grid;
 }
 

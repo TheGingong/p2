@@ -6,6 +6,8 @@ import { globalState, roomsIndexToResourceId } from "../utils/globalVariables.js
 import { calculatePrefScore } from "../utils/prefScores.js";
 import { dateIndex, availabilityGrid, insertBookings } from "./availabilityMatrix.js";
 import { roomsInfo } from "../utils/getInfo.js";
+import { timespanAvailability } from "./assignBookings.js";
+import dayjs from "dayjs";
 export { preferenceOptimization }
 
 /**
@@ -14,11 +16,15 @@ export { preferenceOptimization }
 async function preferenceOptimization(visibleBookings, leniency) {
     let currentDay = dateIndex(globalState.currentDay);
 
-    console.log("HERE IS THE VISIBLEBOOKINGS:");
-    console.log(visibleBookings);
-
+    // Initialize empty matrix
     let ghostMatrix = JSON.parse(JSON.stringify(availabilityGrid));
 
+    console.log("HERE IS THE GHOSTMATRIX");
+
+    console.log(ghostMatrix);
+    console.log(visibleBookings);
+    insertBookings(visibleBookings, ghostMatrix);
+    
     let roomArray = [];
 
     for (let room of roomsInfo) {
@@ -30,39 +36,59 @@ async function preferenceOptimization(visibleBookings, leniency) {
     let bookingPrefScore = 0;
     let prefScoreTable = [];
     let bestSwapMatch = 0;
-    
+
     // Iterate through the bookings in the bookings starting today array.
     for (let booking of bookingsStartingToday) {
         for (let i = 0; i < roomArray.length; i++) {
             if (validSwaps(booking, roomArray[i], ghostMatrix, currentDay)) {
                 bookingPrefScore = await calculatePrefScore(booking, roomArray[i]);
-
+                
                 // Ensure the room index in prefScoreTable is initialized.
-                if (!prefScoreTable[i]) {
+                if (!Array.isArray(prefScoreTable[i])) {
                     prefScoreTable[i] = [];
                 }
 
                 // Push the preference score at the right room index, to the booking that will get that specific score at that location.
-                console.log("Here is da bookingID")
+                /*console.log("Here is da bookingID")
                 console.log(booking.bookingId);
-                console.log(bookingPrefScore);
+                console.log(bookingPrefScore);*/
                 prefScoreTable[i].push([booking.bookingId, bookingPrefScore]);
-                                
+            } else {
+                console.log("hej2")
+                console.log(booking.bookingId);
+                console.log("PREFSCORE")
+                console.log(prefScoreTable);
+                console.log("Here is I");
+                console.log(i)
+
+                if (!Array.isArray(prefScoreTable[i])) {
+                    prefScoreTable[i] = [];
+                }
+                prefScoreTable[i].push([booking.bookingId, -1]);
             }
         }
     }
+
+    console.log(prefScoreTable);
     
     // Find the right prioritization of the bookings starting today array.
     let sortedBookings = prioritySwaps(bookingsStartingToday);
 
+    console.log("Here is sorted bookings:");
+    console.log(sortedBookings);
+
     // For loop that iterates over the sortedBookings to find the best matches and assigning resourceIds.
     for (let booking of sortedBookings) {
-        bestSwapMatch = locateBestMatches(booking, prefScoreTable, bookingsStartingToday, ghostMatrix);
+        console.log("\u001b[1;31m Room " + booking.resourceIds + " ID: " + booking.bookingId);
+        bestSwapMatch = locateBestMatches(booking, prefScoreTable, roomArray);
+        console.log("Now swapping:")
+        console.log(sortedBookings);
         assignResourceIds(booking, bestSwapMatch, bookingsStartingToday, ghostMatrix);
-        insertBookings([booking], ghostMatrix);
+        console.log("Is now swapped!");
+        console.log(sortedBookings);
     }
     // Permanent insert into bossman
-    insertBookings(bookingsStartingToday, availabilityGrid);
+    //insertBookings(bookingsStartingToday, availabilityGrid);
     return bookingsStartingToday; // This will be used to update the fullCalendar
 }
 
@@ -81,9 +107,9 @@ function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray, curr
 
     for (let i = 0; i < roomArray.length; i++) {
         if (String(ghostMatrix[roomArray[i]][currentDay]).includes("s")) {
-            console.log(String(ghostMatrix[roomArray[i]][currentDay])); // Prints the s number
+            //console.log(String(ghostMatrix[roomArray[i]][currentDay])); // Prints the s number
             bookingsStartingToday.push(String(ghostMatrix[roomArray[i]][currentDay]).replace(/s/g, ""));            
-            console.log(bookingsStartingToday);
+            //console.log(bookingsStartingToday);
         }
     }
 
@@ -98,6 +124,12 @@ function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray, curr
  */
 function validSwaps(booking, room, matrix, currentDay) {
     let bookingDuration = booking.stayDuration;
+
+    if (booking.resourceIds === room.roomNumber) {
+        console.log("Same room");
+        return true;
+    }
+
     if (String(matrix[room][currentDay]).includes("s") || matrix[room][currentDay] === 0) { 
         if (String(matrix[room][currentDay + bookingDuration]).includes("e") || matrix[room][currentDay + bookingDuration] === 0) {
             // This is now a possible swap for this booking so return true.
@@ -131,32 +163,37 @@ function prioritySwaps(booksStarting2day) {
 /**
  * Funtion that searches and finds the best room matching a booking's preferences.
  */ 
-function locateBestMatches(booking, prefScoreTable) {
-    let currentBest = -Infinity;
+function locateBestMatches(booking, prefScoreTable, roomArray) {
+    let currentBestScore = -Infinity;
     let currentBestIndex = -1;
-    let counter = 0;
 
-    for (let outerArray of prefScoreTable) {
-        // Skip if the outer array is empty or not an array
-        if (!Array.isArray(outerArray) || outerArray.length === 0) {
-            counter++;
-            continue;
-        }
+    for (let i = 0; i < prefScoreTable.length; i++) {
+        const roomNum = roomArray[i];
+        const roomScores = prefScoreTable[i];
 
-        // Loop th
-        for (let pair of outerArray) {
-            if (pair[0] === booking.bookingId && pair[1] > currentBest) {
-                currentBest = pair[1];
-                currentBestIndex = counter;
+        // Skip if no scores or room is not available
+        if (!Array.isArray(roomScores) || roomScores.length === 0) continue;
+        
+        if (!timespanAvailability(roomNum, booking.checkInDate, booking.checkOutDate, availabilityGrid)) continue;
+
+        for (let [bookingId, score] of roomScores) {
+            if (bookingId === booking.bookingId && score > currentBestScore) {
+                currentBestScore = score;
+                currentBestIndex = i;
+                console.log("Current best room for BK: " + bookingId + " is " + roomArray[i]);
             }
         }
-        counter++;
     }
 
-    // Check if a valid best match was found. If a valid pair is found, reset the position
+    // Clear used score slot if match was found
     if (currentBestIndex !== -1) {
         prefScoreTable[currentBestIndex] = [];
     }
+
+    console.log("CURRENT PREFSCORE TABLE")
+    console.log(prefScoreTable);
+    console.log("Current best index for BK: " + booking.bookingId);
+    console.log(currentBestIndex)
 
     return currentBestIndex;
 }
@@ -173,28 +210,35 @@ function assignResourceIds(booking, bestMatchFound, bookingsStartingToday, ghost
     
     // Give an index and return the room object corresponding to that index. Check if this is the right index out of ghostmatrix.
     const roomDetails = roomsIndexToResourceId[bestMatchFound];
+    
+    const roomNumberToBookingObject = bookingsStartingToday.reduce((hash, booking) => {
+        hash[booking.resourceIds] = booking;
+        return hash;
+    }, {});
 
-    // Ensure the booking to swap with exists - Error handling
-    if (!bookingsStartingToday[bestMatchFound]) {
-        console.error(`No booking found at index: ${bestMatchFound}`);
-        return;
-    }
 
     // Find the correct booking to swap with, we know the index is pointing to the correct booking because the prefScoreTable was created out of bookingsStartingToday
-    let bookingToSwapWith = bookingsStartingToday[bestMatchFound];
+    //let bookingToSwapWith = bookingsStartingToday[bestMatchFound];
+    let bookingToSwapWith = roomNumberToBookingObject[roomDetails.roomNumber] || null;
     
     /* Swap logic below */
     // Swap the resource ids around
-    const tempResourceId = booking.resourceIds;
+    console.log("Successful swap: " + booking.bookingId + " in room " + booking.resourceIds + " to room " + roomDetails.roomNumber);
+    
+    let tempResourceId = booking.resourceIds;
     booking.resourceIds = roomDetails.roomNumber;
-    bookingToSwapWith.resourceIds = tempResourceId;
+
+    if (bookingToSwapWith !== null) {
+        bookingToSwapWith.resourceIds = tempResourceId;
+    }
 
     // For loop to find the correct position of the booking we want to swap
     // Swap the bookings around in the bookingStartingToday array so the array will correctly reflect the change
     for (let i in bookingsStartingToday) {
-        if (booking.id === bookingsStartingToday[i].bookingId) {
+        if (booking.id === bookingsStartingToday[i].bookingId && bookingToSwapWith.bookingId !== null) {
             bookingsStartingToday[i] = bookingToSwapWith;
             bookingsStartingToday[bestMatchFound] = booking;
         }
     }
+    insertBookings([booking], availabilityGrid);
 }

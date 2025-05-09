@@ -51,8 +51,16 @@ async function calculatePrefScore(booking, room) {
     // Load how many total preferences for the booking.
     const amountOfPreferences = Object.keys(booking.preference);
 
-    // For every preference, we check if they are equal to any preferences in the room.
+    // For every preference, we check if they are equal to any preferences in the room.j
+
+    if (roomDetails.roomGuest < booking.guestNumber) {
+        score = -1;
+    }
+
+        
     for (let key of amountOfPreferences) {
+
+
         if (!roomDetails.preference.hasOwnProperty(key) || roomDetails.preference[key] !== booking.preference[key]) {
             score -= 1 / amountOfPreferences.length;
         }
@@ -62,27 +70,7 @@ async function calculatePrefScore(booking, room) {
      * The resulting preference score for the guest is multiplied by how many days the guest is staying, 
      * and thus has said preference score. The result is console logged and returned. 
      */ 
-    console.log(score, "*", booking.stayDuration)
-    console.log(score * booking.stayDuration)
+    //console.log(score, "*", booking.stayDuration)
+    //console.log(score * booking.stayDuration)
     return score * booking.stayDuration;
 }
-
-// - test - 
-
-let visibleBookings = [
-    {
-      "checkInDate": "2025-02-19",
-      "checkOutDate": "2025-02-28",
-      "guestsNumber": 4,
-      "stayDuration": 9,
-      "dayOfBooking": "2025-01-10",
-      "resourceIds": "103",
-      "bookingId": "s5",
-      "preference": {
-        "beds": "s0q2",
-        "pref1": "1",
-        "pref2": "2",
-        "pref3": "3",
-      }
-    }
-]

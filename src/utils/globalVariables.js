@@ -29,15 +29,14 @@ let globalState = {
 let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]
 
 // Room generation variables
-let buildingFloors = 1; // Floors in the hotel.
-let roomsPerFloor = 3; // Amount of rooms to generate for each floor.
-let maxGuests = 2; // Maximum guests for the largest room (-1 because we add in the random generation in roomGenerator).    
+let buildingFloors = 5; // Floors in the hotel.
+let roomsPerFloor = 2; // Amount of rooms to generate for each floor.
+let maxGuests = 4; // Maximum guests for the largest room (-1 because we add in the random generation in roomGenerator).    
 
 /**
  * Hash map for roomsInfo, that converts from the resourceID 
  * to the room's object containing more detailed information.
  */
-
 
 let { roomsInfo } = await loadRooms();
 console.log("Loaded Rooms Info:", roomsInfo);
