@@ -44,8 +44,8 @@ async function matchBookingsToRooms(version) {
                 booking.resourceIds = await assignResId(booking, roomsInfo, tempMatrix);
             }
 
-            //booking.title = booking.guestsNumber
-            booking.title = booking.dayOfBooking + ", Duration =  " + booking.stayDuration
+            // the title of the booking shown in the calendar is set to the bookingId and the stayDuration
+            booking.title = booking.bookingId + ", Nights: " + booking.stayDuration
 
             // Insert into our temporary matrix
             if (booking.resourceIds !== "0") {
