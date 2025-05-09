@@ -19,10 +19,6 @@ async function preferenceOptimization(visibleBookings, leniency) {
     // Initialize empty matrix
     let ghostMatrix = JSON.parse(JSON.stringify(availabilityGrid));
 
-    console.log("HERE IS THE GHOSTMATRIX");
-
-    console.log(ghostMatrix);
-    console.log(visibleBookings);
     insertBookings(visibleBookings, ghostMatrix);
     
     let roomArray = [];
@@ -49,18 +45,8 @@ async function preferenceOptimization(visibleBookings, leniency) {
                 }
 
                 // Push the preference score at the right room index, to the booking that will get that specific score at that location.
-                /*console.log("Here is da bookingID")
-                console.log(booking.bookingId);
-                console.log(bookingPrefScore);*/
                 prefScoreTable[i].push([booking.bookingId, bookingPrefScore]);
             } else {
-                console.log("hej2")
-                console.log(booking.bookingId);
-                console.log("PREFSCORE")
-                console.log(prefScoreTable);
-                console.log("Here is I");
-                console.log(i)
-
                 if (!Array.isArray(prefScoreTable[i])) {
                     prefScoreTable[i] = [];
                 }
@@ -68,27 +54,16 @@ async function preferenceOptimization(visibleBookings, leniency) {
             }
         }
     }
-
-    console.log(prefScoreTable);
     
     // Find the right prioritization of the bookings starting today array.
     let sortedBookings = prioritySwaps(bookingsStartingToday);
 
-    console.log("Here is sorted bookings:");
-    console.log(sortedBookings);
-
     // For loop that iterates over the sortedBookings to find the best matches and assigning resourceIds.
     for (let booking of sortedBookings) {
-        console.log("\u001b[1;31m Room " + booking.resourceIds + " ID: " + booking.bookingId);
         bestSwapMatch = locateBestMatches(booking, prefScoreTable, roomArray);
-        console.log("Now swapping:")
-        console.log(sortedBookings);
         assignResourceIds(booking, bestSwapMatch, bookingsStartingToday, ghostMatrix);
-        console.log("Is now swapped!");
-        console.log(sortedBookings);
     }
     // Permanent insert into bossman
-    //insertBookings(bookingsStartingToday, availabilityGrid);
     return bookingsStartingToday; // This will be used to update the fullCalendar
 }
 
@@ -189,11 +164,6 @@ function locateBestMatches(booking, prefScoreTable, roomArray) {
     if (currentBestIndex !== -1) {
         prefScoreTable[currentBestIndex] = [];
     }
-
-    console.log("CURRENT PREFSCORE TABLE")
-    console.log(prefScoreTable);
-    console.log("Current best index for BK: " + booking.bookingId);
-    console.log(currentBestIndex)
 
     return currentBestIndex;
 }
