@@ -56,7 +56,9 @@ async function matchBookingsToRooms(version) {
                     finalArray.push(booking);
                 }
             } else {
-                discardedBookings.push(booking);
+                if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')) {
+                    discardedBookings.push(booking);
+                }
                 //console.log(`No room found for booking ${booking.bookingId}`);
             }
         }
@@ -66,7 +68,7 @@ async function matchBookingsToRooms(version) {
         
         //console.log("Final bookings to display:", finalArray.length);
         //return visibleBookings;
-        return finalArray;
+        return [finalArray,discardedBookings]; // Return both the final array and discarded bookings
 
     } catch (error) {
         console.error("Error updating bookings:", error);

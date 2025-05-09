@@ -51,8 +51,14 @@ function resetMatrix() {
 
 // Function that generates batches and places it inside a JSON file
 function generateBatches() {
+
+    const amountOfBookingsInput = document.querySelector("#bookingsInput");
+    const amountOfBookings = parseInt(amountOfBookingsInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+
+    let url = `generateBookings?amountOfBookings=${amountOfBookings}`; // Create URL string with days as a query parameter
+
     // Sending POST request to router.js, as we are creating batches on the server side
-    fetch('batch365', {
+    fetch(url, {
     method: "POST"
     })
     .then((response) => {
@@ -74,6 +80,8 @@ function generateBatches() {
 // Allocate function called upon button click. Used later to allocate bookings into calendar.
 function allocateAction() {
 
+    // Get the value from the input field with id "dayInput"
+    // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
 
@@ -102,6 +110,9 @@ function allocateAction() {
 
 // Function that allocates random bookings into the calendar
 function allocateRandom(){
+
+    // Get the value from the input field with id "dayInput"
+    // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
 
@@ -132,6 +143,8 @@ function allocateRandom(){
 // Allocate function called upon button click. Used later to allocate bookings into calendar.
 function allocateActioncheckDate() {
 
+    // Get the value from the input field with id "dayInput"
+    // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
 
