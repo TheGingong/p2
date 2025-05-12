@@ -41,7 +41,7 @@ function createBookingBatch(batch) {
                 checkInDate = dayjs().year('2025').month(checkInMonth).date(randomCheckInDay); 
                
                 // A stayduratino is found, and the checkOutDate is found based on this. 
-                stayDuration = Math.ceil((Math.random() * 8));
+                stayDuration = Math.ceil((Math.random() * 8)) + 1;
                 checkOutDate = checkInDate.add(stayDuration, 'day');
                 
                 /** 

@@ -90,13 +90,12 @@ async function matchBookingsToRooms(version) {
 async function assignResId(booking, rooms, tempMatrix) {
     // Loop through every room available
     for (const room of rooms) {
-        if (booking.guestsNumber <= room.roomGuests) { // if the room can occupy the guests
+        if (booking.guestsNumber == room.roomGuests) { // if the room can occupy the guests
             // Check if the room is available
             if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate, tempMatrix) === 1){
                 return room.roomNumber;
             }
-        }
-        else {
+        } else {
             continue;
         }
     }
@@ -159,7 +158,7 @@ function timespanAvailability(roomNumber, startDate, endDate, tempMatrix){
  */
 async function bestFit(booking, rooms, tempMatrix) {
     // Filter rooms that can accommodate the number of guests.
-    let eligibleRooms = rooms.filter(room => booking.guestsNumber <= room.roomGuests);
+    let eligibleRooms = rooms.filter(room => booking.guestsNumber == room.roomGuests);
     
     // If there are no eligible rooms, return "0".
     if (eligibleRooms.length === 0) {

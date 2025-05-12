@@ -37,7 +37,7 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
     for (let booking of bookingsStartingToday) {
         for (let i = 0; i < roomArray.length; i++) {
             // Checks if the room checking for is a valid swap for the booking
-            if (validSwaps(booking, roomArray[i], ghostMatrix, currentDay)) {
+            if (validSwapsV2(booking, roomArray[i], ghostMatrix, currentDay, 2)) {
                 // If its a valid swap, calculate the preference score
                 bookingPrefScore = await calculatePrefScore(booking, roomArray[i]);
                 
@@ -52,7 +52,7 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
                 if (!Array.isArray(prefScoreTable[i])) {
                     prefScoreTable[i] = [];
                 }
-                prefScoreTable[i].push([booking.bookingId, -1]);
+                prefScoreTable[i].push([booking.bookingId, 0]);
             }
         }
     }
@@ -65,7 +65,7 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
         let results = locateBestMatches(booking, prefScoreTable, roomArray);
         bestSwapMatch = results.currentBestIndex;
         totalPrefScore += results.prefScore;
-        booking.title = booking.guestsNumber + " " + results.prefScore + " " + booking.stayDuration
+        booking.title = booking.guestsNumber + " " + results.prefScore + " " + booking.bookingId
         assignResourceIds(booking, bestSwapMatch, bookingsStartingToday);
     }
     // This return statement will be used to update fullCalendar
@@ -123,6 +123,37 @@ function validSwaps(booking, room, matrix, currentDay) {
     }
     return false;
 }
+
+function validSwapsV2(booking, room, matrix, currentDay, leniency) {
+    let numberZeroes = -1;
+    if (booking.guestsNumber === roomsResourceIdToObject[room].roomGuests) {
+        if (String(matrix[room][currentDay + booking.stayDuration-1]).includes("e") || String(matrix[room][currentDay + booking.stayDuration-1]) === "0") {
+            numberZeroes = 0;
+            for (let cell = booking.stayDuration; cell > currentDay; cell--) {
+                if (matrix[room][cell-1] === 0) {
+                    numberZeroes++;
+                }
+            }
+        }
+    }
+    
+    if (numberZeroes === booking.stayDuration){
+        return true
+    }
+
+    //console.log(booking.bookingId + " to room " + room + " the difference is " + Math.abs(booking.stayDuration - durationOfFoundRooms))
+    return numberZeroes >= 0 && numberZeroes <= leniency ? true : false
+
+}
+
+
+
+
+
+
+
+
+
 
 /**
  * Prioritizes the bookings starting today, s.t. first booking is the booking we earn the most score from (least prefs).

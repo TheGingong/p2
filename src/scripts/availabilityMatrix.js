@@ -104,7 +104,7 @@ function insertBookings(newBookings, grid) {
     let endIndex = parseInt(dateIndex(endDate));
 
     if (!grid[roomNumber]) {
-      console.error(`Room number ${roomNumber} not found in grid.`);
+      //console.error(`Room number ${roomNumber} not found in grid.`);
       return;
     }
 

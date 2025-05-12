@@ -32,7 +32,7 @@ async function calculatePrefScore(booking, room) {
 
     // If the booking is at its the original room calculate the score being 0. This makes it so it chooses its original room over a room with a worse score.
     if (roomDetails.roomNumber == booking.resourceIds) {
-        score = 0;
+        score = 0.5;
     }
 
     /** 
