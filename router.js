@@ -131,25 +131,16 @@ startServer();
     } //end switch method
   }
 
-
 async function allocate(res, days, version){
     let lastArray = [];
-    let allocationArray = [];
     let assignedBookingsResults = {};
     let totalPrefScore = 0;
     let totalRandomPrefScore = 0;
     days += startValue;
 
     for (let i = startValue; i < days; i++) {
-      //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
-      //assignedBookings = await easyalg(allocationArray)
-      assignedBookingsResults = await matchBookingsToRooms(version, totalRandomPrefScore) || []; // sort by StayDuration, checkInDay or Random
-      
-      // Calling preference score optimization algorithm with assigned bookings if it isn't the random allocation algorithm
-      //let preferenceOptimized = assignedBookings
+      assignedBookingsResults = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
 
-      
-      
       if (version !== 2) {
         let results = await preferenceOptimization(assignedBookingsResults.visibleBookings, totalPrefScore, null) || [];
         totalPrefScore = results.totalPrefScore;  // Update the accumulated score

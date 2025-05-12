@@ -20,11 +20,14 @@ dayjs.extend(isSameOrAfter);
  * @param {Int} version - The version of algorithm
  * @returns {Array} - Returns bookings that are visible to current day optimzed with ressourceIDs
  */
-async function matchBookingsToRooms(version, totalRandomPrefScore) {   
+async function matchBookingsToRooms(version) {   
     try {
         // load data regarding bookings and room types
         const { bookingsInfo } = await loadBookings();
         const { roomsInfo } = await loadRooms();
+
+        let totalRandomPrefScore = 0;
+        let randomPrefScore = 0;
 
         // use function to create array of the bookings that should be visible for a given date
        const visibleBookings = await getVisibleBookings(bookingsInfo, globalState.currentDay);
@@ -50,19 +53,18 @@ async function matchBookingsToRooms(version, totalRandomPrefScore) {
                 booking.resourceIds = await assignResId(booking, roomsInfo, tempMatrix);
             }
 
-            // If version is 2, random allocation
-            if (version === 2 && booking.resourceIds !== "0") {
-                totalRandomPrefScore = await calculatePrefScoreRandom(booking, parseInt(booking.resourceIds));
-            }
-
-            //booking.title = booking.guestsNumber
-            booking.title = booking.guestsNumber + " " + totalRandomPrefScore + " " + booking.bookingId;
-
             if (booking.resourceIds !== "0") {
                 tempMatrix = insertBookings([booking], tempMatrix);
                 
                 // If this booking starts today, add it to our final array
                 if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')) {
+                    // If version is 2, random allocation
+                    if (version === 2) {
+                        randomPrefScore = await calculatePrefScoreRandom(booking, parseInt(booking.resourceIds));
+                        totalRandomPrefScore += randomPrefScore;
+                    }
+                    //booking.title = booking.guestsNumber
+                    booking.title = booking.guestsNumber + " " + randomPrefScore + " " + booking.bookingId;
                     finalArray.push(booking);
                 }
             } else {
