@@ -133,33 +133,33 @@ startServer();
 
 
 async function allocate(res, days, version){
-    let lastArray = []
-    let allocationArray = []
-    let assignedBookings = []
-    days += startValue
+    let lastArray = [];
+    let allocationArray = [];
+    let assignedBookings = [];
+    let totalPrefScore = 0;
+    days += startValue;
 
     for (let i = startValue; i < days; i++){
-    //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
-    //assignedBookings = await easyalg(allocationArray)
-    assignedBookings = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
+      //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
+      //assignedBookings = await easyalg(allocationArray)
+      assignedBookings = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
+        
+      // Calling preference score optimization algorithm with assigned bookings if it isn't the random allocation algorithm
+      //let preferenceOptimized = assignedBookings
 
+      globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
+      console.log("currentDay" + globalState.currentDay);
       
-    // KALD PREFSCORE ALGORITHM MED assignedBookings som parameter
-    let preferenceOptimized = assignedBookings
-    if (version !== 2){
-        preferenceOptimized = await preferenceOptimization(assignedBookings, null) || [];
-    }
-
-    // Call our algorithm function
-
-
-    // Final array gets defined
-
-    globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
-    console.log("currentDay" + globalState.currentDay)
-    lastArray.push(...preferenceOptimized); // Push our array we made in algorithm
+      if (version !== 2) {
+        let results = await preferenceOptimization(assignedBookings, totalPrefScore, null) || [];
+        totalPrefScore = results.totalPrefScore;  // Update the accumulated score
+        lastArray.push(...results.bookingsStartingToday); // Push our array we made in algorithm
+        console.log("Preferensce score for the current allocation", results.totalPrefScore);
+      } else {
+        lastArray.push(...assignedBookings); // Push our array we made in algorithm
+      }
     }   
-    startValue = days
+    startValue = days;
 
     //scoring(bookingsInfo, roomsInfo); // Perform scoring
 
