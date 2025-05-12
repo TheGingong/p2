@@ -10,7 +10,7 @@ export { calculatePrefScore, calculatePrefScoreRandom }
  * The function loads the needed data, compares the booking and room, and returnd the preference score. 
  */
 async function calculatePrefScore(booking, room) {
-    let score = 1 * booking.stayDuration;
+    let score = 1;
     
     // Load the object containing the data on the parsed room ID.
     const roomDetails = roomsResourceIdToObject[room];
@@ -34,11 +34,11 @@ async function calculatePrefScore(booking, room) {
      * The resulting preference score for the guest is multiplied by how many days the guest is staying, 
      * and thus has said preference score. The result is console logged and returned. 
      */ 
-    return score;
+    return 1- score;
 }
 
 async function calculatePrefScoreRandom(booking, room) {
-    let score = 1 * booking.stayDuration;
+    let score = 1;
     
     // Load the object containing the data on the parsed room ID.
     const roomDetails = roomsResourceIdToObject[room];
@@ -60,5 +60,5 @@ async function calculatePrefScoreRandom(booking, room) {
      * The resulting preference score for the guest is multiplied by how many days the guest is staying, 
      * and thus has said preference score. The result is console logged and returned. 
      */ 
-    return score;
+    return 1-score;
 }

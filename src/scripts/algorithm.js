@@ -39,7 +39,7 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
             // Checks if the room checking for is a valid swap for the booking
             if (validSwapsV2(booking, roomArray[i], ghostMatrix, currentDay, 10)) {
                 // If its a valid swap, calculate the preference score
-                bookingPrefScore = await calculatePrefScore(booking, roomArray[i]);
+                bookingPrefScore = 1 - await calculatePrefScore(booking, roomArray[i]);
                 
                 // Ensure the room index in prefScoreTable is initialized.
                 if (!Array.isArray(prefScoreTable[i])) {
@@ -52,7 +52,7 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
                 if (!Array.isArray(prefScoreTable[i])) {
                     prefScoreTable[i] = [];
                 }
-                prefScoreTable[i].push([booking.bookingId, 0]);
+                prefScoreTable[i].push([booking.bookingId, -1]);
             }
         }
     }
