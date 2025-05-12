@@ -2,14 +2,14 @@
  * This file . . . 
  */
 
-import fs from 'fs/promises';
 import dayjs from 'dayjs';
 import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
 import { checkAvailability, availabilityGrid, insertBookings, extendGrid, bookingRange, dateDifference, dateIndex } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
-import { globalState } from "../utils/globalVariables.js";
+import { globalState, roomsResourceIdToObject } from "../utils/globalVariables.js";
+import { calculatePrefScore, calculatePrefScoreRandom } from '../utils/prefScores.js';
 export { getVisibleBookings, matchBookingsToRooms, sortByDuration, timespanAvailability }
 
 dayjs.extend(isSameOrBefore); 
@@ -20,7 +20,7 @@ dayjs.extend(isSameOrAfter);
  * @param {Int} version - The version of algorithm
  * @returns {Array} - Returns bookings that are visible to current day optimzed with ressourceIDs
  */
-async function matchBookingsToRooms(version) {   
+async function matchBookingsToRooms(version, totalRandomPrefScore) {   
     try {
         // load data regarding bookings and room types
         const { bookingsInfo } = await loadBookings();
@@ -43,7 +43,7 @@ async function matchBookingsToRooms(version) {
         let finalArray = []
         let arr = []
         // Match bookings to rooms
-        for (const booking of visibleBookings) {
+        for (let booking of visibleBookings) {
             if (version === 0){
                 booking.resourceIds = await bestFit(booking, roomsInfo, tempMatrix);
             } else { // else random
@@ -52,6 +52,13 @@ async function matchBookingsToRooms(version) {
 
             //booking.title = booking.guestsNumber
             booking.title = booking.guestsNumber + " " + booking.bookingId + " " + booking.stayDuration
+
+            // If version is 2
+            if (version === 2 && booking.resourceIds !== "0") {
+                totalRandomPrefScore += await calculatePrefScoreRandom(booking, parseInt(booking.resourceIds));
+                console.log("here")
+                console.log(totalRandomPrefScore);
+            }
 
             if (booking.resourceIds !== "0") {
                 tempMatrix = insertBookings([booking], tempMatrix);
@@ -68,11 +75,11 @@ async function matchBookingsToRooms(version) {
         // Update the real availability grid with today's new bookings
         if (version === 2) {
             insertBookings(finalArray, availabilityGrid);
-            return finalArray;
+            return { finalArray, totalRandomPrefScore };
         }
         
         //console.log("Final bookings to display:", finalArray.length);
-        return visibleBookings;
+        return { visibleBookings, totalRandomPrefScore };
         //return finalArray;
 
     } catch (error) {

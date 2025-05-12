@@ -66,7 +66,9 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
         bestSwapMatch = results.currentBestIndex;
         totalPrefScore += results.prefScore;
         booking.title = booking.guestsNumber + " " + results.prefScore + " " + booking.bookingId
-        assignResourceIds(booking, bestSwapMatch, bookingsStartingToday);
+        assignResourceIds(booking, bestSwapMatch, bookingsStartingToday, roomArray, prefScoreTable);
+        console.log("Check this:");
+        console.log(prefScoreTable);
     }
     // This return statement will be used to update fullCalendar
     return { bookingsStartingToday, totalPrefScore };
@@ -127,7 +129,7 @@ function validSwaps(booking, room, matrix, currentDay) {
 function validSwapsV2(booking, room, matrix, currentDay, leniency) {
     let numberZeroes = -1;
     if (booking.guestsNumber === roomsResourceIdToObject[room].roomGuests) {
-        if (String(matrix[room][currentDay + booking.stayDuration-1]).includes("e") || String(matrix[room][currentDay + booking.stayDuration-1]) === "0") {
+        //if (String(matrix[room][currentDay + booking.stayDuration-1]).includes("e") || String(matrix[room][currentDay + booking.stayDuration-1]) === "0") {
             numberZeroes = 0;
             for (let cell = booking.stayDuration; cell > currentDay; cell--) {
                 if (matrix[room][cell-1] === 0) {
@@ -135,9 +137,9 @@ function validSwapsV2(booking, room, matrix, currentDay, leniency) {
                 }
             }
         }
-    }
+    //}
     
-    if (numberZeroes === booking.stayDuration){
+    if (numberZeroes === booking.stayDuration) {
         return true
     }
 
@@ -145,15 +147,6 @@ function validSwapsV2(booking, room, matrix, currentDay, leniency) {
     return numberZeroes >= 0 && numberZeroes <= leniency ? true : false
 
 }
-
-
-
-
-
-
-
-
-
 
 /**
  * Prioritizes the bookings starting today, s.t. first booking is the booking we earn the most score from (least prefs).
@@ -183,6 +176,10 @@ function locateBestMatches(booking, prefScoreTable, roomArray) {
     let currentBestScore = -Infinity;
     let currentBestIndex = -1;
     let prefScore = 0;
+    let oldRoomIndex = -1;
+
+    oldRoomIndex = roomArray.indexOf(booking.resourceIds);
+
 
     for (let i = 0; i < prefScoreTable.length; i++) {
         const roomNum = roomArray[i];
@@ -192,6 +189,8 @@ function locateBestMatches(booking, prefScoreTable, roomArray) {
         if (!Array.isArray(roomScores) || roomScores.length === 0) continue;
         
         if (!timespanAvailability(roomNum, booking.checkInDate, booking.checkOutDate, availabilityGrid)) continue;
+
+        console.log("THIS IS THE CURRENT ROOM:" + booking.resourceIds);
 
         for (let [bookingId, score] of roomScores) {
             if (bookingId === booking.bookingId && score > currentBestScore) {
@@ -216,7 +215,7 @@ function locateBestMatches(booking, prefScoreTable, roomArray) {
 /**
  * Assigns resourceIds to the bookings that will swap
  */
-function assignResourceIds(booking, bestMatchFound, bookingsStartingToday) {
+async function assignResourceIds(booking, bestMatchFound, bookingsStartingToday, roomArray, prefScoreTable) {
     // Ensure the room is found - Error handling
     if (!roomsIndexToResourceId[bestMatchFound]) {
         console.error(`Invalid index: ${bestMatchFound}`);
@@ -231,7 +230,6 @@ function assignResourceIds(booking, bestMatchFound, bookingsStartingToday) {
         return hash;
     }, {});
 
-
     // Find the correct booking to swap with, we know the index is pointing to the correct booking because the prefScoreTable was created out of bookingsStartingToday
     //let bookingToSwapWith = bookingsStartingToday[bestMatchFound];
     let bookingToSwapWith = roomNumberToBookingObject[roomDetails.roomNumber] || null;
@@ -245,6 +243,12 @@ function assignResourceIds(booking, bestMatchFound, bookingsStartingToday) {
 
     if (bookingToSwapWith !== null) {
         bookingToSwapWith.resourceIds = tempResourceId;
+        let newRoomIndex = roomArray.indexOf(tempResourceId);
+        let updatedScore = await calculatePrefScore(bookingToSwapWith, tempResourceId);
+        prefScoreTable[newRoomIndex].push([bookingToSwapWith.bookingId, updatedScore]);
+        let newRoomIndexForCurrent = roomArray.indexOf(booking.resourceIds);
+        let updatedScoreForCurrent = await calculatePrefScore(booking, booking.resourceIds);
+        prefScoreTable[newRoomIndexForCurrent].push([booking.bookingId, updatedScoreForCurrent]);
     }
 
     // For loop to find the correct position of the booking we want to swap

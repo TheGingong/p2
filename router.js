@@ -135,15 +135,16 @@ startServer();
 async function allocate(res, days, version){
     let lastArray = [];
     let allocationArray = [];
-    let assignedBookings = [];
+    let assignedBookingsResults = {};
     let totalPrefScore = 0;
+    let totalRandomPrefScore = 0;
     days += startValue;
 
-    for (let i = startValue; i < days; i++){
+    for (let i = startValue; i < days; i++) {
       //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
       //assignedBookings = await easyalg(allocationArray)
-      assignedBookings = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
-        
+      assignedBookingsResults = await matchBookingsToRooms(version, totalRandomPrefScore) || []; // sort by StayDuration, checkInDay or Random
+      
       // Calling preference score optimization algorithm with assigned bookings if it isn't the random allocation algorithm
       //let preferenceOptimized = assignedBookings
 
@@ -151,12 +152,14 @@ async function allocate(res, days, version){
       console.log("currentDay" + globalState.currentDay);
       
       if (version !== 2) {
-        let results = await preferenceOptimization(assignedBookings, totalPrefScore, null) || [];
-        totalPrefScore = results.totalPrefScore;  // Update the accumulated score
+        let results = await preferenceOptimization(assignedBookingsResults.visibleBookings, totalPrefScore, null) || [];
+        totalPrefScore += results.totalPrefScore;  // Update the accumulated score
         lastArray.push(...results.bookingsStartingToday); // Push our array we made in algorithm
         console.log("Preferensce score for the current allocation", results.totalPrefScore);
       } else {
-        lastArray.push(...assignedBookings); // Push our array we made in algorithm
+        totalRandomPrefScore = assignedBookingsResults.totalRandomPrefScore;
+        console.log("Preferensce score for the current allocation RANDOM", assignedBookingsResults.totalRandomPrefScore);
+        lastArray.push(...assignedBookingsResults.finalArray); // Push our array we made in algorithm
       }
     }   
     startValue = days;

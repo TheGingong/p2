@@ -4,7 +4,7 @@
  */
 
 import { roomsResourceIdToObject } from "./globalVariables.js";
-export { calculatePrefScore }
+export { calculatePrefScore, calculatePrefScoreRandom }
 
 /**
  * The function loads the needed data, compares the booking and room, and returnd the preference score. 
@@ -33,6 +33,32 @@ async function calculatePrefScore(booking, room) {
     // If the booking is at its the original room calculate the score being 0. This makes it so it chooses its original room over a room with a worse score.
     if (roomDetails.roomNumber == booking.resourceIds) {
         score = 0.5;
+    }
+
+    /** 
+     * The resulting preference score for the guest is multiplied by how many days the guest is staying, 
+     * and thus has said preference score. The result is console logged and returned. 
+     */ 
+    return score;
+}
+
+async function calculatePrefScoreRandom(booking, room) {
+    let score = 1 * booking.stayDuration;
+    
+    // Load the object containing the data on the parsed room ID.
+    const roomDetails = roomsResourceIdToObject[room];
+    
+    // Load how many total preferences for the booking.
+    const amountOfPreferences = Object.keys(booking.preference);
+
+    console.log("Booking:", booking);
+    console.log("Room:", room);
+
+    // For every preference, we check if they are equal to any preferences in the room.j
+    for (let key of amountOfPreferences) {
+        if (!roomDetails.preference.hasOwnProperty(key) || roomDetails.preference[key] !== booking.preference[key]) {
+            score -= 1 / amountOfPreferences.length;
+        }
     }
 
     /** 
