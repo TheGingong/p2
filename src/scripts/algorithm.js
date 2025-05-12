@@ -37,7 +37,7 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
     for (let booking of bookingsStartingToday) {
         for (let i = 0; i < roomArray.length; i++) {
             // Checks if the room checking for is a valid swap for the booking
-            if (validSwapsV2(booking, roomArray[i], ghostMatrix, currentDay, 2)) {
+            if (validSwapsV2(booking, roomArray[i], ghostMatrix, currentDay, 10)) {
                 // If its a valid swap, calculate the preference score
                 bookingPrefScore = await calculatePrefScore(booking, roomArray[i]);
                 
@@ -67,8 +67,6 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
         totalPrefScore += results.prefScore;
         booking.title = booking.guestsNumber + " " + results.prefScore + " " + booking.bookingId
         assignResourceIds(booking, bestSwapMatch, bookingsStartingToday, roomArray, prefScoreTable);
-        console.log("Check this:");
-        console.log(prefScoreTable);
     }
     // This return statement will be used to update fullCalendar
     return { bookingsStartingToday, totalPrefScore };
@@ -89,9 +87,7 @@ function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray, curr
 
     for (let i = 0; i < roomArray.length; i++) {
         if (String(ghostMatrix[roomArray[i]][currentDay]).includes("s")) {
-            //console.log(String(ghostMatrix[roomArray[i]][currentDay])); // Prints the s number
             bookingsStartingToday.push(String(ghostMatrix[roomArray[i]][currentDay]).replace(/s/g, ""));            
-            //console.log(bookingsStartingToday);
         }
     }
 
@@ -104,47 +100,18 @@ function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray, curr
 /**
  * Function that evaluates bookings, and returns a true or a false of possible/valid swaps for a single input booking.
  */
-function validSwaps(booking, room, matrix, currentDay) {
-    let bookingDuration = booking.stayDuration;
-
-    // Makes the bookings own room a valid option
-    if (booking.resourceIds === room) {
-        console.log("Same room");
+function validSwapsV2(booking, room, matrix, currentDay) {
+    //let numberZeroes = -1;
+    if (booking.guestsNumber === roomsResourceIdToObject[room].roomGuests) {
         return true;
     }
-
-    // First checks if the preference of beds match the beds preference in the room. If it doesn't, this is NOT a valid swap!
-    if (booking.preference.beds === roomsResourceIdToObject[room].preference.beds) {
-        // Checks in the matrix in the correct column for the booking starting the same day
-        if (String(matrix[room][currentDay]).includes("s") || matrix[room][currentDay] === 0) { 
-            if (String(matrix[room][currentDay + bookingDuration]).includes("e") || matrix[room][currentDay + bookingDuration] === 0) {
-                // This is now a possible swap for this booking so return true.
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-function validSwapsV2(booking, room, matrix, currentDay, leniency) {
-    let numberZeroes = -1;
-    if (booking.guestsNumber === roomsResourceIdToObject[room].roomGuests) {
-        //if (String(matrix[room][currentDay + booking.stayDuration-1]).includes("e") || String(matrix[room][currentDay + booking.stayDuration-1]) === "0") {
-            numberZeroes = 0;
-            for (let cell = booking.stayDuration; cell > currentDay; cell--) {
-                if (matrix[room][cell-1] === 0) {
-                    numberZeroes++;
-                }
-            }
-        }
-    //}
     
-    if (numberZeroes === booking.stayDuration) {
-        return true
-    }
+    //if (numberZeroes === booking.stayDuration) {
+    //    return true
+    //}
 
     //console.log(booking.bookingId + " to room " + room + " the difference is " + Math.abs(booking.stayDuration - durationOfFoundRooms))
-    return numberZeroes >= 0 && numberZeroes <= leniency ? true : false
+    //return numberZeroes >= 0 && numberZeroes <= leniency ? true : false
 
 }
 
@@ -176,10 +143,6 @@ function locateBestMatches(booking, prefScoreTable, roomArray) {
     let currentBestScore = -Infinity;
     let currentBestIndex = -1;
     let prefScore = 0;
-    let oldRoomIndex = -1;
-
-    oldRoomIndex = roomArray.indexOf(booking.resourceIds);
-
 
     for (let i = 0; i < prefScoreTable.length; i++) {
         const roomNum = roomArray[i];
@@ -188,9 +151,8 @@ function locateBestMatches(booking, prefScoreTable, roomArray) {
         // Skip if no scores or room is not available
         if (!Array.isArray(roomScores) || roomScores.length === 0) continue;
         
+        // Checks if the room is actually valid. Meaning that the room is not locked in availability grid
         if (!timespanAvailability(roomNum, booking.checkInDate, booking.checkOutDate, availabilityGrid)) continue;
-
-        console.log("THIS IS THE CURRENT ROOM:" + booking.resourceIds);
 
         for (let [bookingId, score] of roomScores) {
             if (bookingId === booking.bookingId && score > currentBestScore) {
@@ -243,12 +205,6 @@ async function assignResourceIds(booking, bestMatchFound, bookingsStartingToday,
 
     if (bookingToSwapWith !== null) {
         bookingToSwapWith.resourceIds = tempResourceId;
-        let newRoomIndex = roomArray.indexOf(tempResourceId);
-        let updatedScore = await calculatePrefScore(bookingToSwapWith, tempResourceId);
-        prefScoreTable[newRoomIndex].push([bookingToSwapWith.bookingId, updatedScore]);
-        let newRoomIndexForCurrent = roomArray.indexOf(booking.resourceIds);
-        let updatedScoreForCurrent = await calculatePrefScore(booking, booking.resourceIds);
-        prefScoreTable[newRoomIndexForCurrent].push([booking.bookingId, updatedScoreForCurrent]);
     }
 
     // For loop to find the correct position of the booking we want to swap

@@ -50,15 +50,13 @@ async function matchBookingsToRooms(version, totalRandomPrefScore) {
                 booking.resourceIds = await assignResId(booking, roomsInfo, tempMatrix);
             }
 
-            //booking.title = booking.guestsNumber
-            booking.title = booking.guestsNumber + " " + booking.bookingId + " " + booking.stayDuration
-
-            // If version is 2
+            // If version is 2, random allocation
             if (version === 2 && booking.resourceIds !== "0") {
-                totalRandomPrefScore += await calculatePrefScoreRandom(booking, parseInt(booking.resourceIds));
-                console.log("here")
-                console.log(totalRandomPrefScore);
+                totalRandomPrefScore = await calculatePrefScoreRandom(booking, parseInt(booking.resourceIds));
             }
+
+            //booking.title = booking.guestsNumber
+            booking.title = booking.guestsNumber + " " + totalRandomPrefScore + " " + booking.bookingId;
 
             if (booking.resourceIds !== "0") {
                 tempMatrix = insertBookings([booking], tempMatrix);

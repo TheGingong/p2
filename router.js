@@ -148,19 +148,23 @@ async function allocate(res, days, version){
       // Calling preference score optimization algorithm with assigned bookings if it isn't the random allocation algorithm
       //let preferenceOptimized = assignedBookings
 
-      globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
-      console.log("currentDay" + globalState.currentDay);
+      
       
       if (version !== 2) {
         let results = await preferenceOptimization(assignedBookingsResults.visibleBookings, totalPrefScore, null) || [];
-        totalPrefScore += results.totalPrefScore;  // Update the accumulated score
+        totalPrefScore = results.totalPrefScore;  // Update the accumulated score
         lastArray.push(...results.bookingsStartingToday); // Push our array we made in algorithm
-        console.log("Preferensce score for the current allocation", results.totalPrefScore);
+        console.log("Preferensce score for the current allocation", totalPrefScore);
       } else {
-        totalRandomPrefScore = assignedBookingsResults.totalRandomPrefScore;
-        console.log("Preferensce score for the current allocation RANDOM", assignedBookingsResults.totalRandomPrefScore);
+        totalRandomPrefScore += assignedBookingsResults.totalRandomPrefScore;
+        console.log("Preferensce score for the current allocation RANDOM", totalRandomPrefScore);
         lastArray.push(...assignedBookingsResults.finalArray); // Push our array we made in algorithm
       }
+      
+      // Updates the day
+      globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
+      console.log("currentDay" + globalState.currentDay);
+    
     }   
     startValue = days;
 
