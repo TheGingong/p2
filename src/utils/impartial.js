@@ -60,9 +60,9 @@ function createBookingBatch(batch) {
                 preference = {};
 
                 // Room type preferences are generated,
-                generateRoomTypes(guestsNumber, preference);
+                generateRoomTypes(guestsNumber, preference,0);
                 // followed by the generation of additional preferences. 
-                generateSoftPrefs(totalPrefs, preference, prefOddsGuests);
+                generateSoftPrefs(preference, prefOddsGuests, 1);
                 
                 // lets the bookings have no roomNumber when generated
                 let resourceIds = "0";

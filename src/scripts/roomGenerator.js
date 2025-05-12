@@ -23,8 +23,8 @@ async function generateRooms () {
             let guests = generateGuests(maxGuests);
             // Generate object to hold preferences, followed by generation of preferences to fill object
             let preference = {};
-            generateRoomTypes(guests, preference);
-            generateSoftPrefs(totalPrefs, preference, prefOddsRooms);
+            generateRoomTypes(guests, preference, i);
+            generateSoftPrefs(preference, prefOddsRooms, 0);
 
             let roomObject = {
                 "roomNumber" : generateRoomNumber(i, j),
