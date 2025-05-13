@@ -1,17 +1,16 @@
 /**
  * This file contains functions and the like for generating the bookings' and rooms' preferences. 
  */
-
 import { roomTypes, buildingFloors, totalPrefs } from './globalVariables.js'
 export { generateSoftPrefs, generateRoomTypes }
 
 /**
  * Function called with the array containing all preference options. 
  * The function will, with a chance defined in globalVariables.js, give a room/booking a preference. 
- * @param {array} prefsArray Array of arrays representing prefs whose elems are options
- * @param {object} prefObject Object that may hold preferences
+ * @param {Array} prefsArray Array of arrays representing prefs whose elems are options
+ * @param {Object} prefObject Object that may hold preferences
  */
-function generateSoftPrefs(prefObject, prefOdds, isBooking){
+function generateSoftPrefs(prefObject, prefOdds, isBooking) {
     // Check if the function rund for the generation of a booking, if so alloc floor pref based on odds. 
     if (isBooking) {
         // Given prefOdds, define the odds of getting a floor pref, then assign.
@@ -21,8 +20,8 @@ function generateSoftPrefs(prefObject, prefOdds, isBooking){
         if (!chanceForFloorPref) {
             // Generate floor pref options seperately, as it is defined based on building floors variable in globalVariables.
             let floors = [];
-            for (let i = 1; i <= buildingFloors; i++){
-                floors.push(i)
+            for (let i = 1; i <= buildingFloors; i++) {
+                floors.push(i);
             }
             prefObject.floor = Math.ceil(Math.random() * buildingFloors);
         }
@@ -44,15 +43,15 @@ function generateSoftPrefs(prefObject, prefOdds, isBooking){
 
 /**
  * Function that generates the room preferences depending on amount of guests, through af switch case.
- * @param {int} numberOfGuests Amount of max guests for a room
- * @param {object} prefObject Object that may hold preferences
+ * @param {Integer} numberOfGuests Amount of max guests for a room
+ * @param {Object} prefObject Object that may hold preferences
  */ 
 function generateRoomTypes(numberOfGuests, prefObject, currentFloor) {
     // Generate room preference.
     console.log(prefObject)
     // Start by generating the floor which the room is on if it is a room to generate.
-    if (currentFloor > 0){
-        prefObject.floor = currentFloor
+    if (currentFloor > 0) {
+        prefObject.floor = currentFloor;
     }
     // Now generate bed layout.
     switch(numberOfGuests) {

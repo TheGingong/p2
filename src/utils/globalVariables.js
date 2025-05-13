@@ -15,7 +15,6 @@
 
 import dayjs from "dayjs";
 import { bookingsInfo, loadRooms } from "./getInfo.js"; // Importing the bookings and rooms info
-
 export {
     buildingFloors,
     roomsPerFloor,
@@ -36,9 +35,9 @@ let globalState = {
     }
 }
 
-// Available room/booking preferences
-let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]; // Bed layouts/room types
-let totalPrefs = { // Object containing all the soft preference options
+// Available room/booking preferences.
+let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]; // Bed layouts/room types.
+let totalPrefs = { // Object containing all the soft preference options.
     pref1  : ["opt1.1", "opt1.2", "opt1.3", "opt1.4", "opt1.5"],
     pref2  : ["opt2.1", "opt2.2", "opt2.3", "opt2.4", "opt2.5"],
     pref3  : ["opt3.1", "opt3.2", "opt3.3", "opt3.4", "opt3.5"],
@@ -51,40 +50,31 @@ let totalPrefs = { // Object containing all the soft preference options
     pref10 : ["opt10.1", "opt10.2", "opt10.3", "opt10.4", "opt10.5"]
 };
 
-// Global variable to change chances of preferences occuring. Probability will be 1/prefOdds
+// Global variable to change chances of preferences occuring. Probability will be 1/prefOdds.
 let prefOddsGuests = 20; // ex. 20 => 1/20 = 5% chance
 let prefOddsRooms = 4;
 
-// Room generation
-let buildingFloors = 4; // Floors in the hotel
-let roomsPerFloor = 2; // How many rooms to generate for every floor
-let maxGuests = 4; // Maximum guests for largest room (-1 because we add in the random)
-
-
-
+// Room generation variables: 
+let buildingFloors = 4; // Floors in the hotel.
+let roomsPerFloor = 2; // How many rooms to generate for every floor.
+let maxGuests = 4; // Maximum guests for largest room (-1 because we add in the random generation).
 
 /**
- * Hash map for roomsInfo, that converts from the resourceID 
- * to the room's object containing more detailed information.
+ * The following code makes a hash map for roomsInfo, 
+ * converting the resourceID to the room's object containing more detailed information.
  */
-
 let { roomsInfo } = await loadRooms();
 console.log("Loaded Rooms Info:", roomsInfo);
-
-// Check if the result is an array
+// Checks if the result is an array.
 if (!Array.isArray(roomsInfo)) {
     throw new Error("loadRooms() did not return an array");
 }
-
+// Converts the resource ID of a room, to it's object
 const roomsResourceIdToObject = roomsInfo.reduce((hash, room) => {
-// Hash map for roomsInfo
     hash[room.roomNumber] = room;
     return hash;
 }, {});
-
-/**
- * Hash map for roomsInfo, that converts an index (from 0) to the resourceID of a room.
- */
+// Converts the room index of a room, to it's resource ID
 const roomsIndexToResourceId = roomsInfo.reduce((hash, room, index) => {
     hash[index] = room;
     return hash;

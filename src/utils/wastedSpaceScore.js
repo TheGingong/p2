@@ -4,7 +4,10 @@ import { availabilityGrid } from "../scripts/availabilityMatrix.js";
 
 
 
-
+/**
+ * @param {}
+ * @return {float} Outputs a value form 0 - 1 higher score is worse
+ */
 function wastedSpaceEvaluate(roomsObject) {
 
 

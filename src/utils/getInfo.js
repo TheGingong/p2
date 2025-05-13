@@ -15,7 +15,7 @@ export { roomsInfo, bookingsInfo, loadBookings, loadRooms, bookingsPath, roomsPa
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Variables that will hold info of all rooms and all bookings
+// Variables that will hold info of all rooms and all bookings.
 let roomsInfo = null;
 let bookingsInfo = null;
 
@@ -25,7 +25,7 @@ const roomsPath = path.resolve(__dirname, '../json/rooms.json');
 
 /**
  * Reads bookings from json file, parses and returns for export and usage.
- * @returns {Array} - Array of booking objects
+ * @returns {Array} - Array of booking objects.
  */
 async function loadBookings() {
     try {
@@ -38,20 +38,20 @@ async function loadBookings() {
         return { bookingsInfo }; // Return the loaded data.
     } catch (err) {
         console.error("Error reading files:", err);
-        throw err; // Ensure errors are propagated
+        throw err; // Ensure errors are propagated.
     }
 }
 
 /**
  * Reads rooms from json file, parses and returns for export and usage.
- * @returns {Array} - Array of room objects
+ * @returns {Array} - Array of room objects.
  */
 async function loadRooms() {
     try {
         // Calls readFile on rooms.
         const roomsData = await readFile(roomsPath, 'utf8');
 
-        // Parses data to roomsInfo, in the format of an array
+        // Parses data to roomsInfo, in the format of an array.
         roomsInfo = JSON.parse(roomsData);
 
         return { roomsInfo }; // Return the loaded data.

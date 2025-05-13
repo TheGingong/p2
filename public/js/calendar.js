@@ -22,7 +22,7 @@ fetch('rooms', {
   .then((data) => {
       // Map roomTypes to FullCalendar resources.
       let roomResources = [];
-      console.log("Data received from rooms endpoint")
+      console.log("Data received from rooms endpoint");
 
       // Pushes room data to our roomResources array.
       data.forEach(room => {
@@ -30,21 +30,17 @@ fetch('rooms', {
               id: room.roomNumber || "Not read from JSON",   // Fallback values, in case undefined, null or other is passed.
               title: room.roomNumber || "Not read from JSON", 
               roomSize: room.roomGuests || "Not read from JSON",
-          });
+              });
       });
-      // Event listener, that listens after the HTML page has been loaded and deferred scripts have been executed.
-      // calenderEl is created using the fullCalender library.
+      /**
+       * Event listener, that listens after the HTML page has been loaded and deferred scripts have been executed.
+       * alenderEl is created using the fullCalender library.
+       */
     document.addEventListener('DOMContentLoaded', function() {
       let calendarEl = document.getElementById('calendar');
       let calendar = new FullCalendar.Calendar(calendarEl, {
-        // - resolve comments here - !!
-        //headerToolbar: {
-        //  left: 'today prev,next',
-        //  center: 'title',
-        //  right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
-        //},
 
-        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // Public key for private use
+        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // Public license key for private use.
     
         initialView: 'booking_view', // Default view.
         views: { // Initialization of calender setup, a default 7 day calender.
@@ -53,10 +49,10 @@ fetch('rooms', {
             duration: {month: 1},
             slotLabelInterval: {days:1},
               slotLabelFormat: [{
-              weekday: 'short',
+              weekday: 'short', 
               day: 'numeric',
               month: 'numeric',
-               // Format for day titles.
+               // Format for day titles, short for days is first 3 letters, numeric for days and months.
             }]
           }
         },
@@ -74,7 +70,7 @@ fetch('rooms', {
           }
         ],
 
-        resources: roomResources, // Insert array to resources
+        resources: roomResources, // Insert array to resources.
       });
 
       calendar.render(); // Renders the calender.
