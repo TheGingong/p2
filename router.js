@@ -141,19 +141,17 @@ async function allocate(res, days, version){
     let assignedBookingsResults = {};
     let totalPrefScore = 0;
     let totalRandomPrefScore = 0;
+    let notAssignedBookings = []
     prefScoreArray.length = 0; // Clears the array
 
     days += startValue;
 
-    let successfulBookings = []
-    let assignedBookings = []
-    let notAssignedBookings = []
-    let failedBookings = []
+ 
 
     for (let i = startValue; i < days; i++) {
       assignedBookingsResults = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
-
-
+      
+      notAssignedBookings.push(...assignedBookingsResults.discardedBookings) // Push our array of failed bookings we made in algorithm       
 
 
       if (version !== 2) {
@@ -181,19 +179,11 @@ async function allocate(res, days, version){
     console.log(sum / prefScoreArray.length)
     startValue = days;
 
-     successfulBookings.push(...assignedBookings); // Push our array of succesful bookings we made in algorithm
-      failedBookings.push(...notAssignedBookings); // Push our array of failed bookings from algorithm into failedBookings
-       
-
-    console.log("Succesful bookings: ")
-    console.log(successfulBookings)
-    console.log("Assigned bookings: ", successfulBookings.length)
-    console.log("Failed bookings: ", failedBookings.length)
-    
-
+    console.log("Assigned bookings: ", lastArray.length)
+    console.log("Failed bookings: ", notAssignedBookings.length)
 
     //console.log("wasted space score: " + wastedSpaceEvaluate(availabilityGrid))
-   countZeroes()
+    countZeroes()
 
     jsonResponse(res, lastArray ); // Send the response
 
