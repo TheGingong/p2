@@ -4,11 +4,12 @@
  */
 
 import fs from 'fs/promises'
+import dayjs from 'dayjs';
 import { extendGrid, bookingRange, availabilityGrid, dateDifference } from '../scripts/availabilityMatrix.js';
 import { roomsInfo, loadBookings } from './getInfo.js';
+import { roomTypes, totalPrefs, prefOddsGuests } from './globalVariables.js';
+import { generateSoftPrefs, generateRoomTypes } from './preferences.js';
 import { generateRoomNumber, generateRoomTypes } from '../scripts/roomGenerator.js';
-import dayjs from 'dayjs';
-import { roomTypes } from './globalVariables.js';
 export { storeBookings }
 
 /**
@@ -61,40 +62,19 @@ function createBookingBatch(batch) {
                 guestsNumber = Math.ceil(Math.random() * 4);
 
                 // The 'preference' parameter of the booking object is initialized as an object within the booking object. 
-                preference = {}
+                preference = {};
 
-                // Room preferences are generated - WIP
-                //generateRoomTypes(guestsNumber);
-
-                switch(guestsNumber) {
-                    case 1:
-                        preference.beds = roomTypes[0]; // One single bed.
-                        break;
-                    case 2:
-                        preference.beds = roomTypes[Math.ceil(Math.random() * 2)]; // 2 single beds or 1 queen bed.
-                        break;
-                    case 3:
-                        preference.beds = roomTypes[3]; // One single bed and 1 queen bed. Correct? !!
-                        break;
-                    case 4:
-                        preference.beds = roomTypes[4]; // One single bed and 1 queen bed. Correct? !!
-                        break;
-                    default:
-                        console.log("Something went wrong. Too many guests.");
-                }
-
-                let chanceForFloorPref = Math.floor(Math.random() * 1); // Generates a number from 0 to the specified value.
-                // Runs if chanceForFloorPref = 0.
-                if (!chanceForFloorPref) {
-                    preference.floor = Math.ceil(Math.random() * 5);
-                }
-
-
-
+                // Room type preferences are generated,
+                generateRoomTypes(guestsNumber, preference,0);
+                // followed by the generation of additional preferences. 
+                generateSoftPrefs(preference, prefOddsGuests, 1);
+                
+              
                 // lets the bookings have no roomNumber when generated
 
                 let resourceIds = "0";
 
+                // gives the booking an ID number, simply based on the i-value
                 let bookingId = i;
 
                 // Appends the properties to the current booking object and pushes it into the array of booking batches.

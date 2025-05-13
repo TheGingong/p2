@@ -1,9 +1,10 @@
 import fs from 'fs/promises'
-import { roomTypes } from '../utils/globalVariables.js';
-import { buildingFloors, roomsPerFloor, maxGuests } from '../utils/globalVariables.js'
+import { roomTypes, totalPrefs, prefOddsRooms, buildingFloors, roomsPerFloor, maxGuests } from '../utils/globalVariables.js'
+import { generateSoftPrefs, generateRoomTypes } from '../utils/preferences.js'
 
 import { bookingsInfo, loadBookings } from '../utils/getInfo.js';
 export { generateRoomNumber, generateRooms, generateGuests, generateRoomTypes }
+
 
 
 let preference = {};
@@ -24,8 +25,13 @@ async function generateRooms () {
     for (let i = 1; i <= buildingFloors; i++) {
         for (let j = 1; j <= roomsPerFloor; j++) {
             console.log(`Room Number (${i}, ${j}):`, generateRoomNumber(i, j));
+            // Generate amount of maximum guest space
             let guests = generateGuests(maxGuests);
-            generateRoomTypes(guests)
+            // Generate object to hold preferences, followed by generation of preferences to fill object
+            let preference = {};
+            generateRoomTypes(guests, preference, i);
+            generateSoftPrefs(preference, prefOddsRooms, 0);
+
             let roomObject = {
                 "roomNumber" : generateRoomNumber(i, j),
                 "roomGuests" : guests,
@@ -68,21 +74,4 @@ function generateGuests (maximumGuests) {
     return Math.floor((Math.random() * maximumGuests) + 1);
 }
 
-/**
- * Function that generates the room preferences depending on amount of guests, through use of a switch case.
- */
-function generateRoomTypes(numberOfGuests) {
-    // Generate room preference. 
-    switch(numberOfGuests) {
-        case 1:
-            return preference.beds = roomTypes[0]; // One single bed
-        case 2:
-            return preference.beds = roomTypes[Math.ceil(Math.random() * 2)]; // 2 single bed or 1 queen bed
-        case 3:
-            return preference.beds = roomTypes[3]; // One single bed and 1 queen bed
-        case 4:
-            return preference.beds = roomTypes[4]; // 2 queen beds
-        default:
-            console.log("Something went wrong. Too many guests.");
-    }
-}
+
