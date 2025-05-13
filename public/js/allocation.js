@@ -2,18 +2,18 @@
 /* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
 export {allocate, resetMatrix, resetEverything, generateBatches, allocateAction, allocateRandom, allocateActioncheckDate}
 
-/**
- * Function that allocates bookings into the calendar. 
- * Takes in an array of bookings and adds them to the calendar.
- */
-function allocate(bookings, colurValue){
+
+
+// Function that allocates bookings into the calendar
+// Takes in an array of bookings and adds them to the calendar, also takes a color depending on allocation method
+function allocate(bookings, colorValue){
     console.log(bookings)
-    for (let i = 0; i < bookings.length; i++){
+    for (let i = 0; i < bookings.length; i++){ // Loops through all bookings and addEvent to put in calender
         calendar.addEvent({
             title: `Booking ${bookings[i].title}`,
             start: bookings[i].checkInDate,
             end: bookings[i].checkOutDate,
-            color: colurValue,
+            color: colorValue,
             resourceIds: [bookings[i].resourceIds],
             extendedProps: {
                 guestsNumber: bookings[i].guestsNumber,
@@ -24,12 +24,10 @@ function allocate(bookings, colurValue){
     }
 } 
 
-/**
- * Function that . . . !!
- */
+
+// Function that when pressed, resets both calender and current matrix
 function resetEverything(){
-    // For every event, delete the event. 
-    calendar.getEvents().forEach(event => event.remove());
+    calendar.getEvents().forEach(event => event.remove()); // For every event, remove from calender
     resetMatrix()
 }
 
@@ -60,8 +58,14 @@ function resetMatrix() {
  * Function that generates batches and places it inside a JSON file.
  */
 function generateBatches() {
-    // Sending POST request to router.js, as we are creating batches on the server side.
-    fetch('batch365', {
+
+    const amountOfBookingsInput = document.querySelector("#bookingsInput");
+    const amountOfBookings = parseInt(amountOfBookingsInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+
+    let url = `generateBookings?amountOfBookings=${amountOfBookings}`; // Create URL string with days as a query parameter
+
+    // Sending POST request to router.js, as we are creating batches on the server side
+    fetch(url, {
     method: "POST"
     })
     .then((response) => {
@@ -71,7 +75,8 @@ function generateBatches() {
         return response.json();
     })
     .then((result) => {
-        // Reponse in the form of text, that the batch was generated. 
+
+        // Reponse in form of text that tells the batch has been generated
         console.log('Batch generated:', result);
     })
     .catch((error) => {
@@ -83,9 +88,12 @@ function generateBatches() {
  * Allocate function called upon button click. Used later to allocate bookings into calendar.
  */
 function allocateAction() {
+    // Get the value from the input field with id "dayInput"
+    // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
-    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid. 
-    let url = `allocate?days=${days}`;
+    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+
+    let url = `allocate?days=${days}`; // Create URL string with days as a query parameter
 
     fetch(url, {
         method: 'GET',
@@ -110,10 +118,14 @@ function allocateAction() {
 
 // Function that allocates random bookings into the calendar.
 function allocateRandom(){
-    const dayInput = document.querySelector("#dayInput");
-    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid.
 
-    let url = `random?days=${days}`;
+    // Get the value from the input field with id "dayInput"
+    // This value is used to determine the number of days for allocation
+    const dayInput = document.querySelector("#dayInput");
+
+    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+
+    let url = `random?days=${days}`; // Create URL string with days as a query parameter
 
     fetch(url, {
         method: 'GET',
@@ -140,10 +152,13 @@ function allocateRandom(){
 // Allocate function called upon button click. Used later to allocate bookings into calendar.
 function allocateActioncheckDate() {
 
+    // Get the value from the input field with id "dayInput"
+    // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
-    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid.
 
-    let url = `allocate2?days=${days}`;
+    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+
+    let url = `allocate2?days=${days}`; // Create URL string with days as a query parameter
 
     fetch(url, {
         method: 'GET',

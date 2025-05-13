@@ -2,15 +2,16 @@
  * This file . . . 
  */
 
-import fs from 'fs/promises';
 import dayjs from 'dayjs';
-import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
-import { checkAvailability, availabilityGrid, insertBookings, extendGrid, bookingRange, dateDifference, dateIndex } from './availabilityMatrix.js';
+import { loadBookings, loadRooms } from '../utils/getInfo.js';
+import { checkAvailability, availabilityGrid, insertBookings, dateDifference } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
-import { globalState } from "../utils/globalVariables.js";
+import { globalState, roomsResourceIdToObject } from "../utils/globalVariables.js";
+import { calculatePrefScore, calculatePrefScoreRandom } from '../utils/prefScores.js';
 export { getVisibleBookings, matchBookingsToRooms, sortByDuration, timespanAvailability }
+
 
 dayjs.extend(isSameOrBefore); 
 dayjs.extend(isSameOrAfter);
@@ -26,54 +27,64 @@ async function matchBookingsToRooms(version) {
         const { bookingsInfo } = await loadBookings();
         const { roomsInfo } = await loadRooms();
 
+        let totalRandomPrefScore = 0;
+        let randomPrefScore = 0;
+
         // use function to create array of the bookings that should be visible for a given date
        const visibleBookings = await getVisibleBookings(bookingsInfo, globalState.currentDay);
 
         // Sort the array depending on what version of the fuction is called
         if (version === 0 || version === 1){
             await sortByDuration(visibleBookings) // sort by duration of stay
-        } else { // else, do not sort if random allocation is pressed
-        }
-         
-        console.log(globalState.currentDay)
+        }  // else, do not sort if random allocation is pressed
+        
+
+      
 
         // Makes a DEEP copy of the availabilityGrid
         let tempMatrix = JSON.parse(JSON.stringify(availabilityGrid));
-
+    
+        let discardedBookings = [];
         let finalArray = []
-        let arr = []
         // Match bookings to rooms
-        for (const booking of visibleBookings) {
+        for (let booking of visibleBookings) {
             if (version === 0){
                 booking.resourceIds = await bestFit(booking, roomsInfo, tempMatrix);
             } else { // else random
                 booking.resourceIds = await assignResId(booking, roomsInfo, tempMatrix);
             }
 
-            //booking.title = booking.guestsNumber
-            booking.title = booking.guestsNumber + " " + booking.bookingId + " " + booking.stayDuration
 
+
+            // Insert into our temporary matrix
             if (booking.resourceIds !== "0") {
                 tempMatrix = insertBookings([booking], tempMatrix);
                 
                 // If this booking starts today, add it to our final array
                 if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')) {
+                    // If version is 2, random allocation
+                    if (version === 2) {
+                        randomPrefScore = await calculatePrefScoreRandom(booking, parseInt(booking.resourceIds));
+                        totalRandomPrefScore += randomPrefScore;
+                    }
+                    //booking.title = booking.guestsNumber
+                    booking.title = booking.guestsNumber + " " + randomPrefScore + " " + booking.bookingId;
                     finalArray.push(booking);
                 }
             } else {
-                //console.log(`No room found for booking ${booking.bookingId}`);
+                if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')) {
+                    discardedBookings.push(booking);
+                }
             }
         }
         
         // Update the real availability grid with today's new bookings
         if (version === 2) {
             insertBookings(finalArray, availabilityGrid);
-            return finalArray;
+            return { finalArray, totalRandomPrefScore, discardedBookings };
         }
-        
-        //console.log("Final bookings to display:", finalArray.length);
-        return visibleBookings;
-        //return finalArray;
+       
+        return { visibleBookings, totalRandomPrefScore, discardedBookings };
 
     } catch (error) {
         console.error("Error updating bookings:", error);
@@ -90,17 +101,17 @@ async function matchBookingsToRooms(version) {
 async function assignResId(booking, rooms, tempMatrix) {
     // Loop through every room available
     for (const room of rooms) {
-        if (booking.guestsNumber <= room.roomGuests) { // if the room can occupy the guests
+        if (booking.guestsNumber == room.roomGuests) { // if the room can occupy the guests
             // Check if the room is available
             if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate, tempMatrix) === 1){
                 return room.roomNumber;
             }
+
         }
         else {
-            continue;
+            continue; // Else, move on to the next room
         }
     }
-    //console.log("Didn't find any available rooms")
     return "0";
 }
 
@@ -159,7 +170,7 @@ function timespanAvailability(roomNumber, startDate, endDate, tempMatrix){
  */
 async function bestFit(booking, rooms, tempMatrix) {
     // Filter rooms that can accommodate the number of guests.
-    let eligibleRooms = rooms.filter(room => booking.guestsNumber <= room.roomGuests);
+    let eligibleRooms = rooms.filter(room => booking.guestsNumber == room.roomGuests);
     
     // If there are no eligible rooms, return "0".
     if (eligibleRooms.length === 0) {

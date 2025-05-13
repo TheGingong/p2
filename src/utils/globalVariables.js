@@ -2,12 +2,20 @@
  * This is a file for all the global variables that we use throughout the program files.
  * These variables are meant to be changed and imported/exported multiple times.
  * Having them here is just to get a better overview of them instead of having to go through each individual file where they may be used.
- * 
  * This is also meant to store variables that we want to change to test the program, such as the amount of rooms/guests, etc.
+ * The following variables are included:
+ * @global {buildingFloors} - The amount of floors in the hotel
+ * @global {roomsPerFloor} - The amount of rooms per floor
+ * @global {maxGuests} - The maximum amount of guests in a room
+ * @global {roomTypes} - The types of rooms in the hotel
+ * @global {globalState} - The global state of the program
+ * @global {roomsResourceIdToObject} - Hash map for roomsInfo
+ * @global {roomsIndexToResourceId} - Hash map for roomsInfo
  */
 
 import dayjs from "dayjs";
-import { loadRooms } from "./getInfo.js";
+import { bookingsInfo, loadRooms } from "./getInfo.js"; // Importing the bookings and rooms info
+
 export {
     buildingFloors,
     roomsPerFloor,
@@ -33,6 +41,8 @@ let buildingFloors = 5; // Floors in the hotel.
 let roomsPerFloor = 2; // Amount of rooms to generate for each floor.
 let maxGuests = 4; // Maximum guests for the largest room (-1 because we add in the random generation in roomGenerator).    
 
+
+
 /**
  * Hash map for roomsInfo, that converts from the resourceID 
  * to the room's object containing more detailed information.
@@ -47,6 +57,7 @@ if (!Array.isArray(roomsInfo)) {
 }
 
 const roomsResourceIdToObject = roomsInfo.reduce((hash, room) => {
+// Hash map for roomsInfo
     hash[room.roomNumber] = room;
     return hash;
 }, {});

@@ -53,6 +53,7 @@ function dateDifference(date1, date2) {
  * @param {Integer} date_range - Number determined with bookingRange from first day to last booking
  */
 function extendGrid(rooms, date_range) {
+
 	if (date_range === 0) {
 		console.log(availabilityGrid);
 		console.log("date_range = 0");
@@ -97,6 +98,13 @@ function extendGrid(rooms, date_range) {
 	console.log("availabilityGrid");
 	console.log(availabilityGrid);
 }
+
+/**
+ * Takes an array of bookings and inserts it into the given grid (matrix).
+ * @param {Array} newBookings - Array of booking objects
+ * @param {Object} grid - A matrix
+ * @returns {Object} grid - The updated matrix with inserted bookings
+ */
 function insertBookings(newBookings, grid) {
 	// for each booking
 	//console.log("New Bookings:", newBookings); - resolve comments !!
@@ -131,6 +139,7 @@ function insertBookings(newBookings, grid) {
 	return grid;
 }
 
+
 function checkAvailability(room, date, grid) {
 	const realDate = dayjs(date);
 
@@ -154,21 +163,26 @@ function resetMatrix() {
           console.log("Matrix reset.");
 }
 
-function createSlice(matrix, sliceStartDate, sliceEndDate) {
-	console.log(
-		`Copy ${matrix} from ${sliceStartDate}, to ${sliceEndDate}.`
-	);
-	const sliceMatrix = [];
-	const sliceEndIndex = sliceEndDate + 1;
-}
+
+
+/**
+ * Checks availability for a given room and date, in a specific grid (either availabilityGrid or tempMatrix).
+ * @param {String} room - Room number matching the index of the matrix
+ * @param {String} date - Date of booking to check in matrix
+ * @param {Object} grid - Matrix to be checked
+ * @returns {Integer} - Returns 1 if the room is occupied, and 0 if the room is unnocipied. 
+ */
+
 
 export function getAvailabilityGridForTesting() {
 	return availabilityGrid;
 }
 
+
 // Getter for the module's internal 'temp_min'
 export function getTempMinForTesting() {
 	return temp_min;
+
 }
 
 export function setTempMinForTesting(newDate) {

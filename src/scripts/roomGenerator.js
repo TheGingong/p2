@@ -1,8 +1,10 @@
 import fs from 'fs/promises'
 import { roomTypes } from '../utils/globalVariables.js';
 import { buildingFloors, roomsPerFloor, maxGuests } from '../utils/globalVariables.js'
+
 import { bookingsInfo, loadBookings } from '../utils/getInfo.js';
 export { generateRoomNumber, generateRooms, generateGuests, generateRoomTypes }
+
 
 let preference = {};
 
@@ -18,6 +20,7 @@ async function generateRooms () {
     await fs.writeFile(roomsPath, "[\n", "utf8");
 
     // Loop that generates rooms, and inserts them into the array for a said amount of rooms per floor for each floor.
+
     for (let i = 1; i <= buildingFloors; i++) {
         for (let j = 1; j <= roomsPerFloor; j++) {
             console.log(`Room Number (${i}, ${j}):`, generateRoomNumber(i, j));
@@ -33,6 +36,7 @@ async function generateRooms () {
             let roomData = JSON.stringify(roomObject, null, 2);
 
             // if not the first entry, add a comma for valid JSON.
+
             if (i !== 1 || j !== 1) {
             roomData = ",\n" + roomData;
             }
@@ -44,10 +48,12 @@ async function generateRooms () {
     await fs.appendFile(roomsPath, "\n]", "utf8");
 }
 
+
 /**
- * Function that generates a roomnumber adding the floor and the roomnumber.
- * @param {Integer} roomFloor - The floor the rooms i placed on
- * @param {Integer} roomNumber - The rooms number
+ * Function that generates a roomnumber adding the floor and the roomnumber,
+ * E.g, roomnumber "109" is room 9 on floor 1.
+ * @param {Integer} roomFloor - The floor the room is placed on
+ * @param {Integer} roomNumber - The room's number
  * @returns {String} - roomnumber string
  */
 function generateRoomNumber(roomFloor, roomNumber) {
