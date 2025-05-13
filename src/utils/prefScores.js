@@ -1,70 +1,73 @@
+/**
+ * The functions in this file are designed to, given a booking and a room, 
+ * figure out how well the allocation accomodates the guest's preferences. 
+ */
+
 import { roomsResourceIdToObject } from "./globalVariables.js";
-export { calculatePrefScore }
+export { calculatePrefScore, calculatePrefScoreRandom }
 
-// DELETE THIS MBY
-async function scoringtwo(bookingsInfo, roomsInfo) {
-    // Create a hash table for roomsInfo
-    const roomsResourceIdToObject = roomsInfo.reduce((hash, room) => {
-        hash[room.roomNumber] = room;
-        return hash;
-    }, {});
+export let prefScoreArray = [];
 
-    let sumOfScores = 0;
-
-    for (let assignment of bookingsInfo) {
-        let score = 1;
-        const roomDetails = roomsResourceIdToObject[assignment.resourceIds];
-        if (roomDetails) { // If the resourceId exists in the hash table
-            // Check if roomGuests match guestsNumber
-            if (roomDetails.preference.beds != assignment.preference.beds) {
-                score -= 0.5;
-            }
-            if (assignment.preference.hasOwnProperty('floor') && assignment.preference.floor != roomDetails.preference.floor) {
-                score -= 0.5;
-            }
-
-            sumOfScores += score;
-
-        } else {
-            console.log(`Room ${assignment.resourceIds} not found in roomsInfo`);
-        }
-    }
-    console.log("Average score is", sumOfScores / bookingsInfo.length);
-}
-
-async function calculatePrefScore(booking, room) {
+/**
+ * The function loads the needed data, compares the booking and room, and returnd the preference score. 
+ */
+async function calculatePrefScore(booking, room, version) {
     let score = 1;
-
+    
+    // Load the object containing the data on the parsed room ID.
     const roomDetails = roomsResourceIdToObject[room];
-
+    
+    // Load how many total preferences for the booking.
     const amountOfPreferences = Object.keys(booking.preference);
+
+    // If statement that gives a score of -2 if this preference is not met. This is a hard constraint so its important to make sure it can't swap.
+    if (roomDetails.roomGuests != booking.guestsNumber) {
+        score = -2;
+    }
+
+    // For every preference, we check if they are equal to any preferences in the room.j
     for (let key of amountOfPreferences) {
-        // Check if preferences are equal to preferences in the room
         if (!roomDetails.preference.hasOwnProperty(key) || roomDetails.preference[key] !== booking.preference[key]) {
             score -= 1 / amountOfPreferences.length;
         }
     }
-    console.log(score, "*", booking.stayDuration)
-    console.log(score * booking.stayDuration)
-    return score * booking.stayDuration;
+
+    /** 
+     * The resulting preference score for the guest is multiplied by how many days the guest is staying, 
+     * and thus has said preference score. The result is console logged and returned. 
+     */ 
+
+
+    return score;
 }
 
-let visibleBookings = [
-    {
-      "checkInDate": "2025-02-19",
-      "checkOutDate": "2025-02-28",
-      "guestsNumber": 4,
-      "stayDuration": 9,
-      "dayOfBooking": "2025-01-10",
-      "resourceIds": "103",
-      "bookingId": "s5",
-      "preference": {
-        "beds": "s0q2",
-        "pref1": "1",
-        "pref2": "2",
-        "pref3": "3",
-      }
-    }
-  ]
 
-calculatePrefScore(visibleBookings[0], "101")
+
+async function calculatePrefScoreRandom(booking, room) {
+    let score = 1;
+    
+    // Load the object containing the data on the parsed room ID.
+    const roomDetails = roomsResourceIdToObject[room];
+    
+    // Load how many total preferences for the booking.
+    const amountOfPreferences = Object.keys(booking.preference);
+
+    console.log("Booking:", booking);
+    console.log("Room:", room);
+
+    // For every preference, we check if they are equal to any preferences in the room.j
+    for (let key of amountOfPreferences) {
+        if (!roomDetails.preference.hasOwnProperty(key) || roomDetails.preference[key] !== booking.preference[key]) {
+            score -= 1 / amountOfPreferences.length;
+        }
+    }
+
+    /** 
+     * The resulting preference score for the guest is multiplied by how many days the guest is staying, 
+     * and thus has said preference score. The result is console logged and returned. 
+     */ 
+    for(let i = 0; i < booking.stayDuration; i++){
+        prefScoreArray.push(score)
+    }
+    return score;
+}

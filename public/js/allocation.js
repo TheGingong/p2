@@ -2,6 +2,8 @@
 /* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
 export {allocate, resetMatrix, resetEverything, generateBatches, allocateAction, allocateRandom, allocateActioncheckDate}
 
+
+
 // Function that allocates bookings into the calendar
 // Takes in an array of bookings and adds them to the calendar, also takes a color depending on allocation method
 function allocate(bookings, colorValue){
@@ -22,13 +24,16 @@ function allocate(bookings, colorValue){
     }
 } 
 
+
 // Function that when pressed, resets both calender and current matrix
 function resetEverything(){
     calendar.getEvents().forEach(event => event.remove()); // For every event, remove from calender
     resetMatrix()
 }
 
-// Reset function to reset the calendar
+/** 
+ * Function to reset the calendar.
+ */
 function resetMatrix() {
     // Sending POST request to router.js
     fetch('reset', {
@@ -41,7 +46,7 @@ function resetMatrix() {
         return response.json();
     })
     .then((result) => {
-        // Reponse in form of text that the batch was generated
+        // Reponse in the form of text, that the batch was generated.
         console.log('Calender was reset', result);
     })
     .catch((error) => {
@@ -49,7 +54,9 @@ function resetMatrix() {
     });
 }
 
-// Function that generates batches and places it inside a JSON file
+/**
+ * Function that generates batches and places it inside a JSON file.
+ */
 function generateBatches() {
 
     const amountOfBookingsInput = document.querySelector("#bookingsInput");
@@ -68,6 +75,7 @@ function generateBatches() {
         return response.json();
     })
     .then((result) => {
+
         // Reponse in form of text that tells the batch has been generated
         console.log('Batch generated:', result);
     })
@@ -76,10 +84,10 @@ function generateBatches() {
     });
     }
 
-
-// Allocate function called upon button click. Used later to allocate bookings into calendar.
+/**
+ * Allocate function called upon button click. Used later to allocate bookings into calendar.
+ */
 function allocateAction() {
-
     // Get the value from the input field with id "dayInput"
     // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
@@ -100,7 +108,7 @@ function allocateAction() {
             return response.json();
         })
         .then((data) => {
-            // Call the allocate function with the fetched data, that allocates bookings into calendar
+            // Call the allocate function with the fetched data, which allocates bookings into the calendar.
             allocate(data, "rgb(77, 160, 244)");
         })
         .catch((error) => {
@@ -108,12 +116,13 @@ function allocateAction() {
         });
 }
 
-// Function that allocates random bookings into the calendar
+// Function that allocates random bookings into the calendar.
 function allocateRandom(){
 
     // Get the value from the input field with id "dayInput"
     // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
+
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
 
     let url = `random?days=${days}`; // Create URL string with days as a query parameter
@@ -131,7 +140,7 @@ function allocateRandom(){
             return response.json();
         })
         .then((data) => {
-            // Call the allocate function with the fetched data, that allocates bookings into calendar
+            // Call the allocate function with the fetched data, which allocates bookings into calendar.
             allocate(data, "rgb(45, 45, 49)");
         })
         .catch((error) => {
@@ -146,6 +155,7 @@ function allocateActioncheckDate() {
     // Get the value from the input field with id "dayInput"
     // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
+
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
 
     let url = `allocate2?days=${days}`; // Create URL string with days as a query parameter
@@ -163,7 +173,7 @@ function allocateActioncheckDate() {
             return response.json();
         })
         .then((data) => {
-            // Call the allocate function with the fetched data, that allocates bookings into calendar
+            // Call the allocate function with the fetched data, which allocates bookings into calendar.
             allocate(data, "rgb(245, 154, 56)");
         })
         .catch((error) => {

@@ -12,19 +12,19 @@ export {
   resetMatrix
 };
 
-let today = dayjs(globalState.currentDay); // Get today's date
+let today = dayjs(globalState.currentDay); // Get today's date.
 
-let availabilityGrid = {}; // Global matrix
+let availabilityGrid = {}; // Initializes globally available matrix.
 
-let temp_min = today; // The last "last" booking
+let temp_min = today; // The last "last" booking. - explain !! - maybe change var name from temp !!
 
-// BookingRange takes an array of bookings and finds the booking with the longest checkOutDate, this value is given to extendGrid.
+// BookingRange takes an array of bookings and finds the booking with the longest checkOutDate. This value is given to extendGrid.
 function bookingRange(newBookings) {
-  // temp_max = The new last booking
+  // temp_max is set to the new 'last' booking.
   let temp_max = temp_min;
   let range = 0;
 
-  // If we have a new booking with a later end date we set the range to be the differnce between the last end date and the new 
+  // If we have a new booking with a later end date, we set the range to be the differnce between the previous end date and the new one. 
   for (let i of newBookings) {
     if (dateIndex(i.checkOutDate) > dateIndex(temp_max)) {
       temp_max = i.checkOutDate;
@@ -36,18 +36,17 @@ function bookingRange(newBookings) {
   return range;
 }
 
-// Function that returns an index showing the difference from the given date to today in a number
+// Function that returns an index showing the difference from the given date to today as an int.
 function dateIndex(date) {
-  const futureDate = dayjs(date); // Convert string to dayjs
+  const futureDate = dayjs(date); // Convert string to dayjs.
   return futureDate.diff(today, "day");
 }
 
-// Function that returns the difference between 2 days in a number
+// Function that returns the difference between 2 days as an int.
 function dateDifference(date1, date2) {
   return dayjs(date2).diff(dayjs(date1), "day");
 }
 
-// extends matrix for a given set of data with amount of rooms and the range of dates in the data set
 /**
  * Extends matrix for a given dataset with certain amount of rooms and the range of dates in the dataset.
  * @param {Array} rooms - Array of all rooms
@@ -62,33 +61,32 @@ function extendGrid(rooms, date_range) {
   console.log("date_range = " + date_range);
   let tempGrid = {};
 
-  // if empty, create new grid and fill with 0
+  // If empty, create new grid and fill it with 0.
   if (Object.keys(availabilityGrid).length === 0) {
     rooms.forEach((room) => {
       availabilityGrid[room.roomNumber] = new Array(date_range).fill(0);
       console.log("grid empty, new grid created");
     });
   } else {
-    // Makes temporary grid for the new matrix that needs to be appended to the total grid
+    // Makes temporary grid for the new matrix, which needs to be appended to the total grid.
     rooms.forEach((room) => {
       tempGrid[room.roomNumber] = new Array(date_range).fill(0);
     });
     console.log(tempGrid);
 
-    // Appends the temp grid to the total grid
-    // the format and syntax to push might be wrong atm..
-    roomsInfo.forEach((room) => {
-      //		availabilityGrid[room.roomNumber].push(date_range.fill(0));
-    });
+    //// Appends the temp grid to the total grid. - Delete? !!
+    //roomsInfo.forEach((room) => {
+    //  availabilityGrid[room.roomNumber].push(date_range.fill(0));
+    //});
 
-    // nyt forsøg
+    // Appends the array from tempGrid to the corresponding array in availabilityGrid
     for (let roomNumber in tempGrid) {
-      // Append the array from tempGrid to the corresponding array in availabilityGrid
-      // ... spread the array from tempgrid and pushes them individually so we dont push the entire array as one element
+      // The '...' (spread operator) pushes all elements in tempGrid individually, so we dont push the entire array as one element.
       availabilityGrid[roomNumber].push(...tempGrid[roomNumber]);
     }
   }
 
+  // Console logs and shows the availability grid visually. 
   console.log("availabilityGrid");
   console.log(availabilityGrid);
 }
@@ -110,15 +108,28 @@ function insertBookings(newBookings, grid) {
     let startIndex = parseInt(dateIndex(startDate));
     let endIndex = parseInt(dateIndex(endDate));
 
-    // Fill the grid for the room
-    grid[roomNumber][startIndex] = booking.bookingId;
-   
-    for (let i = startIndex+1; i < endIndex; i++) {
-      grid[roomNumber][i] = 1; // Mark as occupied
+    
+    if (!grid[roomNumber]) {
+      //console.error(`Room number ${roomNumber} not found in grid.`);
+      return;
     }
+
+    // Fill the grid for the room
+    grid[roomNumber][startIndex] = "s" + booking.bookingId;
+
+    for (let i = startIndex+1; i < endIndex-1; i++) {
+      grid[roomNumber][i] = booking.bookingId; // Mark as occupied
+    }
+
+    if (booking.stayDuration > 1) {
+      grid[roomNumber][endIndex-1] = "e" + booking.bookingId;
+    }
+
+
   });
   return grid;
 }
+
 
 /**
  * Checks availability for a given room and date, in a specific grid (either availabilityGrid or tempMatrix).
@@ -136,6 +147,7 @@ function checkAvailability(room, date, grid) {
   return grid[room][dateIndex(realDate)] !== 0 ? 1 : 0;
 }
 
+
 // Resets the matrix (avalibilityGrid) so new data can be input
 function resetMatrix(){
   for (const key in availabilityGrid) { // Sets all fields of the matrix to 0
@@ -145,11 +157,8 @@ function resetMatrix(){
   }
 }
 
-// Function slices availabilitymatrix at todays date, and copies the relevant remains into our ghost matrix
 function createSlice(matrix, sliceStartDate, sliceEndDate) {
-  console.log(
-      `Kopier:${matrix} fra: ${sliceStartDate} til ${sliceEndDate}.`
-);
-const sliceMatrix = [];
-const sliceEndIndex = sliceEndDate + 1;
+  console.log( `Copy ${matrix} from ${sliceStartDate}, to ${sliceEndDate}.` );
+  const sliceMatrix = [];
+  const sliceEndIndex = sliceEndDate + 1;
 }

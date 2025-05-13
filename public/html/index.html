@@ -8,7 +8,7 @@
     <div id="controls">
 
       <label for="dayInput">Number of days to allocate:</label>
-      <input type="number" id="dayInput" name="dayInput" value="0" min="0" step="1" />
+      <input type="number" id="dayInput" name="dayInput" value="1" min="0" step="1" />
 
       <button id="allocateButton_sort1">
         <span class="color-indicator least-diff"></span>
@@ -26,13 +26,13 @@
       </button>
 
       <label for="bookingsInput">Amount of bookings:</label>
-      <input type="number" id="bookingsInput" name="bookingsInput" value="0" min="0" step="1" />
+      <input type="number" id="bookingsInput" name="bookingsInput" value="200" min="0" step="1" />
 
       <button id="batchButton_id">
         <span class="color-indicator batch"></span>
         Generate bookings
       </button>
-    
+     
       <button id="resetMatrix">
         <span class="color-indicator reset"></span>
         Reset matrix
@@ -81,8 +81,6 @@
     let allocate2Elem = document.querySelector("#allocateButton_sort2");
     allocate2Elem.addEventListener("click", allocateActioncheckDate);
 
-
-    //window.allocateAction = allocateAction;
       
   </script>
 </html>
