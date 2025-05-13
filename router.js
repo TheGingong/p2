@@ -3,7 +3,7 @@ import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorRe
 import { extendGrid, insertBookings, checkAvailability, availabilityGrid, resetMatrix } from "./src/scripts/availabilityMatrix.js";
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
-import { storeBatch365 } from "./src/utils/impartial.js";
+import { storeBookings } from "./src/utils/impartial.js";
 import { calculatePrefScore, prefScoreArray } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
 import { getVisibleBookings, matchBookingsToRooms} from "./src/scripts/assignBookings.js";
@@ -22,7 +22,7 @@ startServer();
    ******************************************************************** */
    
    // Fills the rooms! 
-   //generateRooms();
+   generateRooms();
 
    async function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
@@ -39,8 +39,11 @@ startServer();
          switch(pathElements[1]){
           // ADD CASES FOR POST
           // Post endpoint for the generation of batches
-          case "batch365":
-            storeBatch365()
+          case "generateBookings":
+            // Get the number of bookings from the query parameter
+            const amountOfBookingsParam = searchParms.get("amountOfBookings");
+            const amountOfBookings = parseInt(amountOfBookingsParam, 10);
+            storeBookings(amountOfBookings)
             .then((result) => {
               jsonResponse(res, result);
             })
@@ -76,8 +79,9 @@ startServer();
               });
              fileResponse(res,"/html/index.html");
              break;
-          case "allocate": // sortByStayDuration
+          case "allocate": // sortByDuration and bestfit
             try {
+              // Get the number of days from the query parameter
               const daysParam = searchParms.get("days");
               const days = parseInt(daysParam, 10);
               await allocate(res, days, 0);
@@ -88,7 +92,7 @@ startServer();
               reportError(res, error); // Send error response
           }
           break;
-          case "allocate2": // sortByCheckInDay
+          case "allocate2": // sortByDuration only
             try {
               const daysParam = searchParms.get("days");
               const days = parseInt(daysParam, 10);
@@ -100,7 +104,7 @@ startServer();
               reportError(res, error); // Send error response
           }
           break;
-          case "random":
+          case "random": // allocate without sorting
             try {
               const daysParam = searchParms.get("days");
               const days = parseInt(daysParam, 10);
@@ -143,6 +147,12 @@ async function allocate(res, days, version){
     for (let i = startValue; i < days; i++) {
       assignedBookingsResults = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
 
+    let succesfulBookings = []
+    let assignedBookings = []
+    let notAssignedBookings = []
+    let failedBookings = []
+
+
       if (version !== 2) {
         let results = await preferenceOptimization(assignedBookingsResults.visibleBookings, totalPrefScore, null) || [];
         totalPrefScore = results.totalPrefScore;  // Update the accumulated score
@@ -168,11 +178,15 @@ async function allocate(res, days, version){
     console.log(sum / prefScoreArray.length)
     startValue = days;
 
+      succesfulBookings.push(...assignedBookings); // Push our array of succesful bookings we made in algorithm
+      failedBookings.push(...notAssignedBookings); // Push our array of failed bookings from algorithm into failedBookings
+       
 
-    //scoring(bookingsInfo, roomsInfo); // Perform scoring
-
-    //await jsonResponse(res, lastArray ); // Send the response
-    //console.log("lastArray")
-    //console.log(lastArray)
+    console.log("Succesful bookings: ")
+    console.log(succesfulBookings)
+    console.log("Assigned bookings: ", succesfulBookings.length)
+    console.log("Failed bookings: ", failedBookings.length)
+    
     jsonResponse(res, lastArray ); // Send the response
+
 }

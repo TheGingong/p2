@@ -1,6 +1,4 @@
-// 
-// 
-// 
+
 /**
  * This file has the functions: 
  *  - Creates calender with the fullCalender library.
@@ -16,7 +14,6 @@ fetch('rooms', {
   },
 })
   .then((response) => {
-    console.log("test1")
       if (!response.ok) {
           throw new Error('Network response was not ok');
       }
@@ -24,9 +21,8 @@ fetch('rooms', {
   })
   .then((data) => {
       // Map roomTypes to FullCalendar resources.
-      console.log("test2")
       let roomResources = [];
-      console.log("data received from rooms endpoint")
+      console.log("Data received from rooms endpoint")
 
       // Pushes room data to our roomResources array.
       data.forEach(room => {
@@ -47,7 +43,8 @@ fetch('rooms', {
         //  center: 'title',
         //  right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
         //},
-        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // Public key for private use.
+
+        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // Public key for private use
     
         initialView: 'booking_view', // Default view.
         views: { // Initialization of calender setup, a default 7 day calender.
@@ -76,13 +73,8 @@ fetch('rooms', {
             headerContent: 'Room size'
           }
         ],
-        resources: roomResources, // Insert array to resources.
-      
-        
-        // Add the eventDidMount option here (TOOL TIPS FUCKING UP - COMMENTING OUT FOR NOW) - resolve !!
-        //eventDidMount: function (info) {
-        //  tooltipMaker(info);
-        //}
+
+        resources: roomResources, // Insert array to resources
       });
 
       calendar.render(); // Renders the calender.
@@ -93,39 +85,3 @@ fetch('rooms', {
   .catch((error) => {
       console.error('There was a problem with the fetch operation:', error);
   });
-
-/**
- * This function creates tooltips for mousehover over bookings. - resolve, doesnt work !!
- */
-function tooltipMaker(info) {
-  // Create a tooltip element.
-  let tooltip = document.createElement('div');
-  tooltip.className = 'custom-tooltip'; // Match the CSS class.
-
-  // giga inefficient cuz toLocaleDatestring searched a big database to localize the date - resolve !!
-  // We do this so the info.even.start gives us the timezone as well.
-  let formattedDate = info.event.start.toLocaleDateString();
-
-  tooltip.innerHTML = `<strong>${info.event.title}</strong><br>${info.event.extendedProps.description || 'No description available'}<br>${formattedDate}`;
-  document.body.appendChild(tooltip);
-
-  // Use Popper.js to position the tooltip.
-  let popperInstance = Popper.createPopper(info.el, tooltip, {
-      placement: 'top',
-      modifiers: [{ name: 'offset', options: { offset: [0, 8] } }]
-  });
-
-  // Show the tooltip on mouseover.
-  info.el.addEventListener('mouseover', function () {
-      tooltip.style.visibility = 'visible';
-      tooltip.style.zIndex = '1000'; // Ensure it appears in front of other elements.
-  });
-
-  // Hide the tooltip on mouseleave.
-  info.el.addEventListener('mouseleave', function () {
-      tooltip.style.visibility = 'hidden';
-  });
-}
-
-
-   

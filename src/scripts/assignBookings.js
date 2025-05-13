@@ -3,14 +3,15 @@
  */
 
 import dayjs from 'dayjs';
-import { bookingsPath, roomsPath, loadBookings, loadRooms } from '../utils/getInfo.js';
-import { checkAvailability, availabilityGrid, insertBookings, extendGrid, bookingRange, dateDifference, dateIndex } from './availabilityMatrix.js';
+import { loadBookings, loadRooms } from '../utils/getInfo.js';
+import { checkAvailability, availabilityGrid, insertBookings, dateDifference } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
 import { start } from 'repl';
 import { globalState, roomsResourceIdToObject } from "../utils/globalVariables.js";
 import { calculatePrefScore, calculatePrefScoreRandom } from '../utils/prefScores.js';
 export { getVisibleBookings, matchBookingsToRooms, sortByDuration, timespanAvailability }
+
 
 dayjs.extend(isSameOrBefore); 
 dayjs.extend(isSameOrAfter);
@@ -35,16 +36,16 @@ async function matchBookingsToRooms(version) {
         // Sort the array depending on what version of the fuction is called
         if (version === 0 || version === 1){
             await sortByDuration(visibleBookings) // sort by duration of stay
-        } else { // else, do not sort if random allocation is pressed
-        }
-         
-        console.log(globalState.currentDay)
+        }  // else, do not sort if random allocation is pressed
+        
+
+      
 
         // Makes a DEEP copy of the availabilityGrid
         let tempMatrix = JSON.parse(JSON.stringify(availabilityGrid));
-
+    
+        let discardedBookings = [];
         let finalArray = []
-        let arr = []
         // Match bookings to rooms
         for (let booking of visibleBookings) {
             if (version === 0){
@@ -53,6 +54,9 @@ async function matchBookingsToRooms(version) {
                 booking.resourceIds = await assignResId(booking, roomsInfo, tempMatrix);
             }
 
+
+
+            // Insert into our temporary matrix
             if (booking.resourceIds !== "0") {
                 tempMatrix = insertBookings([booking], tempMatrix);
                 
@@ -68,19 +72,19 @@ async function matchBookingsToRooms(version) {
                     finalArray.push(booking);
                 }
             } else {
-                //console.log(`No room found for booking ${booking.bookingId}`);
+                if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')) {
+                    discardedBookings.push(booking);
+                }
             }
         }
         
         // Update the real availability grid with today's new bookings
         if (version === 2) {
             insertBookings(finalArray, availabilityGrid);
-            return { finalArray, totalRandomPrefScore };
+            return { finalArray, totalRandomPrefScore, discardedBookings };
         }
-        
-        //console.log("Final bookings to display:", finalArray.length);
-        return { visibleBookings, totalRandomPrefScore };
-        //return finalArray;
+       
+        return { visibleBookings, totalRandomPrefScore, discardedBookings };
 
     } catch (error) {
         console.error("Error updating bookings:", error);
@@ -102,11 +106,12 @@ async function assignResId(booking, rooms, tempMatrix) {
             if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate, tempMatrix) === 1){
                 return room.roomNumber;
             }
-        } else {
-            continue;
+
+        }
+        else {
+            continue; // Else, move on to the next room
         }
     }
-    //console.log("Didn't find any available rooms")
     return "0";
 }
 

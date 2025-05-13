@@ -72,7 +72,6 @@ function extendGrid(rooms, date_range) {
     rooms.forEach((room) => {
       tempGrid[room.roomNumber] = new Array(date_range).fill(0);
     });
-    console.log("avtempGRidailabilityGrid");
     console.log(tempGrid);
 
     //// Appends the temp grid to the total grid. - Delete? !!
@@ -91,9 +90,15 @@ function extendGrid(rooms, date_range) {
   console.log("availabilityGrid");
   console.log(availabilityGrid);
 }
+
+/**
+ * Takes an array of bookings and inserts it into the given grid (matrix).
+ * @param {Array} newBookings - Array of booking objects
+ * @param {Object} grid - A matrix
+ * @returns {Object} grid - The updated matrix with inserted bookings
+ */
 function insertBookings(newBookings, grid) {
-  // for each booking
-  //console.log("New Bookings:", newBookings); - resolve comments !!
+  // Initialize dates with forEach
   newBookings.forEach((booking) => {
     let startDate = new Date(booking.checkInDate);
     let endDate = new Date(booking.checkOutDate);
@@ -103,6 +108,7 @@ function insertBookings(newBookings, grid) {
     let startIndex = parseInt(dateIndex(startDate));
     let endIndex = parseInt(dateIndex(endDate));
 
+    
     if (!grid[roomNumber]) {
       //console.error(`Room number ${roomNumber} not found in grid.`);
       return;
@@ -124,6 +130,14 @@ function insertBookings(newBookings, grid) {
   return grid;
 }
 
+
+/**
+ * Checks availability for a given room and date, in a specific grid (either availabilityGrid or tempMatrix).
+ * @param {String} room - Room number matching the index of the matrix
+ * @param {String} date - Date of booking to check in matrix
+ * @param {Object} grid - Matrix to be checked
+ * @returns {Integer} - Returns 1 if the room is occupied, and 0 if the room is unnocipied. 
+ */
 function checkAvailability(room, date, grid) {
   const realDate = dayjs(date);
 
@@ -133,8 +147,10 @@ function checkAvailability(room, date, grid) {
   return grid[room][dateIndex(realDate)] !== 0 ? 1 : 0;
 }
 
+
+// Resets the matrix (avalibilityGrid) so new data can be input
 function resetMatrix(){
-  for (const key in availabilityGrid) {
+  for (const key in availabilityGrid) { // Sets all fields of the matrix to 0
     for (let i = 0; i < availabilityGrid[key].length; i++) {
       availabilityGrid[key][i] = 0;
     }
