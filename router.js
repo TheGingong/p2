@@ -22,7 +22,7 @@ startServer();
    ******************************************************************** */
    
    // Fills the rooms! 
-   generateRooms();
+   //generateRooms();
 
    async function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
@@ -144,13 +144,15 @@ async function allocate(res, days, version){
 
     days += startValue;
 
-    for (let i = startValue; i < days; i++) {
-      assignedBookingsResults = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
-
-    let succesfulBookings = []
+    let successfulBookings = []
     let assignedBookings = []
     let notAssignedBookings = []
     let failedBookings = []
+
+    for (let i = startValue; i < days; i++) {
+      assignedBookingsResults = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
+
+
 
 
       if (version !== 2) {
@@ -178,13 +180,13 @@ async function allocate(res, days, version){
     console.log(sum / prefScoreArray.length)
     startValue = days;
 
-      succesfulBookings.push(...assignedBookings); // Push our array of succesful bookings we made in algorithm
+     successfulBookings.push(...assignedBookings); // Push our array of succesful bookings we made in algorithm
       failedBookings.push(...notAssignedBookings); // Push our array of failed bookings from algorithm into failedBookings
        
 
     console.log("Succesful bookings: ")
-    console.log(succesfulBookings)
-    console.log("Assigned bookings: ", succesfulBookings.length)
+    console.log(successfulBookings)
+    console.log("Assigned bookings: ", successfulBookings.length)
     console.log("Failed bookings: ", failedBookings.length)
     
     jsonResponse(res, lastArray ); // Send the response

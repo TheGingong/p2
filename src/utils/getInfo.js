@@ -8,7 +8,7 @@
 import { readFile } from 'fs/promises'; // Imports function readFile from File System library.
 import path from 'path'
 import { fileURLToPath } from 'url';
-export { roomsInfo, bookingsInfo, loadBookings, loadRooms, bookingsPath, roomsPath, visibleJsonPath};
+export { roomsInfo, bookingsInfo, loadBookings, loadRooms, bookingsPath, roomsPath};
 
 
 // Get the directory of the current file.

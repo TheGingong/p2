@@ -108,9 +108,10 @@ function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray, curr
  */
 function validSwapsV2(booking, room, matrix, currentDay) {
     //let numberZeroes = -1;
-    if (booking.guestsNumber === roomsResourceIdToObject[room].roomGuests) {
+    if (booking.guestsNumber == roomsResourceIdToObject[room].roomGuests) {
         return true;
     }
+    return false;
     
     //if (numberZeroes === booking.stayDuration) {
     //    return true
