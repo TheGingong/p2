@@ -3,7 +3,7 @@
  * Comparisons and swaps are made, as well as defining the necessary subfunctions. 
  */
 import { globalState, roomsIndexToResourceId, roomsResourceIdToObject } from "../utils/globalVariables.js";
-import { calculatePrefScore } from "../utils/prefScores.js";
+import { calculatePrefScore, prefScoreArray } from "../utils/prefScores.js";
 import { dateIndex, availabilityGrid, insertBookings } from "./availabilityMatrix.js";
 import { roomsInfo } from "../utils/getInfo.js";
 import { timespanAvailability } from "./assignBookings.js";
@@ -33,13 +33,14 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
     let prefScoreTable = [];
     let bestSwapMatch = 0;
 
+
     // Iterate through the bookings in the bookings starting today array.
     for (let booking of bookingsStartingToday) {
         for (let i = 0; i < roomArray.length; i++) {
             // Checks if the room checking for is a valid swap for the booking
             if (validSwapsV2(booking, roomArray[i], ghostMatrix, currentDay, 10)) {
                 // If its a valid swap, calculate the preference score
-                bookingPrefScore = 1 - await calculatePrefScore(booking, roomArray[i]);
+                bookingPrefScore = await calculatePrefScore(booking, roomArray[i]);
                 
                 // Ensure the room index in prefScoreTable is initialized.
                 if (!Array.isArray(prefScoreTable[i])) {
@@ -67,6 +68,11 @@ async function preferenceOptimization(visibleBookings, totalPrefScore, leniency)
         totalPrefScore += results.prefScore;
         booking.title = booking.guestsNumber + " " + results.prefScore + " " + booking.bookingId
         assignResourceIds(booking, bestSwapMatch, bookingsStartingToday, roomArray, prefScoreTable);
+
+
+        for(let i = 0; i < booking.stayDuration; i++){
+            prefScoreArray.push(results.prefScore)
+        }
     }
     // This return statement will be used to update fullCalendar
     return { bookingsStartingToday, totalPrefScore };

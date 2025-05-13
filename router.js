@@ -4,7 +4,7 @@ import { extendGrid, insertBookings, checkAvailability, availabilityGrid, resetM
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBatch365 } from "./src/utils/impartial.js";
-import { calculatePrefScore } from "./src/utils/prefScores.js";
+import { calculatePrefScore, prefScoreArray } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
 import { getVisibleBookings, matchBookingsToRooms} from "./src/scripts/assignBookings.js";
 import {globalState } from "./src/utils/globalVariables.js";
@@ -136,6 +136,8 @@ async function allocate(res, days, version){
     let assignedBookingsResults = {};
     let totalPrefScore = 0;
     let totalRandomPrefScore = 0;
+    prefScoreArray.length = 0; // Clears the array
+
     days += startValue;
 
     for (let i = startValue; i < days; i++) {
@@ -147,8 +149,8 @@ async function allocate(res, days, version){
         lastArray.push(...results.bookingsStartingToday); // Push our array we made in algorithm
         console.log("Preferensce score for the current allocation", totalPrefScore);
       } else {
-        totalRandomPrefScore += assignedBookingsResults.totalRandomPrefScore;
-        console.log("Preferensce score for the current allocation RANDOM", totalRandomPrefScore);
+        totalPrefScore += assignedBookingsResults.totalRandomPrefScore;
+        console.log("Preferensce score for the current allocation RANDOM", totalPrefScore);
         lastArray.push(...assignedBookingsResults.finalArray); // Push our array we made in algorithm
       }
       
@@ -157,7 +159,15 @@ async function allocate(res, days, version){
       console.log("currentDay" + globalState.currentDay);
     
     }   
+
+    let sum = 0;
+    for (let i of prefScoreArray){
+      sum += i;
+    }
+    console.log("average preferences")
+    console.log(sum / prefScoreArray.length)
     startValue = days;
+
 
     //scoring(bookingsInfo, roomsInfo); // Perform scoring
 
