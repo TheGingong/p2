@@ -7,7 +7,6 @@ import { availabilityGrid } from "../scripts/availabilityMatrix.js";
 
 function wastedSpaceEvaluate(roomsObject) {
 
-	const newMatrix = createOccupancyMatrix();
 
     const roomMatrix = Object.values(roomsObject);
 	const consecutiveZeros = [];
@@ -62,7 +61,7 @@ function wastedSpaceEvaluate(roomsObject) {
           let newScore = 0;
 
           for (let i = 0; i < consecutiveZeros.length; i++) {
-                    console.log("Current newScore: " + newScore + ". Current number: " + consecutiveZeros[i])
+                    //console.log("Current newScore: " + newScore + ". Current number: " + consecutiveZeros[i])
                     newScore += (1 / (consecutiveZeros[i] ** 2));
           }
 	if (newScore !== 0) {
@@ -74,18 +73,16 @@ function wastedSpaceEvaluate(roomsObject) {
 
 
 
-export function createOccupancyMatrix() {
-	const occupancyMatrix = [];
-	let row = 0;
-	for (const key in availabilityGrid) {
-	  const arr = availabilityGrid[key];
-	  occupancyMatrix[row] = [];
-	  for (let col = 0; col < arr.length; col++) {
-		occupancyMatrix[row][col] = arr[col] !== 0
-		  ? 1
-		  : 0;
-	  }
-	  row++;
-	}
-	return occupancyMatrix;
-  }
+export function countZeroes(){
+
+	let zeroCount = 0;
+
+for (const key in availabilityGrid) {
+    for (let i = 0; i < availabilityGrid[key].length; i++) {
+        if (availabilityGrid[key][i] === 0) {
+            zeroCount++;
+        }
+    }
+}
+console.log("Total number of zeros:", zeroCount);
+}

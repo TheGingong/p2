@@ -9,6 +9,7 @@ import { json } from "stream/consumers";
 import { getVisibleBookings, matchBookingsToRooms} from "./src/scripts/assignBookings.js";
 import {globalState } from "./src/utils/globalVariables.js";
 import { preferenceOptimization } from "./src/scripts/algorithm.js";
+import { countZeroes, wastedSpaceEvaluate } from "./src/utils/wastedSpaceScore.js";
 import dayjs from "dayjs";
 
 const ValidationError="Validation Error";
@@ -22,7 +23,7 @@ startServer();
    ******************************************************************** */
    
    // Fills the rooms! 
-   //await generateRooms();
+   //generateRooms();
 
    async function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
@@ -191,8 +192,8 @@ async function allocate(res, days, version){
     
 
 
-    
-
+    //console.log("wasted space score: " + wastedSpaceEvaluate(availabilityGrid))
+   countZeroes()
 
     jsonResponse(res, lastArray ); // Send the response
 
