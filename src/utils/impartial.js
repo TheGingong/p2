@@ -9,7 +9,6 @@ import { extendGrid, bookingRange, availabilityGrid, dateDifference } from '../s
 import { roomsInfo, loadBookings } from './getInfo.js';
 import { roomTypes, totalPrefs, prefOddsGuests } from './globalVariables.js';
 import { generateSoftPrefs, generateRoomTypes } from './preferences.js';
-import { generateRoomNumber, generateRoomTypes } from '../scripts/roomGenerator.js';
 export { storeBookings }
 
 /**

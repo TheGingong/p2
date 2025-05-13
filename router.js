@@ -1,6 +1,6 @@
 export {ValidationError, NoResourceError, processReq};
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
-import { extendGrid, insertBookings, checkAvailability, availabilityGrid, resetMatrix } from "./src/scripts/availabilityMatrix.js";
+import { extendGrid, insertBookings, checkAvailability, availabilityGrid, clearMatrix } from "./src/scripts/availabilityMatrix.js";
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBookings } from "./src/utils/impartial.js";
@@ -22,7 +22,7 @@ startServer();
    ******************************************************************** */
    
    // Fills the rooms! 
-   //generateRooms();
+   //await generateRooms();
 
    async function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
@@ -52,7 +52,7 @@ startServer();
             })
             break;
           case "reset":
-            resetMatrix();
+            clearMatrix();
             startValue = 0;
             globalState.reset();
             jsonResponse(res, "matrix was succesfully reset");

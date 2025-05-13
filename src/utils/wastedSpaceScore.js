@@ -3,8 +3,7 @@ export { wastedSpaceEvaluate };
 
 function wastedSpaceEvaluate(roomsObject) {
 
-
-          const roomMatrix = Object.values(roomsObject);
+    const roomMatrix = Object.values(roomsObject);
 	const consecutiveZeros = [];
 	let currentCount = 0;
 
@@ -66,37 +65,4 @@ function wastedSpaceEvaluate(roomsObject) {
 
           return occupancyScore;
 }
-try {
-const badArrays = [
-         [0,1,0,1,0,1,0,1,0,1],
-         [0,1,0,1,0,1,0,1,0,1],
-         [0,1,0,1,0,1,0,1,0,1],
-         [0,1,0,1,0,1,0,1,0,1],
-         [0,1,0,1,0,1,0,1,0,1]
-]
-const fullArrays = [
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-]
 
-const NormalArrays = [
-  [0, 0, 0, 1, 1, 0, 1, 0, 0, 1],
-  [1, 0, 1, 0, 1, 0, 0, 1, 0, 0],
-  [], // Empty inner array
-  [5, 6, 7], // No zeros
-  [0, 0, 0, 0], // All zeros
-  [1, 1, 1, 0], // Trailing zero
-  [0, 1, 0, 0] // Leading and internal zeros
-];
-
-const result = wastedSpaceEvaluate(fullArrays);
-//console.log("Input Arrays:", arrays);
-console.log("Consecutive Zeros Counts:", result); // Expected: [3, 1, 2, 1, 1, 2, 2, 4, 1, 1, 2]
-
-} catch {
-          throw new Error ("Something went wrong bitch");
-}

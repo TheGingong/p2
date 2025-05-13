@@ -61,8 +61,6 @@ let roomsPerFloor = 5; // How many rooms to generate for every floor
 let maxGuests = 4; // Maximum guests for largest room (-1 because we add in the random)
 
 
-// Array which will hold template of rooms.
-let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]
 
 
 /**
