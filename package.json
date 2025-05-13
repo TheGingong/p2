@@ -4,5 +4,11 @@
     "fullcalendar": "^6.1.15",
     "fullcalendar-scheduler": "^6.1.15"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+"scripts": {
+  "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+}
 }
