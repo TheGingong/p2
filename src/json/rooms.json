@@ -1,44 +1,72 @@
 [
 {
   "roomNumber": "101",
-  "roomGuests": 4,
+  "roomGuests": 2,
   "preference": {
-    "beds": "s0q2"
+    "beds": "s2q0"
   }
 },
 {
   "roomNumber": "102",
-  "roomGuests": 4,
+  "roomGuests": 2,
   "preference": {
     "beds": "s0q1"
   }
 },
 {
-  "roomNumber": "103",
-  "roomGuests": 4,
+  "roomNumber": "201",
+  "roomGuests": 2,
   "preference": {
-    "beds": "s0q1"
+    "beds": "s2q0"
   }
 },
 {
-  "roomNumber": "104",
-  "roomGuests": 4,
-  "preference": {
-    "beds": "s0q2"
-  }
-},
-{
-  "roomNumber": "105",
-  "roomGuests": 4,
+  "roomNumber": "202",
+  "roomGuests": 3,
   "preference": {
     "beds": "s1q1"
   }
 },
 {
-  "roomNumber": "106",
+  "roomNumber": "301",
   "roomGuests": 1,
   "preference": {
     "beds": "s1q0"
+  }
+},
+{
+  "roomNumber": "302",
+  "roomGuests": 1,
+  "preference": {
+    "beds": "s1q0"
+  }
+},
+{
+  "roomNumber": "401",
+  "roomGuests": 2,
+  "preference": {
+    "beds": "s2q0"
+  }
+},
+{
+  "roomNumber": "402",
+  "roomGuests": 2,
+  "preference": {
+    "beds": "s0q1"
+  }
+},
+{
+  "roomNumber": "501",
+  "roomGuests": 4,
+  "preference": {
+    "beds": "s0q2"
+  }
+},
+{
+  "roomNumber": "502",
+  "roomGuests": 4,
+  "preference": {
+    "beds": "s0q2"
   }
 }
 ]

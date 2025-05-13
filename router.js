@@ -4,10 +4,11 @@ import { extendGrid, insertBookings, checkAvailability, availabilityGrid, resetM
 import { roomsInfo, bookingsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { generateRooms, generateRoomNumber, generateGuests } from "./src/scripts/roomGenerator.js";
 import { storeBookings } from "./src/utils/impartial.js";
-import { calculatePrefScore } from "./src/utils/prefScores.js";
+import { calculatePrefScore, prefScoreArray } from "./src/utils/prefScores.js";
 import { json } from "stream/consumers";
 import { getVisibleBookings, matchBookingsToRooms} from "./src/scripts/assignBookings.js";
 import {globalState } from "./src/utils/globalVariables.js";
+import { preferenceOptimization } from "./src/scripts/algorithm.js";
 import dayjs from "dayjs";
 
 const ValidationError="Validation Error";
@@ -21,7 +22,7 @@ startServer();
    ******************************************************************** */
    
    // Fills the rooms! 
-   generateRooms();
+   //generateRooms();
 
    async function processReq(req,res){
     console.log("GOT: " + req.method + " " +req.url);
@@ -134,39 +135,60 @@ startServer();
     } //end switch method
   }
 
-
 async function allocate(res, days, version){
-    let succesfulBookings = []
-    let allocationArray = []
+    let lastArray = [];
+    let assignedBookingsResults = {};
+    let totalPrefScore = 0;
+    let totalRandomPrefScore = 0;
+    prefScoreArray.length = 0; // Clears the array
+
+    days += startValue;
+
+    let successfulBookings = []
     let assignedBookings = []
     let notAssignedBookings = []
     let failedBookings = []
-    days += startValue
 
-    for (let i = startValue; i < days; i++){
-    //allocationArray = await getVisibleBookings(bookingsInfo, globalState.currentDay)
-      [assignedBookings,notAssignedBookings]= await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
+    for (let i = startValue; i < days; i++) {
+      assignedBookingsResults = await matchBookingsToRooms(version) || []; // sort by StayDuration, checkInDay or Random
 
+
+
+
+      if (version !== 2) {
+        let results = await preferenceOptimization(assignedBookingsResults.visibleBookings, totalPrefScore, null) || [];
+        totalPrefScore = results.totalPrefScore;  // Update the accumulated score
+        lastArray.push(...results.bookingsStartingToday); // Push our array we made in algorithm
+        console.log("Preferensce score for the current allocation", totalPrefScore);
+      } else {
+        totalPrefScore += assignedBookingsResults.totalRandomPrefScore;
+        console.log("Preferensce score for the current allocation RANDOM", totalPrefScore);
+        lastArray.push(...assignedBookingsResults.finalArray); // Push our array we made in algorithm
+      }
       
-      // KALD PREFSCORE ALGORITHM MED assignedBookings som parameter
-
-      // Call our algorithm function
-      // Final array gets defined
-
+      // Updates the day
       globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
-      console.log("CurrentDay = " + globalState.currentDay)
-      succesfulBookings.push(...assignedBookings); // Push our array of succesful bookings we made in algorithm
-      failedBookings.push(...notAssignedBookings); // Push our array of failed bookings from algorithm into failedBookings
+      console.log("currentDay" + globalState.currentDay);
+    
     }   
-    startValue = days
 
-    //scoring(bookingsInfo, roomsInfo); // Perform scoring
+    let sum = 0;
+    for (let i of prefScoreArray){
+      sum += i;
+    }
+    console.log("average preferences")
+    console.log(sum / prefScoreArray.length)
+    startValue = days;
 
-    //await jsonResponse(res, lastArray ); // Send the response
+     successfulBookings.push(...assignedBookings); // Push our array of succesful bookings we made in algorithm
+      failedBookings.push(...notAssignedBookings); // Push our array of failed bookings from algorithm into failedBookings
+       
+
     console.log("Succesful bookings: ")
-    console.log(succesfulBookings)
-    console.log("Assigned bookings: ", succesfulBookings.length)
+    console.log(successfulBookings)
+    console.log("Assigned bookings: ", successfulBookings.length)
     console.log("Failed bookings: ", failedBookings.length)
     
-    jsonResponse(res, succesfulBookings ); // Send the response
+    jsonResponse(res, lastArray ); // Send the response
+
 }

@@ -14,7 +14,8 @@
  */
 
 import dayjs from "dayjs";
-import { bookingsInfo, roomsInfo } from "./getInfo.js"; // Importing the bookings and rooms info
+import { bookingsInfo, loadRooms } from "./getInfo.js"; // Importing the bookings and rooms info
+
 export {
     buildingFloors,
     roomsPerFloor,
@@ -59,54 +60,34 @@ let buildingFloors = 5; // Floors in the hotel
 let roomsPerFloor = 5; // How many rooms to generate for every floor
 let maxGuests = 4; // Maximum guests for largest room (-1 because we add in the random)
 
-// Delete this later
-let roomsInfoo = [
-    {
-        "roomNumber": "101",
-        "roomGuests": 4,
-        "preference": {
-        "beds": "s0q2"
-        }
-    },
-    {
-        "roomNumber": "102",
-        "roomGuests": 2,
-        "preference": {
-        "beds": "s1q0"
-        }
-    },
-    {
-        "roomNumber": "103",
-        "roomGuests": 2,
-        "preference": {
-        "beds": "s0q1"
-        }
-    },
-    {
-        "roomNumber": "104",
-        "roomGuests": 4,
-        "preference": {
-        "beds": "s0q2"
-        }
-    },
-    {
-        "roomNumber": "105",
-        "roomGuests": 3,
-        "preference": {
-        "beds": "s2q0"
-        }
-    }
-]
+
+// Array which will hold template of rooms.
+let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]
 
 
+/**
+ * Hash map for roomsInfo, that converts from the resourceID 
+ * to the room's object containing more detailed information.
+ */
+
+let { roomsInfo } = await loadRooms();
+console.log("Loaded Rooms Info:", roomsInfo);
+
+// Check if the result is an array
+if (!Array.isArray(roomsInfo)) {
+    throw new Error("loadRooms() did not return an array");
+}
+
+const roomsResourceIdToObject = roomsInfo.reduce((hash, room) => {
 // Hash map for roomsInfo
-const roomsResourceIdToObject = roomsInfoo.reduce((hash, room) => {
     hash[room.roomNumber] = room;
     return hash;
 }, {});
 
-// Hash map for roomsInfo
-const roomsIndexToResourceId = roomsInfoo.reduce((hash, room, index) => {
+/**
+ * Hash map for roomsInfo, that converts an index (from 0) to the resourceID of a room.
+ */
+const roomsIndexToResourceId = roomsInfo.reduce((hash, room, index) => {
     hash[index] = room;
     return hash;
 }, {});

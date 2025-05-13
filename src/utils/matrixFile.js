@@ -1,9 +1,16 @@
+/**
+ * This file . . .
+ */
+
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
-import { roomsIndexToResourceId } from './globalVariables.js';
+import { globalState, roomsIndexToResourceId } from './globalVariables.js';
+import { roomsInfo } from './getInfo.js';
+import { bookingRange } from '../scripts/availabilityMatrix.js';
+import { getVisibleBookings } from '../scripts/assignBookings.js';
+import { loadBookings, loadRooms } from './getInfo.js';
+export { Matrix }
 dayjs.extend(utc);
-
-// Testing comment
 
 function loadBookingsFromJSON(jsonData) { //Load directly from json test
           if (typeof dayjs === 'undefined' || typeof dayjs.utc === 'undefined') {
@@ -347,9 +354,9 @@ class Matrix {
 	        addBooking(bookingObject, targetRoomId) {
 
                     //Error checks og stuff
-                    if (!validateAddBookingArgs(bookingObject, targetRoomId, this)) {
-                              return false;
-                    }
+                    //if (!validateAddBookingArgs(bookingObject, targetRoomId, this)) {
+                    //return false;
+                //}
 
 		    const { checkInDate, checkOutDate, bookingId } = bookingObject;
 
@@ -471,72 +478,76 @@ class Matrix {
           }
 }
 try {
-          //const jsonData = data;
-          //const loadedData = loadBookingsFromJSON(jsonData);
-	        //const bookingCalendar = new Matrix(5, 10);
-          //bookingCalendar.printMatrix();
-          const bookingCalendar = new Matrix(5,10);
-          const booking1 = new Booking(1,3,8,"A101", null);
-          bookingCalendar.addBooking(booking1, 3);
-          bookingCalendar.printMatrix();
-          console.log(bookingCalendar.getBooking(3,5));
-          if (loadedData) {
-                    const { bookings, baseDate, dateToIndex, indexToDate } = loadedData;
-            
-                    console.log(`\nLoaded ${bookings.length} booking objects.`);
-                    console.log(`Base Date (Index 0): ${baseDate.format('YYYY-MM-DD')}`);
-            
-                    // 2. Determine Matrix Size
-                    let maxIndex = 0;
-                    bookings.forEach(b => { if (b.checkOutDate > maxIndex) maxIndex = b.checkOutDate; });
-                    const numColsNeeded = maxIndex;
-                    const numRows = 5; // Example: Assume 5 rooms
-                    console.log(`\nMatrix dimensions needed: ${numRows} rows x ${numColsNeeded} columns (days)`);
-            
-                    // 3. Create the Matrix
-                    const bookingCalendar = new Matrix(numRows, numColsNeeded);
-            
-                    // *** 4. Register Booking Objects with the Matrix ***
-                    console.log("\n--- Registering Bookings with Matrix ---");
-                    bookingCalendar.registerBookings(bookings);
-            
-                    // 5. Add loaded bookings to the Matrix grid
-                    console.log("\n--- Adding Bookings to Matrix Grid ---");
-                    bookings.forEach(booking => {
-                        const targetRoom = parseInt(booking.originalData.resourceIds || booking.bookingId) % numRows;
-                         if (!isNaN(targetRoom)) {
-                             bookingCalendar.addBooking(booking, targetRoom);
-                         } else {
-                             console.warn(`Could not determine target room for booking ${booking.bookingId}, skipping add.`);
-                         }
-                    });
-            
-                    bookingCalendar.printMatrix("Booking Matrix with Dates", indexToDate);
-            
-                    // *** 7. Test the updated getBooking ***
-                    console.log("\n--- Testing getBooking (returns object) ---");
-                    const bookingAtPos = bookingCalendar.getBooking(0, 15); // Should be booking 28
-                    const bookingAtStart = bookingCalendar.getBooking(0, 8); // Should be booking 128 (start marker)
-                    const bookingAtEnd = bookingCalendar.getBooking(0, 19); // Should be booking 97 (end marker)
-                    const emptyCell = bookingCalendar.getBooking(1, 10); // Should be 0
-                    const invalidCell = bookingCalendar.getBooking(10, 10); // Should be null
-            
-                    console.log("\nBooking at [0, 15]:");
-                    if (bookingAtPos && bookingAtPos !== 0) bookingAtPos.printInfo(indexToDate); else console.log(bookingAtPos);
-            
-                    console.log("\nBooking at [0, 8] (Start):");
-                     if (bookingAtStart && bookingAtStart !== 0) bookingAtStart.printInfo(indexToDate); else console.log(bookingAtStart);
-            
-                    console.log("\nBooking at [0, 19] (End):");
-                     if (bookingAtEnd && bookingAtEnd !== 0) bookingAtEnd.printInfo(indexToDate); else console.log(bookingAtEnd);
-            
-                    console.log(`\nValue at [1, 10]: ${emptyCell}`); // Should be 0
-                    console.log(`Value at [10, 10]: ${invalidCell}`); // Should be null
-            
-            
-                } else {
-                    console.error("Failed to load booking data.");
-                }
+
+    let visibleBookings = [
+        {
+          "checkInDate": 1,
+          "checkOutDate": 28,
+          "guestsNumber": 4,
+          "stayDuration": 13,
+          "dayOfBooking": 1,
+          "resourceIds": "103",
+          "bookingId": 5,
+          "preference": {
+            "beds": "s0q2",
+            "view": "seaview"
+          }
+        },
+        {
+          "checkInDate": 2,
+          "checkOutDate": 20,
+          "guestsNumber": 1,
+          "stayDuration": 13,
+          "dayOfBooking": 1,
+          "resourceIds": "105",
+          "bookingId": "s9",
+          "preference": {
+            "beds": "s1q0"
+          }
+        },
+        {
+          "checkInDate": 7,
+          "checkOutDate": 15,
+          "guestsNumber": 2,
+          "stayDuration": 15,
+          "dayOfBooking": 1,
+          "resourceIds": "101",
+          "bookingId": "s16",
+          "preference": {
+            "beds": "s0q1"
+          }
+        },
+        {
+          "checkInDate": 22,
+          "checkOutDate": 23,
+          "guestsNumber": 3,
+          "stayDuration": 16,
+          "dayOfBooking": 1,
+          "resourceIds": "104",
+          "bookingId": "s13",
+          "preference": {
+            "beds": "s1q1"
+          }
+        }
+    ]
+
+
+
+
+    const { bookingsInfo } = await loadBookings();
+    const { roomsInfo } = await loadRooms();
+    const newMatrix = new Matrix(roomsInfo.length, bookingRange(bookingsInfo));
+    //let visibleBookings = await getVisibleBookings(bookingsInfo, globalState.currentDay);
+    //console.log(visibleBookings);
+    for (let i of visibleBookings) {
+        let booking = new Booking(i.dayOfBooking, i.checkInDate, i.checkOutDate, i.bookingId);
+        newMatrix.addBooking(booking, booking.resourceIds);
+    }
+
+    let newnewMatrix = newMatrix.createGhostMatrix(1,3);
+    newnewMatrix.printMatrix();
+
+
 } catch(error) {
 	console.error("An error occurred outside the Matrix class:", error.message);
 }

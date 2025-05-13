@@ -9,6 +9,7 @@ import { extendGrid, bookingRange, availabilityGrid, dateDifference } from '../s
 import { roomsInfo, loadBookings } from './getInfo.js';
 import { roomTypes, totalPrefs, prefOddsGuests } from './globalVariables.js';
 import { generateSoftPrefs, generateRoomTypes } from './preferences.js';
+import { generateRoomNumber, generateRoomTypes } from '../scripts/roomGenerator.js';
 export { storeBookings }
 
 /**
@@ -21,31 +22,35 @@ function createBookingBatch(batch) {
     currentBookingObject, guestsNumber, daysInMonth, 
     dayOfBooking, daysBeforeCheckIn, randomCheckInDay, preference;
     
-    // Array which will hold booking objects
+    // Array which will hold booking objects.
     let bookingBatches = [];
 
     return new Promise((resolve, reject) => {
         try {
             for (let i = 1, j = 1; i <= batch; i++) {
-                // Generates random number 1-12 to set a month for the booking
+
+                // Generates random number 1-12 to set a month for the booking.
+
                 checkInMonth = Math.floor(Math.random() * 12);
 
                 /** 
                  * Based on the month found above, the days in the month is found, 
-                 * and then a random day is decided within the month. */
+                 * and then a random day is decided within the month. 
+                 */
                 daysInMonth = dayjs().year('2025').month(checkInMonth).daysInMonth();
-                randomCheckInDay = Math.ceil(Math.random() * daysInMonth); // Generates a random number [0 - intervalLenth], and shifts nr of days in controlDate
+                randomCheckInDay = Math.ceil(Math.random() * daysInMonth); // Generates a random number [0 - intervalLenth], and shifts nr of days in controlDate.
                 
                 // The checkInDate is set based on the month and day found in the two generations above. 
                 checkInDate = dayjs().year('2025').month(checkInMonth).date(randomCheckInDay); 
                
                 // A stayduratino is found, and the checkOutDate is found based on this. 
-                stayDuration = Math.ceil((Math.random() * 8));
+                stayDuration = Math.ceil((Math.random() * 8)) + 1;
                 checkOutDate = checkInDate.add(stayDuration, 'day');
                 
                 /** 
                  * Generates the day that the booking was made, such that not all booknings are made the same day, 
-                 * but rather any random day before the checkInDate (but at most 60 days before) */
+                 * but rather any random day before the checkInDate (but at most 60 days before)
+                 */
                 daysBeforeCheckIn = Math.ceil(Math.random() * 60);
                 dayOfBooking = checkInDate.subtract(daysBeforeCheckIn, 'day').format('YYYY-MM-DD');
 
@@ -53,7 +58,7 @@ function createBookingBatch(batch) {
                 checkInDate = checkInDate.format('YYYY-MM-DD');
                 checkOutDate = checkOutDate.format('YYYY-MM-DD'); 
                
-                // The amount of guests who will attend the generated booking is determined (at most 4 guests)
+                // The amount of guests who will attend the generated booking is determined with a max value. 
                 guestsNumber = Math.ceil(Math.random() * 4);
 
                 // The 'preference' parameter of the booking object is initialized as an object within the booking object. 
@@ -64,24 +69,28 @@ function createBookingBatch(batch) {
                 // followed by the generation of additional preferences. 
                 generateSoftPrefs(preference, prefOddsGuests, 1);
                 
+              
                 // lets the bookings have no roomNumber when generated
+
                 let resourceIds = "0";
 
                 // gives the booking an ID number, simply based on the i-value
                 let bookingId = i;
 
-                // Appends the properties to the current booking object and pushes it into the array of booking batches
+                // Appends the properties to the current booking object and pushes it into the array of booking batches.
                 currentBookingObject = {checkInDate, checkOutDate, guestsNumber, stayDuration, dayOfBooking, resourceIds, bookingId, preference};
                 bookingBatches.push(currentBookingObject);
             }    
+
             // creates the booking matrix with the length of the furthest booking
             // and the amount of rooms in the hotel
+
             extendGrid(roomsInfo, bookingRange(bookingBatches));
 
-            // Resolves if no errors and returns array of booking batches
+            // Resolves if there are no errors, and returns an array of booking batches.
             resolve(bookingBatches);
         } catch (error) {
-            // Catches any errors there might be
+            // Catches any errors that might occur. 
             reject(error);
         }
     })
@@ -96,10 +105,7 @@ function createBookingBatch(batch) {
  */ 
 async function storeBookings(amountOfBookings) {
     try {
-        console.log("Calling promise");
         const data = await createBookingBatch(amountOfBookings);
-        console.log("data");
-        console.log(data);
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
         await loadBookings(); // Loading bookings into array after its been written into bookings.json
