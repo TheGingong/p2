@@ -189,6 +189,11 @@ async function allocate(res, days, version){
     console.log("Assigned bookings: ", successfulBookings.length)
     console.log("Failed bookings: ", failedBookings.length)
     
+
+
+    
+
+
     jsonResponse(res, lastArray ); // Send the response
 
 }

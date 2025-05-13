@@ -1,7 +1,13 @@
 //import { availabilityGrid } from "../scripts/availabilityMatrix.js";
 export { wastedSpaceEvaluate };
+import { availabilityGrid } from "../scripts/availabilityMatrix.js";
+
+
+
 
 function wastedSpaceEvaluate(roomsObject) {
+
+	const newMatrix = createOccupancyMatrix();
 
     const roomMatrix = Object.values(roomsObject);
 	const consecutiveZeros = [];
@@ -66,3 +72,20 @@ function wastedSpaceEvaluate(roomsObject) {
           return occupancyScore;
 }
 
+
+
+export function createOccupancyMatrix() {
+	const occupancyMatrix = [];
+	let row = 0;
+	for (const key in availabilityGrid) {
+	  const arr = availabilityGrid[key];
+	  occupancyMatrix[row] = [];
+	  for (let col = 0; col < arr.length; col++) {
+		occupancyMatrix[row][col] = arr[col] !== 0
+		  ? 1
+		  : 0;
+	  }
+	  row++;
+	}
+	return occupancyMatrix;
+  }
