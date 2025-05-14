@@ -106,6 +106,7 @@ async function storeBookings(amountOfBookings) {
         let jsonBookingBatches = JSON.stringify(data, null, 2);
         await fs.writeFile("src/json/bookings.json", jsonBookingBatches);
         await loadBookings(); // Loading bookings into array after its been written into bookings.json
+        console.log("Bookings loaded.")
         return { message: "Batch filled.", data };
     } catch (error) {
         return { error: "Batch generation failed." };

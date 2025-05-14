@@ -55,8 +55,8 @@ async function calculatePrefScoreRandom(booking, room) {
     // Load how many total preferences for the booking.
     const amountOfPreferences = Object.keys(booking.preference);
 
-    console.log("Booking:", booking);
-    console.log("Room:", room);
+    //console.log("Booking:", booking);
+    //console.log("Room:", room);
 
     // For each of the booking's preferences, check if they are equal to any preferences in the parsed room.
     for (let key of amountOfPreferences) {

@@ -34,8 +34,8 @@ Setup HTTP route handling: Called when a HTTP request is received.
 /**
  * Handles incoming HTTP requests and routes them based on method and URL.
  *
- * @param {http.IncomingMessage} req – The incoming HTTP request object.
- * @param {http.ServerResponse} res – The outgoing HTTP response object.
+ * @param {http.IncomingMessage} req The incoming HTTP request object.
+ * @param {http.ServerResponse} res The outgoing HTTP response object.
  */
 async function processReq(req, res) {
   console.log("GOT: " + req.method + " " + req.url);
@@ -86,10 +86,9 @@ async function processReq(req, res) {
       switch(pathElements[1]){     
         // GET endpoint for loading the home page.
         case "": // "/"
-            // Load bookings at startup - promise based.
             loadRooms()
             .then(() => {
-                console.log("Rooms and Bookings loaded successfully.");
+                console.log("Rooms loaded successfully.");
             })
             .catch((err) => {
                 console.error("Error loading Rooms and Bookings:", err);
@@ -182,16 +181,16 @@ async function allocate(res, days, version) {
         let results = await preferenceOptimization(assignedBookingsResults.visibleBookings, totalPrefScore) || [];
         totalPrefScore = results.totalPrefScore;  // Update the accumulated preference score.
         allocationArray.push(...results.bookingsStartingToday); // Push our array we made in algorithm to the array that will be allocated in fullCalendar.
-        console.log("Preferensce score for the current allocation", totalPrefScore);
+        //console.log("Preferensce score for the current allocation", totalPrefScore);
       } else {
         totalPrefScore += assignedBookingsResults.totalRandomPrefScore; // Update the accumulated preference score for the RANDOM allocation algorithm.
         allocationArray.push(...assignedBookingsResults.finalArray); // Push our array we made in algorithm
-        console.log("Preferensce score for the random allocation (ver: " + version + ")", totalPrefScore);
+        //console.log("Preferensce score for the random allocation (ver: " + version + ")", totalPrefScore);
       }
       
       // Updates the day
       globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
-      console.log("currentDay" + globalState.currentDay);
+      console.log("Current day " + globalState.currentDay);
     
     }   
 

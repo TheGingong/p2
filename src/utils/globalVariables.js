@@ -64,7 +64,7 @@ let maxGuests = 4; // Maximum guests for largest room (-1 because we add in the 
  * converting the resourceID to the room's object containing more detailed information.
  */
 let { roomsInfo } = await loadRooms();
-console.log("Loaded Rooms Info:", roomsInfo);
+console.log("Rooms loaded.");
 // Checks if the result is an array.
 if (!Array.isArray(roomsInfo)) {
     throw new Error("loadRooms() did not return an array");

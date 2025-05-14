@@ -11,7 +11,7 @@ export { appendToCalendar, resetMatrix, resetEverything, generateBatches, alloca
  * @param {string} - Specifies the rgb values with format "rgb(77, 160, 244)".
  */
 function appendToCalendar(bookings, colorValue) {
-    console.log(bookings)
+    //console.log(bookings)
     // Iterates through each booking we want to append to the calendar. And the specifies the information to be displayed.
     for (let i = 0; i < bookings.length; i++) { 
         calendar.addEvent( {

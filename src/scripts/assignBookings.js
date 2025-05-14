@@ -2,7 +2,6 @@
  * This file containts algorithms for allocating bookings to rooms, with focus on occupancy.
  * Includes the method for the 3 different allocations, depending on what version is pressed on page.
  */
-
 import dayjs from 'dayjs';
 import { loadBookings, loadRooms } from '../utils/getInfo.js';
 import { checkAvailability, availabilityGrid, insertBookings, dateDifference } from './availabilityMatrix.js';
@@ -56,8 +55,6 @@ async function matchBookingsToRooms(version) {
                 booking.resourceIds = await assignResId(booking, roomsInfo, tempMatrix);
             }
 
-
-
             // Insert into our temporary matrix.
             if (booking.resourceIds !== "0") {
                 tempMatrix = insertBookings([booking], tempMatrix);
@@ -104,7 +101,7 @@ async function assignResId(booking, rooms, tempMatrix) {
     for (const room of rooms) {
         if (booking.guestsNumber == room.roomGuests) { // If the room can occupy the guests.
             // Check if the room is available.
-            if(timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate, tempMatrix) === 1){
+            if (timespanAvailability(room.roomNumber, booking.checkInDate, booking.checkOutDate, tempMatrix) === 1){
                 return room.roomNumber; // Return room number, which will be assigned to booking ID.
             }
 

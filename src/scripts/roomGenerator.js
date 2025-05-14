@@ -56,7 +56,7 @@ async function generateRooms () {
  * E.g. room number "109" is room 9 on floor 1.
  * @param {Integer} roomFloor - The floor the room is placed on
  * @param {Integer} roomNumber - The room's number
- * @returns {String} - room number string
+ * @returns {String} room number string
  */
 function generateRoomNumber(roomFloor, roomNumber) {
     if (roomNumber < 10) {return roomFloor.toString() +  "0" + roomNumber.toString()}
@@ -65,6 +65,8 @@ function generateRoomNumber(roomFloor, roomNumber) {
 
 /**
  * Function that generates a random amount of guest space for a room.
+ * @param {Integer} maximumGuests Acts as the maximum value for a random generatoin of an int
+ * @returns {Integer} Random value from 0 to a given maximum
  */
 function generateGuests (maximumGuests) {
     return Math.floor((Math.random() * maximumGuests) + 1);

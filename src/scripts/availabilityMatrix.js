@@ -1,48 +1,56 @@
+/**
+ * This fil
+ */
 import { bookingsInfo, roomsInfo } from "../utils/getInfo.js";
 import dayjs from "dayjs";
 import { globalState } from "../utils/globalVariables.js";
-export {
-	extendGrid,
-	bookingRange,
-	availabilityGrid,
-	insertBookings,
-	checkAvailability,
-	dateDifference,
-	dateIndex,
-	resetMatrix,
-          clearMatrix,
-};
+export { extendGrid, bookingRange, availabilityGrid, insertBookings, 
+checkAvailability, dateDifference, dateIndex, resetMatrix, clearMatrix };
 
-let today = dayjs(globalState.currentDay); // Get today's date.
+// Get today's date.
+let today = dayjs(globalState.currentDay); 
+// Initializes globally available matrix.
+let availabilityGrid = {}; 
+// The matrix starts at the date of today (1 January).
+let firstDay = today; 
 
-let availabilityGrid = {}; // Initializes globally available matrix.
-
-let temp_min = today; // The last "last" booking. - explain !! - maybe change var name from temp !!
-
-// BookingRange takes an array of bookings and finds the booking with the longest checkOutDate. This value is given to extendGrid.
+/**
+ * Function that takes an array of bookings and finds the booking with the longest checkOutDate. 
+ * This value is given to extendGrid, which will define the length of the matrix.
+ * @param {Array} newBookings - Array of created bookings.
+ * @returns {Integer} The range from today till last booking's end date.
+ */
 function bookingRange(newBookings) {
-  let temp_max = temp_min;
+  let lastDay = firstDay; // 
   for (const booking of newBookings) {
-    const out = dayjs(booking.checkOutDate);
-    if (out.isAfter(temp_max)) {
-      temp_max = out;
+    const dateChecked = dayjs(booking.checkOutDate);
+    if (dateChecked.isAfter(lastDay)) {
+      lastDay = dateChecked;
     }
   }
-  // compute the day-difference
-  const range = temp_max.diff(temp_min, "day");
-  // update temp_min to the new latest date (still a Day.js)
-  temp_min = temp_max;
-  console.log(range);
+  // Compute the day-difference from first day till last.
+  const range = lastDay.diff(firstDay, "day");
+  // Update firstDay to the new latest date (still a Day.js), allowing to simulate more badges.
+  firstDay = lastDay;
   return range;
 }
 
-// Function that returns an index showing the difference from the given date to today as an int.
+/**
+ * Function that returns an index showing the difference from the given date to today as an int.
+ * @param {String} date - 
+ * @returns {Integer} The difference between today and a date in the furture.
+ */
 function dateIndex(date) {
 	const futureDate = dayjs(date); // Convert string to dayjs.
-	return futureDate.diff(today, "day");
+	return futureDate.diff(today, "day"); // dayjs built in diff function, finding difference between two strings
 }
 
-// Function that returns the difference between 2 days as an int.
+/**
+ * Function that returns the difference between 2 days as an int.
+ * @param {String} date1 
+ * @param {String} date2
+ * @returns {Integer} The difference between the two input dates.
+ */
 function dateDifference(date1, date2) {
 	return dayjs(date2).diff(dayjs(date1), "day");
 }
@@ -53,39 +61,34 @@ function dateDifference(date1, date2) {
  * @param {Integer} date_range - Number determined with bookingRange from first day to last booking
  */
 function extendGrid(rooms, date_range) {
-
+	/* If the range is 0, the matrix is empty (something went wrong),
+	or new bookings are in same interval */
 	if (date_range === 0) {
-		console.log(availabilityGrid);
-		console.log("date_range = 0");
 		return;
 	}
 	console.log("date_range = " + date_range);
 	let tempGrid = {};
 
-	// If empty, create new grid and fill it with 0.
+	// If empty, create new grid for each room with an array with length 'range'.
 	if (Object.keys(availabilityGrid).length === 0) {
 		rooms.forEach((room) => {
-			availabilityGrid[room.roomNumber] = new Array(
+			availabilityGrid[room.roomNumber] = new Array( // New array corresponding to room number.
 				date_range
-			).fill(0);
-			console.log("grid empty, new grid created");
+			).fill(0); // Fill with zeros initially.	
 		});
+		console.log("Grid empty, new grid created.");
 	} else {
-		// Makes temporary grid for the new matrix, which needs to be appended to the total grid.
+		/* Makes temporary grid for the new matrix, which needs to be appended to the total grid,
+		happens if the matrix is already been used, ensuring no mistakes. */
 		rooms.forEach((room) => {
 			tempGrid[room.roomNumber] = new Array(
 				date_range
 			).fill(0);
 		});
-		console.log("avtempGRidailabilityGrid");
-		console.log(tempGrid);
+		//console.log("avtempGRidailabilityGrid");
+		//console.log(tempGrid);
 
-		//// Appends the temp grid to the total grid. - Delete? !!
-		//roomsInfo.forEach((room) => {
-		//  availabilityGrid[room.roomNumber].push(date_range.fill(0));
-		//});
-
-		// Appends the array from tempGrid to the corresponding array in availabilityGrid
+		// Appends the array from tempGrid to the corresponding array in availabilityGrid.
 		for (let roomNumber in tempGrid) {
 			// The '...' (spread operator) pushes all elements in tempGrid individually, so we dont push the entire array as one element.
 			availabilityGrid[roomNumber].push(
@@ -93,10 +96,9 @@ function extendGrid(rooms, date_range) {
 			);
 		}
 	}
-
 	// Console logs and shows the availability grid visually.
-	console.log("availabilityGrid");
-	console.log(availabilityGrid);
+	//console.log("availabilityGrid");
+	//console.log(availabilityGrid);
 }
 
 /**
@@ -106,50 +108,59 @@ function extendGrid(rooms, date_range) {
  * @returns {Object} grid - The updated matrix with inserted bookings
  */
 function insertBookings(newBookings, grid) {
-	// for each booking
-	//console.log("New Bookings:", newBookings); - resolve comments !!
+	// For each booking, assign values of the room
 	newBookings.forEach((booking) => {
 		let startDate = new Date(booking.checkInDate);
 		let endDate = new Date(booking.checkOutDate);
-		let roomNumber = booking.resourceIds; // Room ID
+		let roomNumber = booking.resourceIds; // Room ID.
 
-		// Calculate the index in the array (days from today)
+		// Calculate the index in the array (days from today).
 		let startIndex = parseInt(dateIndex(startDate));
 		let endIndex = parseInt(dateIndex(endDate));
 
+		// If room number doesn't exist in grid, error.
 		if (!grid[roomNumber]) {
-			console.error(
-				`Room number ${roomNumber} not found in grid.`
-			);
+			//console.error(`Room number ${roomNumber} not found in grid.`);
 			return;
 		}
 
-		// Fill the grid for the room
+		// Fill the grid for the room, on starting date add 's', signaling start.
 		grid[roomNumber][startIndex] = "s" + booking.bookingId;
 
-		for (let i = startIndex + 1; i < endIndex - 1; i++) {
-			grid[roomNumber][i] = booking.bookingId; // Mark as occupied
+		for (let i = startIndex + 1; i < endIndex - 1; i++) { // Fill all entries between start and end.
+			grid[roomNumber][i] = booking.bookingId; // Mark as occupied.
 		}
 
 		if (booking.stayDuration > 1) {
 			grid[roomNumber][endIndex - 1] =
-				"e" + booking.bookingId;
+				"e" + booking.bookingId; // Last day of booking get 'e', marking end.
 		}
 	});
 	return grid;
 }
 
-
+/**
+ * Checks the availability of a room on a given date.
+ * @param {Object} room - Room to be checked for availability.
+ * @param {String} date - Date to be checked.
+ * @param {Object} grid - The matrix to be checked.
+ * @returns {Integer} 1 if occupied, 0 if unoccupied.
+ */
 function checkAvailability(room, date, grid) {
 	const realDate = dayjs(date);
 
-	if (dateIndex(realDate) < 0) {
+	if (dateIndex(realDate) < 0) { 
 		return 1;
 	}
-	return grid[room][dateIndex(realDate)] !== 0 ? 1 : 0;
+	// Return 1 if occupied, 0 if not.
+	return grid[room][dateIndex(realDate)] !== 0 ? 1 : 0; 
 }
 
+/**
+ * Function that clears the whole matrix by setting all the entries to 0.
+ */
 function clearMatrix() {
+	// For each key, set all entries to 0.
 	for (const key in availabilityGrid) {
 		for (let i = 0; i < availabilityGrid[key].length; i++) {
 			availabilityGrid[key][i] = 0;
@@ -157,13 +168,14 @@ function clearMatrix() {
 	}
 }
 
+/**
+ * Resets matrix completely, emptying rows and columns, and leaves an empty object. 
+ */
 function resetMatrix() {
-          availabilityGrid = {};
-          temp_min = today;
+          availabilityGrid = {}; // Set to empty object.
+          firstDay = today; // Reset today
           console.log("Matrix reset.");
 }
-
-
 
 /**
  * Checks availability for a given room and date, in a specific grid (either availabilityGrid or tempMatrix).
@@ -173,20 +185,19 @@ function resetMatrix() {
  * @returns {Integer} - Returns 1 if the room is occupied, and 0 if the room is unnocipied. 
  */
 
-
-export function getAvailabilityGridForTesting() {
+/**
+ * The following functions have been developed for the purposes of program testing.
+ */
+export function getAvailabilityGridForTesting() { //
 	return availabilityGrid;
 }
 
-
-// Getter for the module's internal 'temp_min'
-export function getTempMinForTesting() {
-	return temp_min;
-
+export function getTempMinForTesting() { // Getter for the module's internal 'firstDay'.
+	return firstDay;
 }
 
-export function setTempMinForTesting(newDate) {
+export function setTempMinForTesting(newDate) { // 
 	today = dayjs(newDate);
-	temp_min = dayjs(newDate);
-	console.log("First date set to: " + temp_min);
+	firstDay = dayjs(newDate);
+	console.log("First date set to: " + firstDay);
 }

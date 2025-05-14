@@ -45,10 +45,9 @@ function generateSoftPrefs(prefObject, prefOdds, isBooking) {
  * Function that generates the room preferences depending on amount of guests, through af switch case.
  * @param {Integer} numberOfGuests Amount of max guests for a room
  * @param {Object} prefObject Object that may hold preferences
+ * @returns {String} Returns a string representing bed layout based on the number of guests parsed
  */ 
 function generateRoomTypes(numberOfGuests, prefObject, currentFloor) {
-    // Generate room preference.
-    console.log(prefObject)
     // Start by generating the floor which the room is on if it is a room to generate.
     if (currentFloor > 0) {
         prefObject.floor = currentFloor;

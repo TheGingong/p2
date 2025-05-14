@@ -13,6 +13,7 @@ export { preferenceOptimization }
  * Main optimzation function, which will call on subfunctions to optimize hotel bookings according to certain variables.
  * @param {Array} visibleBookings Array containing all the bookings that have been placed today or before
  * @param {Float} totalPrefScore Number that is parsed and updated by adding/subtracting the new pref score
+ * @returns {Object} The resulting array of bookings starting today, and the total prefscore is returned in an object
  */
 async function preferenceOptimization(visibleBookings, totalPrefScore) {
     let currentDay = dateIndex(globalState.currentDay);
@@ -35,7 +36,6 @@ async function preferenceOptimization(visibleBookings, totalPrefScore) {
     let bookingPrefScore = 0;
     let prefScoreTable = [];
     let bestSwapMatch = 0;
-
 
     // Iterate through the bookings in the bookingsStartingToday array.
     for (let booking of bookingsStartingToday) {
@@ -87,6 +87,7 @@ async function preferenceOptimization(visibleBookings, totalPrefScore) {
  * @param {Array} visibleBookings Array containing all the bookings that have been placed today or before
  * @param {Array} roomArray Array containing the room numbers of all the rooms in the hotel
  * @param {String} currentDay string readible through Day.js, indicated the current day in the simulation
+ * @returns {Array} fullBookings, which is an array of oebjects, constructed by mapping bookings starting today to their original objects
  */ 
 function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray, currentDay) {
     const bookingMap = {};
@@ -118,6 +119,7 @@ function findBookingsStartingToday(ghostMatrix, visibleBookings, roomArray, curr
  * validSwaps is designed to only handle a single booking and a single room, and therefore be called in a for-loop when needed. 
  * @param {Object} booking The object of the singular booking currently considered
  * @param {Integer} room The number of the room currently considered
+ * @returns {Boolean} True/false, wether the swap is valid
  */
 function validSwaps(booking, room) {
     if (booking.guestsNumber == roomsResourceIdToObject[room].roomGuests) {
@@ -129,6 +131,7 @@ function validSwaps(booking, room) {
 /**
  * Prioritizes the bookings starting today, s.t. first booking is the booking we earn the most score from (least amount of prefs).
  * @param {Array} booksStartingToday Array containing the bookings that need to be sorted
+ * @returns {Array} Priority sort done on the parsed array
  */
 function prioritySwaps(booksStartingToday) {
     // Creates a copy of the array so it doesn't directly change the bookingsStartingToday array, as we need this later in the swap.
@@ -151,9 +154,10 @@ function prioritySwaps(booksStartingToday) {
 
 /**
  * Funtion that searches and finds the best room matching a booking's preferences.
- * @param {Object} booking The object for a single booking, containing all the booking's information
- * @param {Array} prefScoreTable Array, containing nested arrays with booking and their prefscores for the associated rooms
- * @param {Array} roomArray Array containing all room numbers for the hotel
+ * @param {Object} booking - The object for a single booking, containing all the booking's information
+ * @param {Array} prefScoreTable - Array, containing nested arrays with booking and their prefscores for the associated rooms
+ * @param {Array} roomArray - Array containing all room numbers for the hotel
+ * @returns {Object} object containing the index of the best room match, and the corresponding prefscore
  */ 
 function locateBestMatches(booking, prefScoreTable, roomArray) {
     let currentBestScore = -Infinity;
@@ -195,6 +199,7 @@ function locateBestMatches(booking, prefScoreTable, roomArray) {
  * @param {Object} booking - An object containing the information of a single booking
  * @param {Integer} bestMatchFound - Index of the best max in prefscoreTable
  * @param {Array} bookingsStartingToday - Array of bookings with checkindate = currentday
+ * @returns Only occurs on errors, otherwise the data is modified live without being returned
  */
 async function assignResourceIds(booking, bestMatchFound, bookingsStartingToday) {
     const roomNumberToBookingObject = bookingsStartingToday.reduce((hash, booking) => {
@@ -235,9 +240,3 @@ async function assignResourceIds(booking, bestMatchFound, bookingsStartingToday)
     }
     insertBookings([booking], availabilityGrid);
 }
-
-/**
- * AvailabilityMatrix   - 
- * wastedSpaceScore     - Frederik
- * server (mby)         - 
- */

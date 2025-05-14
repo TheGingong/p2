@@ -41,7 +41,6 @@ fetch('rooms', {
       let calendar = new FullCalendar.Calendar(calendarEl, {
 
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // Public license key for private use.
-    
         initialView: 'booking_view', // Default view.
         views: { // Initialization of calender setup, a default 7 day calender.
           booking_view: {
