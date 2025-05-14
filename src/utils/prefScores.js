@@ -25,6 +25,7 @@ async function calculatePrefScore(booking, room) {
     /**
      * If-statement that gives a score of -2 if this preference is not met. 
      * This is a hard constraint, so it's important to make sure it can't swap.
+     * This should never happen as this would not be a valid swap. This is an extra security meassure.
      */
     if (roomDetails.roomGuests != booking.guestsNumber) {
         score = -2;
