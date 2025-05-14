@@ -2,12 +2,13 @@
 export { wastedSpaceEvaluate };
 import { availabilityGrid } from "../scripts/availabilityMatrix.js";
 
-
-
-
+/**
+ * Function that counts concecutive zeros. With the formula 1/numOfZero^2.
+ * Not currently used as the logic didn't work as intended
+ * @param {object} - Object containing the information about a room
+ * @return {float} Outputs a value form 0 - 1 higher score is worse
+ */
 function wastedSpaceEvaluate(roomsObject) {
-
-
     const roomMatrix = Object.values(roomsObject);
 	const consecutiveZeros = [];
 	let currentCount = 0;
@@ -56,14 +57,13 @@ function wastedSpaceEvaluate(roomsObject) {
 		}
 		currentCount = 0;
 	}
+	let occupancyScore = 0;
+	let newScore = 0;
 
-          let occupancyScore = 0;
-          let newScore = 0;
-
-          for (let i = 0; i < consecutiveZeros.length; i++) {
-                    //console.log("Current newScore: " + newScore + ". Current number: " + consecutiveZeros[i])
-                    newScore += (1 / (consecutiveZeros[i] ** 2));
-          }
+	for (let i = 0; i < consecutiveZeros.length; i++) {
+			//console.log("Current newScore: " + newScore + ". Current number: " + consecutiveZeros[i])
+			newScore += (1 / (consecutiveZeros[i] ** 2));
+	}
 	if (newScore !== 0) {
           occupancyScore += newScore / (consecutiveZeros.length);
           }
@@ -71,18 +71,19 @@ function wastedSpaceEvaluate(roomsObject) {
           return occupancyScore;
 }
 
-
-
-export function countZeroes(){
-
+/**
+ * Function that loops over the entire avilability matrix, counting the number of times a zero occurs.
+ * Prints the amount of zeros that were counted.
+ */
+export function countZeroes() {
 	let zeroCount = 0;
 
-for (const key in availabilityGrid) {
-    for (let i = 0; i < availabilityGrid[key].length; i++) {
-        if (availabilityGrid[key][i] === 0) {
-            zeroCount++;
-        }
-    }
-}
-console.log("Total number of zeros:", zeroCount);
+	for (const key in availabilityGrid) { //Loops through the rows of the matrix.
+		for (let i = 0; i < availabilityGrid[key].length; i++) { //Loops trough the columns of the matrix.
+			if (availabilityGrid[key][i] === 0) {
+				zeroCount++;
+			}
+		}
+	}
+	console.log("Total number of zeros:", zeroCount);
 }
