@@ -228,15 +228,5 @@ async function assignResourceIds(booking, bestMatchFound, bookingsStartingToday)
         bookingToSwapWith.resourceIds = tempResourceId;
     }
 
-    /**
-     * For loop to find the correct position of the booking we want to swap.
-     * Swap the bookings around in the bookingStartingToday array so the array will correctly reflect the change.
-     */
-    for (let i in bookingsStartingToday) {
-        if (booking.id === bookingsStartingToday[i].bookingId && bookingToSwapWith.bookingId !== null) {
-            bookingsStartingToday[i] = bookingToSwapWith;
-            bookingsStartingToday[bestMatchFound] = booking;
-        }
-    }
     insertBookings([booking], availabilityGrid);
 }
