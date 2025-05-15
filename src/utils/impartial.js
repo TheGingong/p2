@@ -4,9 +4,9 @@
  */
 import fs from 'fs/promises'
 import dayjs from 'dayjs';
-import { extendGrid, bookingRange, availabilityGrid, dateDifference } from '../scripts/availabilityMatrix.js';
+import { extendGrid, bookingRange } from '../scripts/availabilityMatrix.js';
 import { roomsInfo, loadBookings } from './getInfo.js';
-import { roomTypes, totalPrefs, prefOddsGuests } from './globalVariables.js';
+import { prefOddsGuests } from './globalVariables.js';
 import { generateSoftPrefs, generateRoomTypes } from './preferences.js';
 export { storeBookings }
 
@@ -66,7 +66,6 @@ function createBookingBatch(batch) {
                 generateRoomTypes(guestsNumber, preference,0);
                 generateSoftPrefs(preference, prefOddsGuests, 1);
                 
-              
                 // Initialize the bookings room number as "0" initially.
                 let resourceIds = "0";
 

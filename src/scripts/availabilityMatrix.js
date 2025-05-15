@@ -58,22 +58,22 @@ function dateDifference(date1, date2) {
 /**
  * Extends matrix for a given dataset with certain amount of rooms and the range of dates in the dataset.
  * @param {Array} rooms - Array of all rooms
- * @param {Integer} date_range - Number determined with bookingRange from first day to last booking
+ * @param {Integer} dateRange - Number determined with bookingRange from first day to last booking
  */
-function extendGrid(rooms, date_range) {
+function extendGrid(rooms, dateRange) {
 	/* If the range is 0, the matrix is empty (something went wrong),
 	or new bookings are in same interval */
-	if (date_range === 0) {
+	if (dateRange === 0) {
 		return;
 	}
-	console.log("date_range = " + date_range);
+	console.log("dateRange = " + dateRange);
 	let tempGrid = {};
 
 	// If empty, create new grid for each room with an array with length 'range'.
 	if (Object.keys(availabilityGrid).length === 0) {
 		rooms.forEach((room) => {
 			availabilityGrid[room.roomNumber] = new Array( // New array corresponding to room number.
-				date_range
+				dateRange
 			).fill(0); // Fill with zeros initially.	
 		});
 		console.log("Grid empty, new grid created.");
@@ -82,7 +82,7 @@ function extendGrid(rooms, date_range) {
 		happens if the matrix is already been used, ensuring no mistakes. */
 		rooms.forEach((room) => {
 			tempGrid[room.roomNumber] = new Array(
-				date_range
+				dateRange
 			).fill(0);
 		});
 		//console.log("avtempGRidailabilityGrid");
