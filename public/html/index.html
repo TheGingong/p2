@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Hotel Calendar over bookings</title>
+    <title>Hotel Calendar</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/allocate.css">
     <!--<script src="https://unpkg.com/@popperjs/core@2"></script>-->
     <div id="controls">
 
       <label for="dayInput">Number of days to allocate:</label>
-      <input type="number" id="dayInput" name="dayInput" value="1" min="0" step="1" />
+      <input type="number" id="dayInput" name="dayInput" value="10" min="0" step="1" />
 
-      <button id="allocateButton_sort1">
+      <button id="allocateButtonLeastDiff">
         <span class="color-indicator least-diff"></span>
         Allocate least difference
       </button>
     
-      <button id="allocateButton_sort2">
+      <button id="allocateButtonStayDuration">
         <span class="color-indicator duration"></span>
         Allocate stay duration
       </button>
     
-      <button id="allocateRandom_id">
+      <button id="allocateButtonRandom">
         <span class="color-indicator random"></span>
         Allocate random
       </button>
 
       <label for="bookingsInput">Amount of bookings:</label>
-      <input type="number" id="bookingsInput" name="bookingsInput" value="200" min="0" step="1" />
+      <input type="number" id="bookingsInput" name="bookingsInput" value="500" min="0" step="1" />
 
       <button id="batchButton_id">
         <span class="color-indicator batch"></span>
@@ -42,6 +42,7 @@
         <span class="color-indicator reset"></span>
         Reset everything
       </button>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.15/index.global.min.js"></script>
     <script src="js/calendar.js"></script>
@@ -50,37 +51,33 @@
     <div id="calendar"></div>
   </body>
   <script type="module">
-    // Import needed for allocate (use of calendar in html file)
-    import {allocate, allocateAction, generateBatches, 
-    resetMatrix, allocateRandom, resetEverything, allocateActioncheckDate}
-    from './js/allocation.js';
+    // Import needed for allocate (use of calendar in HTML file).
+    import { allocateLeastDiff, allocateStayDuration, allocateRandom, generateBatches, resetMatrix, resetEverything } from './js/allocation.js';
 
-    // Event listeners and handlers for the buttons
-    
-    // Generate batch of bookings button
+    /* Event listeners and handlers for the buttons */
+    // Generate batch of bookings button.
     let batchElem = document.querySelector("#batchButton_id");
     batchElem.addEventListener("click", generateBatches);
 
-    // Reset Matrix button
+    // Reset matrix button.
     let resetMatrixElem = document.querySelector("#resetMatrix");
     resetMatrixElem.addEventListener("click", resetMatrix);
     
-    // Reset Everything button
+    // Reset everything button.
     let resetAllElem = document.querySelector("#resetEverything");
     resetAllElem.addEventListener("click", resetEverything);
 
-    // AllocateRandom button
-    let randomElem = document.querySelector("#allocateRandom_id");
+    // Allocate random button - no sort.
+    let randomElem = document.querySelector("#allocateButtonRandom");
     randomElem.addEventListener("click", allocateRandom);
 
-    // Allocate and sort by stay duration
-    let allocateElem = document.querySelector("#allocateButton_sort1");
-    allocateElem.addEventListener("click", allocateAction);
+    // Allocate and sort by stay duration and best fit.
+    let allocateLDElem = document.querySelector("#allocateButtonLeastDiff");
+    allocateLDElem.addEventListener("click", allocateLeastDiff);
 
-    // Allocate and sort by checkin/outday duration
-    let allocate2Elem = document.querySelector("#allocateButton_sort2");
-    allocate2Elem.addEventListener("click", allocateActioncheckDate);
+    // Allocate and sort by stay duration only.
+    let allocateSDElem = document.querySelector("#allocateButtonStayDuration");
+    allocateSDElem.addEventListener("click", allocateStayDuration);
 
-      
   </script>
 </html>
