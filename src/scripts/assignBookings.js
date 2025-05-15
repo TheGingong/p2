@@ -67,7 +67,7 @@ async function matchBookingsToRooms(version) {
                         totalRandomPrefScore += randomPrefScore;
                     }
                     // Title for booking, which will be visible in calendar.
-                    booking.title = booking.guestsNumber + " " + randomPrefScore + " " + booking.bookingId;
+                    booking.title = booking.bookingId + " Guests: " + booking.guestsNumber + " Pref: " + randomPrefScore;
                     finalArray.push(booking);
                 }
             } else { // Else, push to array of discarded bookings.

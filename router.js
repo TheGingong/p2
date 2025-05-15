@@ -11,7 +11,7 @@ import { extractJSON, fileResponse, htmlResponse, extractForm, jsonResponse, err
 import { availabilityGrid, clearMatrix } from "./src/scripts/availabilityMatrix.js";
 import { roomsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { storeBookings } from "./src/utils/impartial.js";
-import { calculatePrefScore, prefScoreArray } from "./src/utils/prefScores.js";
+import { prefScoreArray } from "./src/utils/prefScores.js";
 import { matchBookingsToRooms} from "./src/scripts/assignBookings.js";
 import { globalState } from "./src/utils/globalVariables.js";
 import { preferenceOptimization } from "./src/scripts/algorithm.js";
@@ -215,9 +215,8 @@ async function allocate(res, days, version) {
     //console.log("Assigned bookings: ", successfulBookings.length)
     //console.log("Failed bookings: ", failedBookings.length)
 
-    // Function call to calculate the wasted space score (countZeros counts all zeroes in the matrix).
-    //console.log("wasted space score: " + wastedSpaceEvaluate(availabilityGrid))
-    wastedSpaceEvaluate(availabilityGrid);
+    // Function call to calculate the wasted space score which counts consecutive zeros and countZeros which counts all zeroes in the matrix.
+    wastedSpaceEvaluate(availabilityGrid); 
     countZeroes()
     jsonResponse(res, allocationArray); // Send the response
 }

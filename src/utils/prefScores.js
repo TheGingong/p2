@@ -37,7 +37,7 @@ async function calculatePrefScore(booking, room) {
             score -= 1 / amountOfPreferences.length;
         }
     }
-    return score;
+    return Math.round(score * 100) / 100;
 }
 
 /**
@@ -71,5 +71,5 @@ async function calculatePrefScoreRandom(booking, room) {
         prefScoreArray.push(score)
     }
 
-    return score;
+    return Math.round(score * 100) / 100;
 }

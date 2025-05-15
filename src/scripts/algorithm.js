@@ -69,7 +69,7 @@ async function preferenceOptimization(visibleBookings, totalPrefScore) {
         let results = locateBestMatches(booking, prefScoreTable, roomArray);
         bestSwapMatch = results.currentBestIndex;
         totalPrefScore += results.prefScore;
-        booking.title = booking.guestsNumber + " " + results.prefScore + " " + booking.bookingId;
+        booking.title = booking.bookingId + " Guests: " + booking.guestsNumber + " Pref: " + results.prefScore;
         assignResourceIds(booking, bestSwapMatch, bookingsStartingToday);
 
         for(let i = 0; i < booking.stayDuration; i++) {
