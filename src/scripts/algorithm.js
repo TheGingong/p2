@@ -213,10 +213,10 @@ async function assignResourceIds(booking, bestMatchFound, bookingsStartingToday)
         return;
     }
     
-    // Give an index and return the room object corresponding to that index. Check if this is the right index out of ghostmatrix.
+    // Give an index and return the room object corresponding to that index.
     const roomDetails = roomsIndexToResourceId[bestMatchFound];
     
-    let bookingToSwapWith = roomNumberToBookingObject[roomDetails.roomNumber] ||  null;
+    let bookingToSwapWith = roomNumberToBookingObject[roomDetails.roomNumber] || null;
     
     // Swap the resource IDs around.
     console.log("Successful swap: " + booking.bookingId + " in room " + booking.resourceIds + " to room " + roomDetails.roomNumber);
