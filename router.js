@@ -52,33 +52,33 @@ async function processReq(req, res) {
     case "POST": {
       let pathElements = queryPath.split("/"); 
       console.log(pathElements[1]);
-        switch(pathElements[1]) {
-          // POST endpoint for the generation of batches.
-          case "generateBookings":
-            const amountOfBookingsParam = searchParms.get("amountOfBookings"); // Get the number of bookings from the query parameter.
-            const amountOfBookings = parseInt(amountOfBookingsParam, 10);
-            // Calls storeBookings in impartial.js to generate the bookings.
-            storeBookings(amountOfBookings)
-            .then((result) => {
-              jsonResponse(res, result);
-            })
-            .catch((err) => {
-              reportError(res, new Error(err));          
-            })
-            break;
-          // POST endoint for clearing the matrix entries.
-          case "reset":
-            clearMatrix();
-            startValue = 0;
-            globalState.reset();
-            jsonResponse(res, "Matrix was succesfully reset.");
-            break;
-          default: 
-            console.error("Resource doesn't exist.");
-            reportError(res, new Error(NoResourceError)); 
-        }
+      switch(pathElements[1]) {
+        // POST endpoint for the generation of batches.
+        case "generateBookings":
+          const amountOfBookingsParam = searchParms.get("amountOfBookings"); // Get the number of bookings from the query parameter.
+          const amountOfBookings = parseInt(amountOfBookingsParam, 10);
+          // Calls storeBookings in impartial.js to generate the bookings.
+          storeBookings(amountOfBookings)
+          .then((result) => {
+            jsonResponse(res, result);
+          })
+          .catch((err) => {
+            reportError(res, new Error(err));          
+          })
+          break;
+        // POST endoint for clearing the matrix entries.
+        case "reset":
+          clearMatrix();
+          startValue = 0;
+          globalState.reset();
+          jsonResponse(res, "Matrix was succesfully reset.");
+          break;
+        default: 
+          console.error("Resource doesn't exist.");
+          reportError(res, new Error(NoResourceError)); 
+      }
     } 
-      break; //END OF POST ENDPOINTS.
+    break; //END OF POST ENDPOINTS.
     case "GET": {
       let pathElements = queryPath.split("/"); 
       console.log(pathElements);
@@ -161,20 +161,19 @@ async function allocate(res, days, version) {
     let allocationArray = []; // Final array of bookings for response.
     let assignedBookingsResults = {};
     let totalPrefScore = 0;
+    let notAssignedBookings = []
     prefScoreArray.length = 0; // Reset preference score tracking.
 
     // Number of days to simulate. We start from start value and count until days, which is current day + x days.
     days += startValue;
 
-    let successfulBookings = [];
-    let assignedBookings = [];
-    let notAssignedBookings = [];
-    let failedBookings = [];
-
     // Loop through each day and allocate bookings.
     for (let i = startValue; i < days; i++) {
       // Match bookings to rooms using chosen version/strategy.
       assignedBookingsResults = await matchBookingsToRooms(version) || [];
+      
+      // Push our array of failed bookings we made in algorithm.
+      notAssignedBookings.push(...assignedBookingsResults.discardedBookings) 
 
       if (version !== 2) {
         // Apply preference optimization for sorted strategies
@@ -203,17 +202,13 @@ async function allocate(res, days, version) {
 
     console.log("Average preferences of the allocation (ver: " + version + ")");
     console.log(sumOfPreferences / prefScoreArray.length)
+  
+    // Console log both the amount of assigned and failed bookings.
+    console.log("Assigned bookings: ", allocationArray.length)
+    console.log("Failed bookings: ", notAssignedBookings.length)
     
     // New start value is the days we have counted up to.
     startValue = days;
-
-    /* GAKKI GO THROUGH DIS */
-    //successfulBookings.push(...assignedBookings); // Push our array of succesful bookings we made in algorithm
-    //failedBookings.push(...notAssignedBookings); // Push our array of failed bookings from algorithm into failedBookings
-    //console.log("Succesful bookings: ")
-    //console.log(successfulBookings)
-    //console.log("Assigned bookings: ", successfulBookings.length)
-    //console.log("Failed bookings: ", failedBookings.length)
 
     // Function call to calculate the wasted space score which counts consecutive zeros and countZeros which counts all zeroes in the matrix.
     wastedSpaceEvaluate(availabilityGrid); 
