@@ -67,7 +67,7 @@ async function calculatePrefScoreRandom(booking, room) {
     }
 
     // The scores are pushed to prefScoreArray, such that it contains all the prefscores for all the days. 
-    for(let i = 0; i < booking.stayDuration; i++){
+    for (let i = 0; i < booking.stayDuration; i++) {
         prefScoreArray.push(score)
     }
 

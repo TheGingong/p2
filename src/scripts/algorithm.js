@@ -72,7 +72,8 @@ async function preferenceOptimization(visibleBookings, totalPrefScore) {
         booking.title = booking.bookingId + " Guests: " + booking.guestsNumber + " Pref: " + results.prefScore;
         assignResourceIds(booking, bestSwapMatch, bookingsStartingToday);
 
-        for(let i = 0; i < booking.stayDuration; i++) {
+        // Takes the preference score corresponding to the best match for the booking and pushes it booking.stayDuration times into the array.
+        for (let i = 0; i < booking.stayDuration; i++) {
             prefScoreArray.push(results.prefScore);
         }
     }
