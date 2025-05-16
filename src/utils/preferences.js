@@ -18,11 +18,6 @@ function generateSoftPrefs(prefObject, prefOdds, isBooking) {
 
         // If the chance calculation's result is = 0, we assign the pref. 
         if (!chanceForFloorPref) {
-            // Generate floor pref options seperately, as it is defined based on building floors variable in globalVariables.
-            let floors = [];
-            for (let i = 1; i <= buildingFloors; i++) {
-                floors.push(i);
-            }
             prefObject.floor = Math.ceil(Math.random() * buildingFloors);
         }
     }
