@@ -56,9 +56,9 @@ function wastedSpaceEvaluate(roomsObject) {
 }
 
 function getPenaltyForGap(length) {
-	if(length == 1) return 1;
-	return 1-(1 / (length ** 2)) 
+    return 1 / Math.sqrt(length + 1);
 }
+
 
 /**
  * Function that loops over the entire avilability matrix, counting the number of times a zero occurs.
