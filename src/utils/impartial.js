@@ -27,7 +27,7 @@ function createBookingBatch(batch) {
     // Makes promise that resolves when bookings are generated and returned.
     return new Promise((resolve, reject) => {
         try {
-            for (let i = 1, j = 1; i <= batch; i++) {
+            for (let i = 1; i <= batch; i++) {
                 // Generates random number in range 1-12 to set a month for the booking.
                 checkInMonth = Math.floor(Math.random() * 12);
 
