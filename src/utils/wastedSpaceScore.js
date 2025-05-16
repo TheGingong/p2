@@ -66,21 +66,21 @@ function getPenaltyForGap(length) {
  */
 export function countZeroes() {
 	let zeroCount = 0;
-	for (const key in availabilityGrid) { //Loops through the rows of the matrix.
-		for (let i = 0; i < availabilityGrid[key].length; i++) { //Loops trough the columns of the matrix.
+	let totalCount = 0;
+
+	for (const key in availabilityGrid) { // Loops through the rows of the matrix.
+		for (let i = 0; i < availabilityGrid[key].length; i++) { // Loops trough the columns of the matrix.
 			if (availabilityGrid[key][i] === 0) {
 				zeroCount++;
+			} else {
+				totalCount++;
 			}
 		}
 	}
+	
+	totalCount = totalCount + zeroCount;
 
-	let totalCount = 0;
-	for (const key in availabilityGrid) { //Loops through the rows of the matrix.
-		for (let i = 0; i < availabilityGrid[key].length; i++) { //Loops trough the columns of the matrix.
-				totalCount++;
-		}
-	}
-	let ratioSlots = zeroCount / totalCount;
+	let ratioSlots = 1 - (zeroCount / totalCount);
 	console.log("Number of zero slots: " + zeroCount + " of total matrix slots " + totalCount);
-	console.log("Ratio of zero slots: " + ratioSlots);
+	console.log("Ratio of filled slots: " + ratioSlots);
 }
