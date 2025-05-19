@@ -67,7 +67,7 @@ function generateBatches() {
     const amountOfBookingsInput = document.querySelector("#bookingsInput");
     const amountOfBookings = parseInt(amountOfBookingsInput.value, 10);
 
-    if (isNaN(amountOfBookings) || amountOfBookings < 1 || amountOfBookings > 1000) {
+    if (isNaN(amountOfBookings) || amountOfBookings < 1 || amountOfBookings > 10000) {
         alert("Please enter a number of bookings between 1 and 1000.");
         return;
     }
