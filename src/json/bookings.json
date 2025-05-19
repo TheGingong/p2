@@ -182,7 +182,8 @@
     "resourceIds": "0",
     "bookingId": 14,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q1",
+      "pref4": "opt4.5"
     }
   },
   {
@@ -206,7 +207,7 @@
     "resourceIds": "0",
     "bookingId": 16,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1"
     }
   },
   {
@@ -371,7 +372,7 @@
     "resourceIds": "0",
     "bookingId": 29,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q1"
     }
   },
   {
@@ -481,7 +482,7 @@
     "resourceIds": "0",
     "bookingId": 38,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -633,7 +634,7 @@
     "resourceIds": "0",
     "bookingId": 50,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1"
     }
   },
   {
@@ -672,6 +673,7 @@
     "resourceIds": "0",
     "bookingId": 53,
     "preference": {
+      "beds": "s1q0"
       "beds": "s1q0"
     }
   },
@@ -724,6 +726,7 @@
     "bookingId": 57,
     "preference": {
       "beds": "s1q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -736,6 +739,7 @@
     "bookingId": 58,
     "preference": {
       "beds": "s2q0"
+      "beds": "s2q0"
     }
   },
   {
@@ -747,6 +751,7 @@
     "resourceIds": "0",
     "bookingId": 59,
     "preference": {
+      "beds": "s1q0"
       "beds": "s1q0"
     }
   },
@@ -821,7 +826,8 @@
     "resourceIds": "0",
     "bookingId": 65,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1",
+      "pref5": "opt5.5"
     }
   },
   {
@@ -873,6 +879,7 @@
     "bookingId": 69,
     "preference": {
       "beds": "s1q0"
+      "beds": "s1q0"
     }
   },
   {
@@ -910,6 +917,7 @@
     "bookingId": 72,
     "preference": {
       "beds": "s1q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -921,7 +929,8 @@
     "resourceIds": "0",
     "bookingId": 73,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s1q0",
+      "pref5": "opt5.4"
     }
   },
   {
@@ -1009,6 +1018,7 @@
     "bookingId": 80,
     "preference": {
       "beds": "s0q2"
+      "beds": "s0q2"
     }
   },
   {
@@ -1070,7 +1080,8 @@
     "resourceIds": "0",
     "bookingId": 85,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q1",
+      "pref1": "opt1.5"
     }
   },
   {
@@ -1173,6 +1184,7 @@
     "resourceIds": "0",
     "bookingId": 93,
     "preference": {
+      "beds": "s1q0"
       "beds": "s1q0"
     }
   },
@@ -1752,6 +1764,7 @@
     "bookingId": 139,
     "preference": {
       "beds": "s1q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -1775,7 +1788,7 @@
     "resourceIds": "0",
     "bookingId": 141,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -1812,6 +1825,7 @@
     "bookingId": 144,
     "preference": {
       "beds": "s0q1"
+      "beds": "s0q1"
     }
   },
   {
@@ -1835,6 +1849,7 @@
     "resourceIds": "0",
     "bookingId": 146,
     "preference": {
+      "beds": "s1q0"
       "beds": "s1q0"
     }
   },
@@ -1946,7 +1961,7 @@
     "resourceIds": "0",
     "bookingId": 155,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -2044,7 +2059,7 @@
     "resourceIds": "0",
     "bookingId": 163,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q1"
     }
   },
   {
@@ -2094,7 +2109,7 @@
     "resourceIds": "0",
     "bookingId": 167,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1"
     }
   },
   {
@@ -2131,7 +2146,7 @@
     "resourceIds": "0",
     "bookingId": 170,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s2q0"
     }
   },
   {
@@ -2143,7 +2158,7 @@
     "resourceIds": "0",
     "bookingId": 171,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -2155,7 +2170,8 @@
     "resourceIds": "0",
     "bookingId": 172,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q2",
+      "pref8": "opt8.2"
     }
   },
   {
@@ -2204,7 +2220,7 @@
     "resourceIds": "0",
     "bookingId": 176,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q0"
     }
   },
   {
@@ -2216,7 +2232,8 @@
     "resourceIds": "0",
     "bookingId": 177,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q2",
+      "pref7": "opt7.5"
     }
   },
   {
@@ -2241,7 +2258,8 @@
     "resourceIds": "0",
     "bookingId": 179,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q2",
+      "pref6": "opt6.4"
     }
   },
   {
@@ -2253,7 +2271,7 @@
     "resourceIds": "0",
     "bookingId": 180,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1"
     }
   },
   {
@@ -2265,7 +2283,8 @@
     "resourceIds": "0",
     "bookingId": 181,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q1",
+      "pref7": "opt7.3"
     }
   },
   {
@@ -2317,7 +2336,8 @@
     "resourceIds": "0",
     "bookingId": 185,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q0",
+      "pref5": "opt5.2"
     }
   },
   {
@@ -2329,7 +2349,9 @@
     "resourceIds": "0",
     "bookingId": 186,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0",
+      "pref2": "opt2.2",
+      "pref3": "opt3.4"
     }
   },
   {
@@ -2355,7 +2377,7 @@
     "resourceIds": "0",
     "bookingId": 188,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q0"
     }
   },
   {
@@ -2379,7 +2401,7 @@
     "resourceIds": "0",
     "bookingId": 190,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -2403,7 +2425,8 @@
     "resourceIds": "0",
     "bookingId": 192,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q1",
+      "pref1": "opt1.4"
     }
   },
   {
@@ -2479,7 +2502,7 @@
     "resourceIds": "0",
     "bookingId": 198,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s0q1"
     }
   },
   {
@@ -2491,7 +2514,7 @@
     "resourceIds": "0",
     "bookingId": 199,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s2q0"
     }
   },
   {
@@ -2503,7 +2526,7 @@
     "resourceIds": "0",
     "bookingId": 200,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q2"
     }
   },
   {
@@ -2515,7 +2538,7 @@
     "resourceIds": "0",
     "bookingId": 201,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -2553,7 +2576,8 @@
     "resourceIds": "0",
     "bookingId": 204,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q2",
+      "pref3": "opt3.4"
     }
   },
   {
@@ -2578,7 +2602,8 @@
     "resourceIds": "0",
     "bookingId": 206,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q2",
+      "pref5": "opt5.5"
     }
   },
   {
@@ -2603,7 +2628,8 @@
     "resourceIds": "0",
     "bookingId": 208,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0",
+      "floor": 2
     }
   },
   {
@@ -2615,7 +2641,7 @@
     "resourceIds": "0",
     "bookingId": 209,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q2"
     }
   },
   {
@@ -2679,7 +2705,8 @@
     "resourceIds": "0",
     "bookingId": 214,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q2",
+      "pref10": "opt10.1"
     }
   },
   {
@@ -2703,7 +2730,9 @@
     "resourceIds": "0",
     "bookingId": 216,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q1",
+      "floor": 4,
+      "pref1": "opt1.3"
     }
   },
   {
@@ -2728,7 +2757,7 @@
     "resourceIds": "0",
     "bookingId": 218,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q0"
     }
   },
   {
@@ -2740,7 +2769,7 @@
     "resourceIds": "0",
     "bookingId": 219,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q1"
     }
   },
   {
@@ -2778,7 +2807,7 @@
     "resourceIds": "0",
     "bookingId": 222,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0"
     }
   },
   {
@@ -2816,7 +2845,8 @@
     "resourceIds": "0",
     "bookingId": 225,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q2",
+      "pref5": "opt5.5"
     }
   },
   {
@@ -2828,7 +2858,9 @@
     "resourceIds": "0",
     "bookingId": 226,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q1",
+      "pref4": "opt4.2",
+      "pref7": "opt7.5"
     }
   },
   {
@@ -2853,7 +2885,8 @@
     "resourceIds": "0",
     "bookingId": 228,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q1",
+      "pref10": "opt10.5"
     }
   },
   {
@@ -2916,7 +2949,7 @@
     "resourceIds": "0",
     "bookingId": 233,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1"
     }
   },
   {
@@ -2942,7 +2975,9 @@
     "resourceIds": "0",
     "bookingId": 235,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s0q2",
+      "pref5": "opt5.4",
+      "pref8": "opt8.1"
     }
   },
   {
@@ -2966,7 +3001,8 @@
     "resourceIds": "0",
     "bookingId": 237,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s1q1",
+      "pref2": "opt2.3"
     }
   },
   {
@@ -2990,7 +3026,8 @@
     "resourceIds": "0",
     "bookingId": 239,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0",
+      "pref5": "opt5.5"
     }
   },
   {
@@ -3028,7 +3065,8 @@
     "resourceIds": "0",
     "bookingId": 242,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q1",
+      "pref2": "opt2.5"
     }
   },
   {
@@ -3053,7 +3091,7 @@
     "resourceIds": "0",
     "bookingId": 244,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s0q2"
     }
   },
   {
@@ -3078,7 +3116,7 @@
     "resourceIds": "0",
     "bookingId": 246,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -3090,7 +3128,7 @@
     "resourceIds": "0",
     "bookingId": 247,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q2"
     }
   },
   {
@@ -3102,7 +3140,7 @@
     "resourceIds": "0",
     "bookingId": 248,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s0q2"
     }
   },
   {
@@ -3114,7 +3152,7 @@
     "resourceIds": "0",
     "bookingId": 249,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q1"
     }
   },
   {
@@ -3251,7 +3289,7 @@
     "resourceIds": "0",
     "bookingId": 260,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s1q0"
     }
   },
   {
@@ -3263,8 +3301,8 @@
     "resourceIds": "0",
     "bookingId": 261,
     "preference": {
-      "beds": "s2q0",
-      "pref2": "opt2.5"
+      "beds": "s0q1",
+      "pref1": "opt1.3"
     }
   },
   {
@@ -3276,7 +3314,9 @@
     "resourceIds": "0",
     "bookingId": 262,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1",
+      "pref2": "opt2.4",
+      "pref3": "opt3.1"
     }
   },
   {
@@ -3300,7 +3340,7 @@
     "resourceIds": "0",
     "bookingId": 264,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s2q0"
     }
   },
   {
@@ -3312,7 +3352,7 @@
     "resourceIds": "0",
     "bookingId": 265,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q1"
     }
   },
   {
@@ -3336,7 +3376,8 @@
     "resourceIds": "0",
     "bookingId": 267,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0",
+      "pref4": "opt4.4"
     }
   },
   {
@@ -3374,7 +3415,9 @@
     "resourceIds": "0",
     "bookingId": 270,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0",
+      "pref7": "opt7.5",
+      "pref8": "opt8.5"
     }
   },
   {
@@ -3436,7 +3479,7 @@
     "resourceIds": "0",
     "bookingId": 275,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q0"
     }
   },
   {
@@ -3448,7 +3491,8 @@
     "resourceIds": "0",
     "bookingId": 276,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1",
+      "pref3": "opt3.5"
     }
   },
   {
@@ -3487,7 +3531,9 @@
     "resourceIds": "0",
     "bookingId": 279,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s2q0",
+      "pref4": "opt4.4",
+      "pref9": "opt9.5"
     }
   },
   {
@@ -3499,7 +3545,7 @@
     "resourceIds": "0",
     "bookingId": 280,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0"
     }
   },
   {
@@ -3524,7 +3570,8 @@
     "resourceIds": "0",
     "bookingId": 282,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s2q0",
+      "pref6": "opt6.5"
     }
   },
   {
@@ -3588,7 +3635,7 @@
     "resourceIds": "0",
     "bookingId": 287,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s0q2"
     }
   },
   {
@@ -3600,7 +3647,7 @@
     "resourceIds": "0",
     "bookingId": 288,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0"
     }
   },
   {
@@ -3653,8 +3700,7 @@
     "resourceIds": "0",
     "bookingId": 292,
     "preference": {
-      "beds": "s1q0",
-      "pref10": "opt10.2"
+      "beds": "s2q0"
     }
   },
   {
@@ -3678,7 +3724,7 @@
     "resourceIds": "0",
     "bookingId": 294,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0"
     }
   },
   {
@@ -3690,6 +3736,7 @@
     "resourceIds": "0",
     "bookingId": 295,
     "preference": {
+      "beds": "s2q0"
       "beds": "s2q0"
     }
   },
@@ -3727,7 +3774,9 @@
     "resourceIds": "0",
     "bookingId": 298,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q1",
+      "pref1": "opt1.4",
+      "pref7": "opt7.5"
     }
   },
   {
@@ -3739,7 +3788,7 @@
     "resourceIds": "0",
     "bookingId": 299,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s2q0"
     }
   },
   {
@@ -3764,7 +3813,7 @@
     "resourceIds": "0",
     "bookingId": 301,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q2"
     }
   },
   {
@@ -3802,7 +3851,7 @@
     "resourceIds": "0",
     "bookingId": 304,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -3826,7 +3875,9 @@
     "resourceIds": "0",
     "bookingId": 306,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s2q0",
+      "pref2": "opt2.1",
+      "pref7": "opt7.3"
     }
   },
   {
@@ -3930,7 +3981,7 @@
     "resourceIds": "0",
     "bookingId": 314,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s1q0"
     }
   },
   {
@@ -3970,6 +4021,7 @@
     "bookingId": 317,
     "preference": {
       "beds": "s1q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -3981,7 +4033,8 @@
     "resourceIds": "0",
     "bookingId": 318,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q0",
+      "pref2": "opt2.2"
     }
   },
   {
@@ -4006,7 +4059,7 @@
     "resourceIds": "0",
     "bookingId": 320,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q2"
     }
   },
   {
@@ -4057,7 +4110,7 @@
     "resourceIds": "0",
     "bookingId": 324,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -4069,7 +4122,7 @@
     "resourceIds": "0",
     "bookingId": 325,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0"
     }
   },
   {
@@ -4094,7 +4147,8 @@
     "resourceIds": "0",
     "bookingId": 327,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q2",
+      "pref9": "opt9.4"
     }
   },
   {
@@ -4132,7 +4186,8 @@
     "resourceIds": "0",
     "bookingId": 330,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q2",
+      "pref1": "opt1.3"
     }
   },
   {
@@ -4144,6 +4199,7 @@
     "resourceIds": "0",
     "bookingId": 331,
     "preference": {
+      "beds": "s1q0"
       "beds": "s1q0"
     }
   },
@@ -4181,7 +4237,7 @@
     "resourceIds": "0",
     "bookingId": 334,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1"
     }
   },
   {
@@ -4193,7 +4249,8 @@
     "resourceIds": "0",
     "bookingId": 335,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q2",
+      "pref9": "opt9.3"
     }
   },
   {
@@ -4220,7 +4277,7 @@
     "resourceIds": "0",
     "bookingId": 337,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q1"
     }
   },
   {
@@ -4244,7 +4301,9 @@
     "resourceIds": "0",
     "bookingId": 339,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s1q0",
+      "pref3": "opt3.3",
+      "pref9": "opt9.4"
     }
   },
   {
@@ -4270,7 +4329,7 @@
     "resourceIds": "0",
     "bookingId": 341,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -4282,7 +4341,8 @@
     "resourceIds": "0",
     "bookingId": 342,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s0q2",
+      "pref1": "opt1.3"
     }
   },
   {
@@ -4307,7 +4367,8 @@
     "resourceIds": "0",
     "bookingId": 344,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q2",
+      "pref5": "opt5.1"
     }
   },
   {
@@ -4319,7 +4380,7 @@
     "resourceIds": "0",
     "bookingId": 345,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -4331,7 +4392,7 @@
     "resourceIds": "0",
     "bookingId": 346,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s2q0"
     }
   },
   {
@@ -4356,7 +4417,9 @@
     "resourceIds": "0",
     "bookingId": 348,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q2",
+      "pref4": "opt4.5",
+      "pref10": "opt10.3"
     }
   },
   {
@@ -4368,7 +4431,8 @@
     "resourceIds": "0",
     "bookingId": 349,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1",
+      "pref10": "opt10.4"
     }
   },
   {
@@ -4420,6 +4484,7 @@
     "bookingId": 353,
     "preference": {
       "beds": "s0q2"
+      "beds": "s0q2"
     }
   },
   {
@@ -4431,7 +4496,7 @@
     "resourceIds": "0",
     "bookingId": 354,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0"
     }
   },
   {
@@ -4456,7 +4521,8 @@
     "resourceIds": "0",
     "bookingId": 356,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q0",
+      "pref7": "opt7.5"
     }
   },
   {
@@ -4508,7 +4574,9 @@
     "resourceIds": "0",
     "bookingId": 360,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q2",
+      "pref6": "opt6.4",
+      "pref8": "opt8.3"
     }
   },
   {
@@ -4610,6 +4678,7 @@
     "bookingId": 368,
     "preference": {
       "beds": "s1q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -4621,7 +4690,7 @@
     "resourceIds": "0",
     "bookingId": 369,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -4633,7 +4702,8 @@
     "resourceIds": "0",
     "bookingId": 370,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0",
+      "floor": 3
     }
   },
   {
@@ -4696,7 +4766,7 @@
     "resourceIds": "0",
     "bookingId": 375,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q2"
     }
   },
   {
@@ -4774,8 +4844,9 @@
     "resourceIds": "0",
     "bookingId": 381,
     "preference": {
-      "beds": "s0q2",
-      "pref4": "opt4.2"
+      "beds": "s1q1",
+      "floor": 2,
+      "pref8": "opt8.5"
     }
   },
   {
@@ -4878,7 +4949,8 @@
     "resourceIds": "0",
     "bookingId": 389,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s1q1",
+      "pref10": "opt10.3"
     }
   },
   {
@@ -4916,7 +4988,8 @@
     "resourceIds": "0",
     "bookingId": 392,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q1",
+      "pref4": "opt4.5"
     }
   },
   {
@@ -4928,7 +5001,8 @@
     "resourceIds": "0",
     "bookingId": 393,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1",
+      "pref3": "opt3.1"
     }
   },
   {
@@ -4965,7 +5039,7 @@
     "resourceIds": "0",
     "bookingId": 396,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s0q2"
     }
   },
   {
@@ -4977,7 +5051,7 @@
     "resourceIds": "0",
     "bookingId": 397,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q1"
     }
   },
   {
@@ -4989,7 +5063,7 @@
     "resourceIds": "0",
     "bookingId": 398,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q0"
     }
   },
   {
@@ -5001,7 +5075,7 @@
     "resourceIds": "0",
     "bookingId": 399,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q0"
     }
   },
   {
@@ -5013,7 +5087,9 @@
     "resourceIds": "0",
     "bookingId": 400,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s2q0",
+      "pref1": "opt1.1",
+      "pref9": "opt9.5"
     }
   },
   {
@@ -5089,7 +5165,7 @@
     "resourceIds": "0",
     "bookingId": 406,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s1q0"
     }
   },
   {
@@ -5138,7 +5214,7 @@
     "resourceIds": "0",
     "bookingId": 410,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s2q0"
     }
   },
   {
@@ -5150,7 +5226,8 @@
     "resourceIds": "0",
     "bookingId": 411,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s1q0",
+      "pref9": "opt9.3"
     }
   },
   {
@@ -5162,7 +5239,7 @@
     "resourceIds": "0",
     "bookingId": 412,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s2q0"
     }
   },
   {
@@ -5174,7 +5251,7 @@
     "resourceIds": "0",
     "bookingId": 413,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q1"
     }
   },
   {
@@ -5227,7 +5304,9 @@
     "resourceIds": "0",
     "bookingId": 417,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s2q0",
+      "floor": 2,
+      "pref7": "opt7.3"
     }
   },
   {
@@ -5303,8 +5382,8 @@
     "resourceIds": "0",
     "bookingId": 423,
     "preference": {
-      "beds": "s0q1",
-      "pref6": "opt6.5"
+      "beds": "s2q0",
+      "pref10": "opt10.3"
     }
   },
   {
@@ -5341,7 +5420,7 @@
     "resourceIds": "0",
     "bookingId": 426,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s0q2"
     }
   },
   {
@@ -5365,7 +5444,8 @@
     "resourceIds": "0",
     "bookingId": 428,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s1q1",
+      "pref4": "opt4.2"
     }
   },
   {
@@ -5377,7 +5457,7 @@
     "resourceIds": "0",
     "bookingId": 429,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s2q0"
     }
   },
   {
@@ -5413,7 +5493,7 @@
     "resourceIds": "0",
     "bookingId": 432,
     "preference": {
-      "beds": "s0q2"
+      "beds": "s0q1"
     }
   },
   {
@@ -5498,7 +5578,7 @@
     "resourceIds": "0",
     "bookingId": 439,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s0q2"
     }
   },
   {
@@ -5536,7 +5616,8 @@
     "resourceIds": "0",
     "bookingId": 442,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s0q1",
+      "pref1": "opt1.2"
     }
   },
   {
@@ -5548,7 +5629,7 @@
     "resourceIds": "0",
     "bookingId": 443,
     "preference": {
-      "beds": "s1q1"
+      "beds": "s0q1"
     }
   },
   {
@@ -5720,6 +5801,18 @@
     "checkInDate": "2025-07-25",
     "checkOutDate": "2025-07-31",
     "guestsNumber": 3,
+    "stayDuration": 5,
+    "dayOfBooking": "2025-05-15",
+    "resourceIds": "0",
+    "bookingId": 1463,
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-02-26",
+    "checkOutDate": "2025-03-04",
+    "guestsNumber": 4,
     "stayDuration": 6,
     "dayOfBooking": "2025-05-29",
     "resourceIds": "0",
@@ -5776,7 +5869,7 @@
     "resourceIds": "0",
     "bookingId": 461,
     "preference": {
-      "beds": "s2q0"
+      "beds": "s1q0"
     }
   },
   {
@@ -5825,7 +5918,7 @@
     "resourceIds": "0",
     "bookingId": 465,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s1q0"
     }
   },
   {
@@ -5967,20 +6060,82 @@
     "resourceIds": "0",
     "bookingId": 476,
     "preference": {
-      "beds": "s1q0"
+      "beds": "s1q1"
     }
   },
   {
     "checkInDate": "2025-02-15",
     "checkOutDate": "2025-02-21",
     "guestsNumber": 2,
-    "stayDuration": 6,
-    "dayOfBooking": "2025-01-06",
+    "stayDuration": 4,
+    "dayOfBooking": "2025-05-14",
     "resourceIds": "0",
     "bookingId": 477,
     "preference": {
       "beds": "s0q1",
       "pref2": "opt2.5"
+    }
+  },
+  {
+    "checkInDate": "2025-12-03",
+    "checkOutDate": "2025-12-08",
+    "guestsNumber": 3,
+    "stayDuration": 5,
+    "dayOfBooking": "2025-11-30",
+    "resourceIds": "0",
+    "bookingId": 1705,
+    "preference": {
+      "beds": "s1q1",
+      "pref3": "opt3.2"
+    }
+  },
+  {
+    "checkInDate": "2025-06-16",
+    "checkOutDate": "2025-06-18",
+    "guestsNumber": 4,
+    "stayDuration": 2,
+    "dayOfBooking": "2025-06-15",
+    "resourceIds": "0",
+    "bookingId": 1706,
+    "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-11-23",
+    "checkOutDate": "2025-11-26",
+    "guestsNumber": 3,
+    "stayDuration": 3,
+    "dayOfBooking": "2025-11-10",
+    "resourceIds": "0",
+    "bookingId": 1707,
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-01-26",
+    "checkOutDate": "2025-02-03",
+    "guestsNumber": 3,
+    "stayDuration": 8,
+    "dayOfBooking": "2025-01-23",
+    "resourceIds": "0",
+    "bookingId": 1708,
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-07-26",
+    "checkOutDate": "2025-07-29",
+    "guestsNumber": 1,
+    "stayDuration": 3,
+    "dayOfBooking": "2025-07-24",
+    "resourceIds": "0",
+    "bookingId": 1709,
+    "preference": {
+      "beds": "s1q0",
+      "floor": 3
     }
   },
   {
@@ -6022,8 +6177,8 @@
     }
   },
   {
-    "checkInDate": "2025-01-18",
-    "checkOutDate": "2025-01-26",
+    "checkInDate": "2025-04-13",
+    "checkOutDate": "2025-04-22",
     "guestsNumber": 2,
     "stayDuration": 8,
     "dayOfBooking": "2024-12-06",
@@ -6064,6 +6219,18 @@
     "checkInDate": "2025-04-17",
     "checkOutDate": "2025-04-20",
     "guestsNumber": 2,
+    "stayDuration": 2,
+    "dayOfBooking": "2024-12-30",
+    "resourceIds": "0",
+    "bookingId": 1782,
+    "preference": {
+      "beds": "s2q0"
+    }
+  },
+  {
+    "checkInDate": "2025-09-19",
+    "checkOutDate": "2025-09-22",
+    "guestsNumber": 1,
     "stayDuration": 3,
     "dayOfBooking": "2025-02-24",
     "resourceIds": "0",
@@ -6083,7 +6250,7 @@
     "bookingId": 485,
     "preference": {
       "beds": "s1q0",
-      "floor": 2
+      "pref7": "opt7.2"
     }
   },
   {
@@ -6136,7 +6303,7 @@
     "resourceIds": "0",
     "bookingId": 489,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s1q0"
     }
   },
   {
@@ -6148,6 +6315,7 @@
     "resourceIds": "0",
     "bookingId": 490,
     "preference": {
+      "beds": "s2q0"
       "beds": "s2q0"
     }
   },
@@ -6223,7 +6391,7 @@
     "resourceIds": "0",
     "bookingId": 496,
     "preference": {
-      "beds": "s0q1"
+      "beds": "s1q1"
     }
   },
   {
@@ -6266,6 +6434,66 @@
     "checkInDate": "2025-08-17",
     "checkOutDate": "2025-08-26",
     "guestsNumber": 4,
+    "stayDuration": 3,
+    "dayOfBooking": "2025-11-25",
+    "resourceIds": "0",
+    "bookingId": 1953,
+    "preference": {
+      "beds": "s0q2"
+    }
+  },
+  {
+    "checkInDate": "2025-07-07",
+    "checkOutDate": "2025-07-12",
+    "guestsNumber": 2,
+    "stayDuration": 5,
+    "dayOfBooking": "2025-07-03",
+    "resourceIds": "0",
+    "bookingId": 1954,
+    "preference": {
+      "beds": "s0q1"
+    }
+  },
+  {
+    "checkInDate": "2025-09-05",
+    "checkOutDate": "2025-09-08",
+    "guestsNumber": 3,
+    "stayDuration": 3,
+    "dayOfBooking": "2025-08-07",
+    "resourceIds": "0",
+    "bookingId": 1955,
+    "preference": {
+      "beds": "s1q1"
+    }
+  },
+  {
+    "checkInDate": "2025-01-19",
+    "checkOutDate": "2025-01-25",
+    "guestsNumber": 2,
+    "stayDuration": 6,
+    "dayOfBooking": "2024-11-28",
+    "resourceIds": "0",
+    "bookingId": 1956,
+    "preference": {
+      "beds": "s2q0"
+    }
+  },
+  {
+    "checkInDate": "2025-10-20",
+    "checkOutDate": "2025-10-28",
+    "guestsNumber": 1,
+    "stayDuration": 8,
+    "dayOfBooking": "2025-09-29",
+    "resourceIds": "0",
+    "bookingId": 1957,
+    "preference": {
+      "beds": "s1q0"
+    }
+  },
+  {
+    "checkInDate": "2025-01-03",
+    "checkOutDate": "2025-01-12",
+    "guestsNumber": 2,
     "stayDuration": 9,
     "dayOfBooking": "2025-06-18",
     "resourceIds": "0",
