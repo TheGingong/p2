@@ -127,6 +127,7 @@ function allocateLeastDiff() {
     .then((data) => {
         // Call the appendToCalendar function with the fetched data, which appendToCalendars bookings into the calendar.
         appendToCalendar(data, "rgb(77, 160, 244)");
+        updateEvaluationDisplay();
     })
     .catch((error) => {
         console.error('There was a problem with the fetch operation: during appendToCalendar', error);
@@ -167,6 +168,7 @@ function allocateRandom() {
     .then((data) => {
         // Call the appendToCalendar function with the fetched data, which appendToCalendars bookings into calendar.
         appendToCalendar(data, "rgb(45, 45, 49)");
+        updateEvaluationDisplay();
     })
     .catch((error) => {
         console.error('There was a problem with the fetch operation: during appendToCalendar', error);
@@ -208,8 +210,29 @@ function allocateStayDuration() {
     .then((data) => {
         // Call the appendToCalendar function with the fetched data, which appendToCalendars bookings into calendar.
         appendToCalendar(data, "rgb(245, 154, 56)");
+        updateEvaluationDisplay();
     })
     .catch((error) => {
         console.error('There was a problem with the fetch operation: during appendToCalendar', error);
     });
+}
+
+function updateEvaluationDisplay() {
+    fetch('/evaluation')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to fetch evaluation data.");
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('avgPrefScore').textContent = data.avgPreference.toFixed(2);
+            document.getElementById('assignedCount').textContent = data.assigned;
+            document.getElementById('failedCount').textContent = data.failed;
+            document.getElementById('zeroCells').textContent = data.zeroCells;
+            document.getElementById('wastedSpace').textContent = data.wastedScore;
+        })
+        .catch(error => {
+            console.error("Evaluation fetch error:", error);
+        });
 }

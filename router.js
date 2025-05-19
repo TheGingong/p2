@@ -136,6 +136,19 @@ async function processReq(req, res) {
               jsonResponse(res, { error: "Rooms data is not available." });
           }
           break;
+        case "evaluation":
+          jsonResponse(res, {
+            avgPreference: prefScoreArray.length
+              ? prefScoreArray.reduce((a, b) => a + b, 0) / prefScoreArray.length
+              : 0,
+            assigned: globalState.totalAssigned || 0,
+            failed: globalState.totalFailed || 0,
+            zeroCells: Object.values(availabilityGrid).reduce((acc, row) => {
+              return acc + row.reduce((rowAcc, cell) => rowAcc + (cell === 0 ? 1 : 0), 0);
+            }, 0),
+            wastedScore: globalState.lastWastedScore || 0,
+          });
+          break;
         default: // For anything else we assume it is a file to be served.
           fileResponse(res, req.url);
         break;
@@ -190,7 +203,11 @@ async function allocate(res, days, version) {
       // Updates the day
       globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
       console.log("Current day " + globalState.currentDay);
-    
+
+      globalState.totalAssigned = allocationArray.length;
+      globalState.totalFailed = notAssignedBookings.length;
+      globalState.lastWastedScore = wastedSpaceEvaluate(availabilityGrid); // assume it returns a score
+
     }   
 
     let sumOfPreferences = 0;

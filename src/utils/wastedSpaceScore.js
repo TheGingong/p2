@@ -50,14 +50,19 @@ function wastedSpaceEvaluate(roomsObject) {
 		currentCount = 0; // Do not push, if the last element in array is a zero.
 	}
 	
+		let averageGapLength = 0;
 		let gapLength = 0;
 		for (const gap of consecutiveZeros) { // Count up all the penalties for the gaps.
-			gapLength += gap;
-		}
-	
-		const averageGapLength = gapLength / consecutiveZeros.length; // Calculate the average gap length.
-		console.log("Average Gap Length: " + averageGapLength);
-		console.log("Average Gap Score: " + 1 / averageGapLength); // Give a normalized score.
+            gapLength += gap;
+        }
+                    if (gapLength != 0) {
+        averageGapLength = gapLength / consecutiveZeros.length; // Calculate the average gap length.
+                    } else {
+                              averageGapLength = 0;
+                    }
+        console.log("Average Gap Length: " + averageGapLength);
+        console.log("Average Gap Score: " + 1 / averageGapLength); // Give a normalized score.
+                    return 1 / averageGapLength;
 }
 
 /** Funtion that for each 'length' of consecutive bookings, gives back a penalty.
