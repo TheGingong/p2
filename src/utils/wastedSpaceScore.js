@@ -50,23 +50,19 @@ function wastedSpaceEvaluate(roomsObject) {
 		currentCount = 0; // Do not push, if the last element in array is a zero.
 	}
 	
-		let totalPenalty = 0;
+		let gapLength = 0;
 		for (const gap of consecutiveZeros) { // Count up all the penalties for the gaps.
-			totalPenalty += getPenaltyForGap(gap);
+			gapLength += gap;
 		}
 	
-		const averagePenalty = totalPenalty / (consecutiveZeros.length); // Find average penalty.
-		let occupancyScore = Math.max(0, Math.min(1, averagePenalty)); // Clamp the score between 0 and 1.
-		console.log("The average slack of the allocation: " + occupancyScore);
+		const averageGapLength = gapLength / consecutiveZeros.length; // Calculate the average gap length.
+		console.log("Average Gap Length: " + averageGapLength);
+		console.log("Average Gap Score: " + 1 / averageGapLength); // Give a normalized score.
 }
 
 /** Funtion that for each 'length' of consecutive bookings, gives back a penalty.
  * The bigger the gap, the bigger the penalty.
  */
-function getPenaltyForGap(length) {
-	if (length == 1) return 0.8
-    return (1 / length);
-}
 
 /**
  * Function that loops over the entire avilability matrix, counting the number of times a zero occurs.
