@@ -18,7 +18,7 @@ function wastedSpaceEvaluate(roomsObject) {
 		return [];
 	}
 
-	for (let i = 0; i < roomMatrix.length; i++) {
+	for (let i = 0; i < roomMatrix.length; i++) { // Loop through rows of the matrix.
 		const innerArray = roomMatrix[i];
 
 		if (!Array.isArray(innerArray)) {
@@ -26,35 +26,38 @@ function wastedSpaceEvaluate(roomsObject) {
 			continue;
 		}
 
-		for (let j = 0; j < innerArray.length; j++) {
+		for (let j = 0; j < innerArray.length; j++) { // Loop through columns of the matrix.
 			const element = innerArray[j];
-			if (element === 0) {
+			if (element === 0) { // If element is zero, increment the count.
 				currentCount++;
 			} else {
-				if (currentCount > 0) {
+				if (currentCount > 0) { // When a zero streak ends, push the count to the array.
 					consecutiveZeros.push(currentCount);
 				}
 				currentCount = 0;
 			}
 		}
 
-		if (currentCount > 0) {
+		if (currentCount > 0) { // If the column ends with a zero streak, push the count to the array.
 			consecutiveZeros.push(currentCount);
 		}
 		currentCount = 0;
 	}
 	
 		let totalPenalty = 0;
-		for (const gap of consecutiveZeros) {
+		for (const gap of consecutiveZeros) { // Count up all the penalties for the gaps.
 			totalPenalty += getPenaltyForGap(gap);
 		}
 	
-		const averagePenalty = totalPenalty / (consecutiveZeros.length);
+		const averagePenalty = totalPenalty / (consecutiveZeros.length); // Find average penalty.
 		
 		const totalOccupancyScore = Math.max(0, Math.min(1, averagePenalty));
 		console.log("Total wasted space score: " + totalOccupancyScore);
 }
 
+/** Funtion that for each 'length' of consecutive bookings, gives back a penalty.
+ * The bigger the gap, the bigger the penalty.
+ */
 function getPenaltyForGap(length) {
     return 1 / Math.sqrt(length + 1);
 }
@@ -62,7 +65,7 @@ function getPenaltyForGap(length) {
 
 /**
  * Function that loops over the entire avilability matrix, counting the number of times a zero occurs.
- * Prints the amount of zeros that were counted.
+ * Prints the amount of zeros that were counted, as well total slots and ratio of filled slots.
  */
 export function countZeroes() {
 	let zeroCount = 0;
@@ -71,16 +74,16 @@ export function countZeroes() {
 	for (const key in availabilityGrid) { // Loops through the rows of the matrix.
 		for (let i = 0; i < availabilityGrid[key].length; i++) { // Loops trough the columns of the matrix.
 			if (availabilityGrid[key][i] === 0) {
-				zeroCount++;
+				zeroCount++; // Increments the zero count if a zero is found.
 			} else {
-				totalCount++;
+				totalCount++; // Increments the total count if a non-zero is found.
 			}
 		}
 	}
 	
-	totalCount = totalCount + zeroCount;
+	totalCount = totalCount + zeroCount; // Final count of total slots.
 
-	let ratioSlots = 1 - (zeroCount / totalCount);
+	let ratioSlots = 1 - (zeroCount / totalCount); // Ratio of filled slots is calculated by subtracting the ratio of zeroes from 1.
 	console.log("Number of zero slots: " + zeroCount + " of total matrix slots " + totalCount);
 	console.log("Ratio of filled slots: " + ratioSlots);
 }
