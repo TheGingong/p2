@@ -64,9 +64,13 @@ function resetMatrix() {
  * Function that sends a request to generate a batch of bookings, with the amount of bookings speficied.
  */
 function generateBatches() {
-
     const amountOfBookingsInput = document.querySelector("#bookingsInput");
-    const amountOfBookings = parseInt(amountOfBookingsInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid.
+    const amountOfBookings = parseInt(amountOfBookingsInput.value, 10); // Fallback to 0 if input is empty or invalid.
+
+    if (isNaN(amountOfBookings) || amountOfBookings < 1 || amountOfBookings > 1000) {
+        alert("Please enter a number of bookings between 1 and 1000.");
+        return;
+    }
 
     let url = `generateBookings?amountOfBookings=${amountOfBookings}`; // Create URL string with days as a query parameter.
 
@@ -100,6 +104,12 @@ function allocateLeastDiff() {
     const dayInput = document.querySelector("#dayInput");
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid.
 
+    // Basic validation
+    if (isNaN(days) || days < 1 || days > 365) {
+        alert("Please enter a number of days between 1 and 365.");
+        return;
+    }
+
     let url = `leastDiff?days=${days}`; // Create URL string with days as a query parameter.
 
     fetch(url, {
@@ -128,13 +138,17 @@ function allocateLeastDiff() {
  * Is responsible of parsing numbers of days we want to simulate
  * Is responsible of calling appendToCalendar with output from random allocation algorithm
  */
-function allocateRandom(){
-
+function allocateRandom() {
     // Get the value from the input field with id "dayInput"
     // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
-
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+
+    // Basic validation
+    if (isNaN(days) || days < 1 || days > 365) {
+        alert("Please enter a number of days between 1 and 365.");
+        return;
+    }
 
     let url = `random?days=${days}`; // Create URL string with days as a query parameter
 
@@ -169,8 +183,13 @@ function allocateStayDuration() {
     // Get the value from the input field with id "dayInput"
     // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
-
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+
+    // Basic validation
+    if (isNaN(days) || days < 1 || days > 365) {
+        alert("Please enter a number of days between 1 and 365.");
+        return;
+    }
 
     let url = `stayDuration?days=${days}`; // Create URL string with days as a query parameter
 
