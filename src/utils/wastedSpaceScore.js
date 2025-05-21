@@ -1,3 +1,12 @@
+import { availabilityGrid } from "../scripts/availabilityMatrix.js";
+export { wastedSpaceEvaluate };
+
+/**
+ * Function that counts concecutive zeros. With the formula 1/numOfZero^2.
+ * Not currently used as the logic didn't work as intended
+ * @param {object} - Object containing the information about a room
+ * @return {float} Outputs a value form 0 - 1 higher score is worse
+ */
 function wastedSpaceEvaluate(roomsObject) {
         // Convert the values of the roomsObject into an array.
         const roomMatrix = Object.values(roomsObject);

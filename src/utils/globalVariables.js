@@ -12,20 +12,22 @@
  * @global {roomsResourceIdToObject} - Hash map for roomsInfo
  * @global {roomsIndexToResourceId} - Hash map for roomsInfo
  */
-
 import dayjs from "dayjs";
-import { bookingsInfo, loadRooms } from "./getInfo.js"; // Importing the bookings and rooms info
-
+import { loadRooms } from "./getInfo.js"; // Rooms info.
 export {
     buildingFloors,
     roomsPerFloor,
     maxGuests,
-    roomTypes,
     globalState,
+    roomTypes,
+    totalPrefs,
+    prefOddsGuests,
+    prefOddsRooms,
     roomsResourceIdToObject,
     roomsIndexToResourceId,
 } 
 
+// Global state object will work as a tool to allow variables to be accessed outside of the scope they are created in.
 let globalState = {
     currentDay: dayjs('2025-01-01'),
     reset (){
@@ -33,38 +35,48 @@ let globalState = {
     }
 }
 
-// Array which will hold template of rooms.
-let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]
+// Available room/booking preferences.
+let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]; // Bed layouts/room types.
+let totalPrefs = { // Object containing all the soft preference options.
+    pref1  : ["opt1.1", "opt1.2", "opt1.3", "opt1.4", "opt1.5"],
+    pref2  : ["opt2.1", "opt2.2", "opt2.3", "opt2.4", "opt2.5"],
+    pref3  : ["opt3.1", "opt3.2", "opt3.3", "opt3.4", "opt3.5"],
+    pref4  : ["opt4.1", "opt4.2", "opt4.3", "opt4.4", "opt4.5"],
+    pref5  : ["opt5.1", "opt5.2", "opt5.3", "opt5.4", "opt5.5"],
+    pref6  : ["opt6.1", "opt6.2", "opt6.3", "opt6.4", "opt6.5"],
+    pref7  : ["opt7.1", "opt7.2", "opt7.3", "opt7.4", "opt7.5"],
+    pref8  : ["opt8.1", "opt8.2", "opt8.3", "opt8.4", "opt8.5"],
+    pref9  : ["opt9.1", "opt9.2", "opt9.3", "opt9.4", "opt9.5"],
+    pref10 : ["opt10.1", "opt10.2", "opt10.3", "opt10.4", "opt10.5"]
+};
 
-// Room generation variables
-let buildingFloors = 5; // Floors in the hotel.
-let roomsPerFloor = 2; // Amount of rooms to generate for each floor.
-let maxGuests = 4; // Maximum guests for the largest room (-1 because we add in the random generation in roomGenerator).    
+// Global variable to change chances of preferences occuring. Probability will be 1/prefOdds.
+let prefOddsGuests = 20; // ex. 20 => 1/20 = 5% chance
+let prefOddsRooms = 4;
 
-
+// Room generation variables: 
+let buildingFloors = 4; // Floors in the hotel.
+let roomsPerFloor = 2; // How many rooms to generate for every floor.
+let maxGuests = 4; // Maximum guests for largest room (-1 because we add in the random generation).
 
 /**
- * Hash map for roomsInfo, that converts from the resourceID 
- * to the room's object containing more detailed information.
+ * The following code makes a hash map for roomsInfo, 
+ * converting the resourceID to the room's object containing more detailed information.
  */
-
 let { roomsInfo } = await loadRooms();
-console.log("Loaded Rooms Info:", roomsInfo);
+console.log("Rooms loaded.");
 
-// Check if the result is an array
+// Checks if the result is an array.
 if (!Array.isArray(roomsInfo)) {
     throw new Error("loadRooms() did not return an array");
 }
-
+// Converts the resource ID of a room, to it's object
 const roomsResourceIdToObject = roomsInfo.reduce((hash, room) => {
-// Hash map for roomsInfo
     hash[room.roomNumber] = room;
     return hash;
 }, {});
 
-/**
- * Hash map for roomsInfo, that converts an index (from 0) to the resourceID of a room.
- */
+// Converts the room index of a room, to it's resource ID
 const roomsIndexToResourceId = roomsInfo.reduce((hash, room, index) => {
     hash[index] = room;
     return hash;

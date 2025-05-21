@@ -1,15 +1,20 @@
-// addEvent (event objekt)
-/* event object: {title: title for event,    start: start-date,     end: end-date,    resourceIds: ID of the room}*/
-export {allocate, resetMatrix, resetEverything, generateBatches, allocateAction, allocateRandom, allocateActioncheckDate}
+/**
+ * This file is reponsible for creating the functions that need to be called when a button on the
+ * html side is clicked. 
+ * Contains functions appendToCalendar, resetEverything, resetMatrix, allocateLeastDiff, allocateRandom, allocateStayduration
+ */
+export { appendToCalendar, resetMatrix, resetEverything, generateBatches, allocateLeastDiff, allocateRandom, allocateStayDuration }
 
-
-
-// Function that allocates bookings into the calendar
-// Takes in an array of bookings and adds them to the calendar, also takes a color depending on allocation method
-function allocate(bookings, colorValue){
-    console.log(bookings)
-    for (let i = 0; i < bookings.length; i++){ // Loops through all bookings and addEvent to put in calender
-        calendar.addEvent({
+/**
+ * Function that appends bookings into the calendar.
+ * @param {array} - an array of bookingobjects to be pushed to the calendar [{booking 1}, {booking 2}...]
+ * @param {string} - Specifies the rgb values with format "rgb(77, 160, 244)".
+ */
+function appendToCalendar(bookings, colorValue) {
+    //console.log(bookings)
+    // Iterates through each booking we want to append to the calendar. And the specifies the information to be displayed.
+    for (let i = 0; i < bookings.length; i++) { 
+        calendar.addEvent( {
             title: `Booking ${bookings[i].title}`,
             start: bookings[i].checkInDate,
             end: bookings[i].checkOutDate,
@@ -24,18 +29,19 @@ function allocate(bookings, colorValue){
     }
 } 
 
-
-// Function that when pressed, resets both calender and current matrix
-function resetEverything(){
+/** 
+ * Function that is triggered upon a button click, resets both calender and current matrix.
+ */ 
+function resetEverything() {
     calendar.getEvents().forEach(event => event.remove()); // For every event, remove from calender
-    resetMatrix()
+    resetMatrix();
 }
 
 /** 
  * Function to reset the calendar.
  */
 function resetMatrix() {
-    // Sending POST request to router.js
+    // Sending POST request to router.js. When received this will reset the availablity matrix.
     fetch('reset', {
     method: "POST"
     })
@@ -55,16 +61,20 @@ function resetMatrix() {
 }
 
 /**
- * Function that generates batches and places it inside a JSON file.
+ * Function that sends a request to generate a batch of bookings, with the amount of bookings speficied.
  */
 function generateBatches() {
-
     const amountOfBookingsInput = document.querySelector("#bookingsInput");
-    const amountOfBookings = parseInt(amountOfBookingsInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+    const amountOfBookings = parseInt(amountOfBookingsInput.value, 10);
 
-    let url = `generateBookings?amountOfBookings=${amountOfBookings}`; // Create URL string with days as a query parameter
+    if (isNaN(amountOfBookings) || amountOfBookings < 1 || amountOfBookings > 10000) {
+        alert("Please enter a number of bookings between 1 and 1000.");
+        return;
+    }
 
-    // Sending POST request to router.js, as we are creating batches on the server side
+    let url = `generateBookings?amountOfBookings=${amountOfBookings}`; // Create URL string with days as a query parameter.
+
+    // Sending POST request to router.js, as batches needs to be created in the backend.
     fetch(url, {
     method: "POST"
     })
@@ -75,8 +85,7 @@ function generateBatches() {
         return response.json();
     })
     .then((result) => {
-
-        // Reponse in form of text that tells the batch has been generated
+        // Reponse in form of text that tells the batch has been generated.
         console.log('Batch generated:', result);
     })
     .catch((error) => {
@@ -85,15 +94,23 @@ function generateBatches() {
     }
 
 /**
- * Allocate function called upon button click. Used later to allocate bookings into calendar.
+ * function called when least Difference is clicked.
+ * Is responsible of parsing numbers of days we want to simulate.
+ * Is responsible of calling appendToCalendar with output from Least Difference algorithm.
  */
-function allocateAction() {
-    // Get the value from the input field with id "dayInput"
-    // This value is used to determine the number of days for allocation
+function allocateLeastDiff() {
+    // Get the value from the input field with id "dayInput".
+    // This value is used to determine the number of days for allocation.
     const dayInput = document.querySelector("#dayInput");
-    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+    const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid.
 
-    let url = `allocate?days=${days}`; // Create URL string with days as a query parameter
+    // Basic validation
+    if (isNaN(days) || days < 1 || days > 365) {
+        alert("Please enter a number of days between 1 and 365.");
+        return;
+    }
+
+    let url = `leastDiff?days=${days}`; // Create URL string with days as a query parameter.
 
     fetch(url, {
         method: 'GET',
@@ -101,29 +118,38 @@ function allocateAction() {
             'Content-Type': 'application/json',
         },
     })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok during allocate');
-            }
-            return response.json();
-        })
-        .then((data) => {
-            // Call the allocate function with the fetched data, which allocates bookings into the calendar.
-            allocate(data, "rgb(77, 160, 244)");
-        })
-        .catch((error) => {
-            console.error('There was a problem with the fetch operation: during allocate', error);
-        });
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok during appendToCalendar');
+        }
+        return response.json();
+    })
+    .then((data) => {
+        // Call the appendToCalendar function with the fetched data, which appendToCalendars bookings into the calendar.
+        appendToCalendar(data, "rgb(77, 160, 244)");
+        updateEvaluationDisplay();
+    })
+    .catch((error) => {
+        console.error('There was a problem with the fetch operation: during appendToCalendar', error);
+    });
 }
 
-// Function that allocates random bookings into the calendar.
-function allocateRandom(){
-
+/**
+ * function called when random is clicked.
+ * Is responsible of parsing numbers of days we want to simulate
+ * Is responsible of calling appendToCalendar with output from random allocation algorithm
+ */
+function allocateRandom() {
     // Get the value from the input field with id "dayInput"
     // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
-
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
+
+    // Basic validation
+    if (isNaN(days) || days < 1 || days > 365) {
+        alert("Please enter a number of days between 1 and 365.");
+        return;
+    }
 
     let url = `random?days=${days}`; // Create URL string with days as a query parameter
 
@@ -133,32 +159,41 @@ function allocateRandom(){
             'Content-Type': 'application/json',
         },
     })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok during allocate');
-            }
-            return response.json();
-        })
-        .then((data) => {
-            // Call the allocate function with the fetched data, which allocates bookings into calendar.
-            allocate(data, "rgb(45, 45, 49)");
-        })
-        .catch((error) => {
-            console.error('There was a problem with the fetch operation: during allocate', error);
-        });
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok during appendToCalendar');
+        }
+        return response.json();
+    })
+    .then((data) => {
+        // Call the appendToCalendar function with the fetched data, which appendToCalendars bookings into calendar.
+        appendToCalendar(data, "rgb(45, 45, 49)");
+        updateEvaluationDisplay();
+    })
+    .catch((error) => {
+        console.error('There was a problem with the fetch operation: during appendToCalendar', error);
+    });
 }
 
-
-// Allocate function called upon button click. Used later to allocate bookings into calendar.
-function allocateActioncheckDate() {
+/**
+ * function called when StayDuration button is clicked.
+ * Is responsible of parsing numbers of days we want to simulate
+ * Is responsible of calling appendToCalendar with output from stayDuration algortihm
+ */
+function allocateStayDuration() {
 
     // Get the value from the input field with id "dayInput"
     // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
-
     const days = parseInt(dayInput.value, 10) || 0; // Fallback to 0 if input is empty or invalid
 
-    let url = `allocate2?days=${days}`; // Create URL string with days as a query parameter
+    // Basic validation
+    if (isNaN(days) || days < 1 || days > 365) {
+        alert("Please enter a number of days between 1 and 365.");
+        return;
+    }
+
+    let url = `stayDuration?days=${days}`; // Create URL string with days as a query parameter
 
     fetch(url, {
         method: 'GET',
@@ -166,17 +201,43 @@ function allocateActioncheckDate() {
             'Content-Type': 'application/json',
         },
     })
-        .then((response) => {
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok during appendToCalendar');
+        }
+        return response.json();
+    })
+    .then((data) => {
+        // Call the appendToCalendar function with the fetched data, which appendToCalendars bookings into calendar.
+        appendToCalendar(data, "rgb(245, 154, 56)");
+        updateEvaluationDisplay();
+    })
+    .catch((error) => {
+        console.error('There was a problem with the fetch operation: during appendToCalendar', error);
+    });
+}
+
+/**
+ * function called when calendar needs to be updated (appendToCalendar) in every allocation algorithm.
+ * Is responsible for updating the evaluation summary list on the webpage.
+ * Creates fetch request for router which handles the calculation of the data that needs to be used.
+ */
+function updateEvaluationDisplay() {
+    fetch('/evaluation')
+        .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok during allocate');
+                throw new Error("Failed to fetch evaluation data.");
             }
             return response.json();
         })
-        .then((data) => {
-            // Call the allocate function with the fetched data, which allocates bookings into calendar.
-            allocate(data, "rgb(245, 154, 56)");
+        .then(data => {
+            document.getElementById('avgPrefScore').textContent = data.avgPreference.toFixed(5);
+            document.getElementById('assignedCount').textContent = data.assigned;
+            document.getElementById('failedCount').textContent = data.failed;
+            document.getElementById('zeroCells').textContent = data.zeroCells.toFixed(5);
+            document.getElementById('wastedSpace').textContent = data.wastedScore.toFixed(5);
         })
-        .catch((error) => {
-            console.error('There was a problem with the fetch operation: during allocate', error);
+        .catch(error => {
+            console.error("Evaluation fetch error:", error);
         });
 }
