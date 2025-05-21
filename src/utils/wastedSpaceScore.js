@@ -100,7 +100,8 @@ function wastedSpaceEvaluate(roomsObject) {
         // Calculate and log the score. The formula aims for a normalized score.
         console.log("Average Gap Score: " + (1 - (1 / averageGapLength))); // Give a normalized score.
         // Return the calculated score. If averageGapLength is 0, return 0 to avoid division by zero.
-        return (averageGapLength === 0) ? 0 : 1 - (1 / averageGapLength);
+		return (averageGapLength > 0) ? 1 - (1 / averageGapLength) : 0;
+
 }
 
 function countZeroes() {

@@ -4,7 +4,7 @@
  */
 import { roomsResourceIdToObject } from "./globalVariables.js";
 export { calculatePrefScore, calculatePrefScoreRandom }
-export let prefScoreArray = [];
+export let prefScoreArrayBefore = [];
 
 /**
  * The function loads the needed data, compares the booking and room, and returns the preference score. 
@@ -66,9 +66,9 @@ async function calculatePrefScoreRandom(booking, room) {
         }
     }
 
-    // The scores are pushed to prefScoreArray, such that it contains all the prefscores for all the days. 
+    // The scores are pushed to prefScoreArrayBefore, such that it contains all the prefscores for all the days. 
     for (let i = 0; i < booking.stayDuration; i++) {
-        prefScoreArray.push(score)
+        prefScoreArrayBefore.push(score);
     }
 
     return Math.round(score * 100) / 100;

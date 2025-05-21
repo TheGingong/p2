@@ -11,13 +11,15 @@ import { extractJSON, fileResponse, htmlResponse, extractForm, jsonResponse, err
 import { availabilityGrid, clearMatrix } from "./src/scripts/availabilityMatrix.js";
 import { roomsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { storeBookings } from "./src/utils/impartial.js";
-import { prefScoreArray } from "./src/utils/prefScores.js";
+import { prefScoreArrayBefore } from "./src/utils/prefScores.js";
+import { prefScoreArray } from "./src/scripts/algorithm.js";
 import { matchBookingsToRooms} from "./src/scripts/assignBookings.js";
 import { globalState } from "./src/utils/globalVariables.js";
 import { preferenceOptimization } from "./src/scripts/algorithm.js";
 import { countZeroes, wastedSpaceEvaluate } from "./src/utils/wastedSpaceScore.js";
 import dayjs from "dayjs";
 export { ValidationError, NoResourceError, processReq };
+export let occupancyMatrixBefore = {};
 
 const ValidationError = "Validation Error";
 const NoResourceError = "No Such Resource";
@@ -60,6 +62,7 @@ async function processReq(req, res) {
           // Calls storeBookings in impartial.js to generate the bookings.
           storeBookings(amountOfBookings)
           .then((result) => {
+            occupancyMatrixBefore = JSON.parse(JSON.stringify(availabilityGrid));
             jsonResponse(res, result);
           })
           .catch((err) => {
@@ -138,11 +141,13 @@ async function processReq(req, res) {
           break;
         case "evaluation": // Case for evaluation summary on the website. Gives an object as a JSON response.
           jsonResponse(res, {
-            avgPreference: (globalState.sumOfPreferences / prefScoreArray.length) || 0,
+            occBefore: globalState.lastWastedScoreBefore || 0,
+            occAfter: globalState.lastWastedScoreAfter || 0,
+            ratio: globalState.ratioSlots || 0,
+            avgPreferenceBefore: (globalState.sumOfPreferencesBefore / prefScoreArrayBefore.length) || 0,
+            avgPreferenceAfter: (globalState.sumOfPreferencesAfter / prefScoreArrayBefore.length) || 0,
             assigned: globalState.totalAssigned || 0,
             failed: globalState.totalFailed || 0,
-            zeroCells: globalState.zeroCells || 0,
-            wastedScore: globalState.lastWastedScore || 0,
           });
           break;
         default: // For anything else we assume it is a file to be served.
@@ -172,6 +177,7 @@ async function allocate(res, days, version) {
     let totalPrefScore = 0;
     let notAssignedBookings = []
     prefScoreArray.length = 0; // Reset preference score tracking.
+    prefScoreArrayBefore.length = 0; // Reset preference score tracking.
 
     // Number of days to simulate. We start from start value and count until days, which is current day + x days.
     days += startValue;
@@ -180,10 +186,10 @@ async function allocate(res, days, version) {
     for (let i = startValue; i < days; i++) {
       // Match bookings to rooms using chosen version/strategy.
       assignedBookingsResults = await matchBookingsToRooms(version) || [];
-      
-      // Push our array of failed bookings we made in algorithm.
-      notAssignedBookings.push(...assignedBookingsResults.discardedBookings) 
 
+      // Push our array of failed bookings we made in algorithm.
+      notAssignedBookings.push(...assignedBookingsResults.discardedBookings);
+      
       if (version !== 2) {
         // Apply preference optimization for sorted strategies
         let results = await preferenceOptimization(assignedBookingsResults.visibleBookings, totalPrefScore) || [];
@@ -206,22 +212,52 @@ async function allocate(res, days, version) {
     globalState.totalAssigned = allocationArray.length;
     globalState.totalFailed = notAssignedBookings.length;
 
-    // Function call to calculate the wasted space score which counts consecutive zeros and countZeros which counts all zeroes in the matrix.
-    globalState.lastWastedScore = wastedSpaceEvaluate(availabilityGrid); // Assume it returns a score
-    globalState.zeroCells = countZeroes();
+    // Handling the different approaches to calculating the occupancy score before the preference optimization algorithm is ran on version 0 and 1.
+    if (version === 2) {
+      globalState.sumOfPreferencesAfter = 0;
+      globalState.sumOfPreferencesBefore = 0;
+      // Iterates through the prefScoreArrayBefore after its been filled by prefScores.js - with the purpose of evaluating.
+      for (let i of prefScoreArrayBefore) {
+        globalState.sumOfPreferencesBefore += i;
+        globalState.sumOfPreferencesAfter += i
+      } 
+      // Function call to calculate the occupancy score before preference optimization which counts consecutive zeros for random algorithm.
+      globalState.lastWastedScoreBefore = wastedSpaceEvaluate(availabilityGrid); // Retrieves occupancy score before preference optimization algorithm.
+    } else {
+      globalState.sumOfPreferencesAfter = 0;
+      globalState.sumOfPreferencesBefore = 0;
+      // Iterates through the prefScoreArray after its been filled by algorithm.js - with the purpose of evaluating.
+      for (let i of prefScoreArray) {
+        globalState.sumOfPreferencesAfter += i;
+      } 
 
-    globalState.sumOfPreferences = 0;
-    // Iterates through the prefScoreArray after its been filled by prefScores.js, and print the average - with the purpose of evaluating.
-    for (let i of prefScoreArray){
-      globalState.sumOfPreferences += i;
+      // Iterates through the prefScoreArrayBefore after its been filled by prefScores.js - with the purpose of evaluating.
+      for (let i of prefScoreArrayBefore) {
+            globalState.sumOfPreferencesBefore += i;
+      }
+
+      // Function call to calculate the occupancy score before preference optimization which counts consecutive zeros for every algorithm thats NOT the random.
+      globalState.lastWastedScoreBefore = wastedSpaceEvaluate(occupancyMatrixBefore); // Retrieves occupancy score before preference optimization algorithm.
     }
+    
+    // Function call to calculate the wasted space score after preference optimization which counts consecutive zeros and countZeros which counts all zeroes in the matrix.
+    globalState.lastWastedScoreAfter = wastedSpaceEvaluate(availabilityGrid); // Assume it returns a score
+    globalState.ratioSlots = countZeroes();
 
     console.log("Average preferences of the allocation (ver: " + version + ")");
-    console.log(globalState.sumOfPreferences / prefScoreArray.length)
+    console.log(globalState.sumOfPreferencesAfter / prefScoreArrayBefore.length)
   
     // Console log both the amount of assigned and failed bookings.
     console.log("Assigned bookings: ", globalState.totalAssigned)
     console.log("Failed bookings: ", globalState.totalFailed)
+
+    console.log(availabilityGrid);
+    console.log(occupancyMatrixBefore);
+
+    console.log("here is all the shit:");
+    console.log("Ratio slot: " + globalState.ratioSlots)
+    console.log("Wasted space before: " + globalState.lastWastedScoreBefore)
+    console.log("Wasted space after: " + globalState.lastWastedScoreAfter)
     
     // New start value is the days we have counted up to.
     startValue = days;

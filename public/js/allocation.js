@@ -35,6 +35,15 @@ function appendToCalendar(bookings, colorValue) {
 function resetEverything() {
     calendar.getEvents().forEach(event => event.remove()); // For every event, remove from calender
     resetMatrix();
+
+    // Resets the evaluation score table
+    document.getElementById('occBefore').textContent = "-"
+    document.getElementById('occAfter').textContent = "-"
+    document.getElementById('ratio').textContent = "-"
+    document.getElementById('avgPrefScoreBefore').textContent = "-"
+    document.getElementById('avgPrefScoreAfter').textContent = "-"
+    document.getElementById('assignedCount').textContent = "-"
+    document.getElementById('failedCount').textContent = "-"
 }
 
 /** 
@@ -231,11 +240,13 @@ function updateEvaluationDisplay() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('avgPrefScore').textContent = data.avgPreference.toFixed(5);
+            document.getElementById('occBefore').textContent = data.occBefore.toFixed(5);
+            document.getElementById('occAfter').textContent = data.occAfter.toFixed(5);
+            document.getElementById('ratio').textContent = data.ratio.toFixed(5);
+            document.getElementById('avgPrefScoreBefore').textContent = data.avgPreferenceBefore.toFixed(5);
+            document.getElementById('avgPrefScoreAfter').textContent = data.avgPreferenceAfter.toFixed(5);
             document.getElementById('assignedCount').textContent = data.assigned;
             document.getElementById('failedCount').textContent = data.failed;
-            document.getElementById('zeroCells').textContent = data.zeroCells.toFixed(5);
-            document.getElementById('wastedSpace').textContent = data.wastedScore.toFixed(5);
         })
         .catch(error => {
             console.error("Evaluation fetch error:", error);
