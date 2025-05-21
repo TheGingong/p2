@@ -127,6 +127,7 @@ function allocateLeastDiff() {
     .then((data) => {
         // Call the appendToCalendar function with the fetched data, which appendToCalendars bookings into the calendar.
         appendToCalendar(data, "rgb(77, 160, 244)");
+        updateEvaluationDisplay();
     })
     .catch((error) => {
         console.error('There was a problem with the fetch operation: during appendToCalendar', error);
@@ -167,6 +168,7 @@ function allocateRandom() {
     .then((data) => {
         // Call the appendToCalendar function with the fetched data, which appendToCalendars bookings into calendar.
         appendToCalendar(data, "rgb(45, 45, 49)");
+        updateEvaluationDisplay();
     })
     .catch((error) => {
         console.error('There was a problem with the fetch operation: during appendToCalendar', error);
@@ -208,8 +210,34 @@ function allocateStayDuration() {
     .then((data) => {
         // Call the appendToCalendar function with the fetched data, which appendToCalendars bookings into calendar.
         appendToCalendar(data, "rgb(245, 154, 56)");
+        updateEvaluationDisplay();
     })
     .catch((error) => {
         console.error('There was a problem with the fetch operation: during appendToCalendar', error);
     });
+}
+
+/**
+ * function called when calendar needs to be updated (appendToCalendar) in every allocation algorithm.
+ * Is responsible for updating the evaluation summary list on the webpage.
+ * Creates fetch request for router which handles the calculation of the data that needs to be used.
+ */
+function updateEvaluationDisplay() {
+    fetch('/evaluation')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to fetch evaluation data.");
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('avgPrefScore').textContent = data.avgPreference.toFixed(5);
+            document.getElementById('assignedCount').textContent = data.assigned;
+            document.getElementById('failedCount').textContent = data.failed;
+            document.getElementById('zeroCells').textContent = data.zeroCells.toFixed(5);
+            document.getElementById('wastedSpace').textContent = data.wastedScore.toFixed(5);
+        })
+        .catch(error => {
+            console.error("Evaluation fetch error:", error);
+        });
 }
