@@ -136,16 +136,12 @@ async function processReq(req, res) {
               jsonResponse(res, { error: "Rooms data is not available." });
           }
           break;
-        case "evaluation":
+        case "evaluation": // Case for evaluation summary on the website. Gives an object as a JSON response.
           jsonResponse(res, {
-            avgPreference: prefScoreArray.length
-              ? prefScoreArray.reduce((a, b) => a + b, 0) / prefScoreArray.length
-              : 0,
+            avgPreference: (globalState.sumOfPreferences / prefScoreArray.length) || 0,
             assigned: globalState.totalAssigned || 0,
             failed: globalState.totalFailed || 0,
-            zeroCells: Object.values(availabilityGrid).reduce((acc, row) => {
-              return acc + row.reduce((rowAcc, cell) => rowAcc + (cell === 0 ? 1 : 0), 0);
-            }, 0),
+            zeroCells: globalState.zeroCells || 0,
             wastedScore: globalState.lastWastedScore || 0,
           });
           break;
@@ -204,31 +200,31 @@ async function allocate(res, days, version) {
       globalState.currentDay = dayjs(globalState.currentDay).add(1, 'day').format('YYYY-MM-DD'); 
       console.log("Current day " + globalState.currentDay);
 
-      globalState.totalAssigned = allocationArray.length;
-      globalState.totalFailed = notAssignedBookings.length;
-      globalState.lastWastedScore = wastedSpaceEvaluate(availabilityGrid); // assume it returns a score
-
     }   
 
-    let sumOfPreferences = 0;
+    // Handles the total assigned amount of bookings and the amount of failed bookings per allocation.
+    globalState.totalAssigned = allocationArray.length;
+    globalState.totalFailed = notAssignedBookings.length;
 
+    // Function call to calculate the wasted space score which counts consecutive zeros and countZeros which counts all zeroes in the matrix.
+    globalState.lastWastedScore = wastedSpaceEvaluate(availabilityGrid); // Assume it returns a score
+    globalState.zeroCells = countZeroes();
+
+    globalState.sumOfPreferences = 0;
     // Iterates through the prefScoreArray after its been filled by prefScores.js, and print the average - with the purpose of evaluating.
     for (let i of prefScoreArray){
-      sumOfPreferences += i;
+      globalState.sumOfPreferences += i;
     }
 
     console.log("Average preferences of the allocation (ver: " + version + ")");
-    console.log(sumOfPreferences / prefScoreArray.length)
+    console.log(globalState.sumOfPreferences / prefScoreArray.length)
   
     // Console log both the amount of assigned and failed bookings.
-    console.log("Assigned bookings: ", allocationArray.length)
-    console.log("Failed bookings: ", notAssignedBookings.length)
+    console.log("Assigned bookings: ", globalState.totalAssigned)
+    console.log("Failed bookings: ", globalState.totalFailed)
     
     // New start value is the days we have counted up to.
     startValue = days;
 
-    // Function call to calculate the wasted space score which counts consecutive zeros and countZeros which counts all zeroes in the matrix.
-    wastedSpaceEvaluate(availabilityGrid); 
-    countZeroes()
     jsonResponse(res, allocationArray); // Send the response
 }

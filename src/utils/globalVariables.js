@@ -12,9 +12,8 @@
  * @global {roomsResourceIdToObject} - Hash map for roomsInfo
  * @global {roomsIndexToResourceId} - Hash map for roomsInfo
  */
-
 import dayjs from "dayjs";
-import { bookingsInfo, loadRooms } from "./getInfo.js"; // Importing the bookings and rooms info
+import { loadRooms } from "./getInfo.js"; // Rooms info.
 export {
     buildingFloors,
     roomsPerFloor,
@@ -28,6 +27,7 @@ export {
     roomsIndexToResourceId,
 } 
 
+// Global state object will work as a tool to allow variables to be accessed outside of the scope they are created in.
 let globalState = {
     currentDay: dayjs('2025-01-01'),
     reset (){
@@ -65,6 +65,7 @@ let maxGuests = 4; // Maximum guests for largest room (-1 because we add in the 
  */
 let { roomsInfo } = await loadRooms();
 console.log("Rooms loaded.");
+
 // Checks if the result is an array.
 if (!Array.isArray(roomsInfo)) {
     throw new Error("loadRooms() did not return an array");
@@ -74,6 +75,7 @@ const roomsResourceIdToObject = roomsInfo.reduce((hash, room) => {
     hash[room.roomNumber] = room;
     return hash;
 }, {});
+
 // Converts the room index of a room, to it's resource ID
 const roomsIndexToResourceId = roomsInfo.reduce((hash, room, index) => {
     hash[index] = room;

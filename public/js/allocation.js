@@ -217,6 +217,11 @@ function allocateStayDuration() {
     });
 }
 
+/**
+ * function called when calendar needs to be updated (appendToCalendar) in every allocation algorithm.
+ * Is responsible for updating the evaluation summary list on the webpage.
+ * Creates fetch request for router which handles the calculation of the data that needs to be used.
+ */
 function updateEvaluationDisplay() {
     fetch('/evaluation')
         .then(response => {
@@ -226,11 +231,11 @@ function updateEvaluationDisplay() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('avgPrefScore').textContent = data.avgPreference.toFixed(2);
+            document.getElementById('avgPrefScore').textContent = data.avgPreference.toFixed(5);
             document.getElementById('assignedCount').textContent = data.assigned;
             document.getElementById('failedCount').textContent = data.failed;
-            document.getElementById('zeroCells').textContent = data.zeroCells;
-            document.getElementById('wastedSpace').textContent = data.wastedScore;
+            document.getElementById('zeroCells').textContent = data.zeroCells.toFixed(5);
+            document.getElementById('wastedSpace').textContent = data.wastedScore.toFixed(5);
         })
         .catch(error => {
             console.error("Evaluation fetch error:", error);

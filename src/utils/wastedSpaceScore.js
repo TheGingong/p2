@@ -30,11 +30,11 @@ function wastedSpaceEvaluate(roomsObject) {
 		for (let j = 0; j < innerArray.length; j++) { // Loop through columns of the matrix.
 			const element = innerArray[j];
 
-			if(element !== 0){
+			if (element !== 0) {
 				hasBegun = 1;
 			}
 
-			if(hasBegun === 0){
+			if (hasBegun === 0) {
 				continue;
 			}
 
@@ -48,21 +48,24 @@ function wastedSpaceEvaluate(roomsObject) {
 			}
 		}
 		currentCount = 0; // Do not push, if the last element in array is a zero.
-	}
+	          }
 	
-		let averageGapLength = 0;
 		let gapLength = 0;
+                    let averageGapLength = 0
+
+
 		for (const gap of consecutiveZeros) { // Count up all the penalties for the gaps.
-            gapLength += gap;
-        }
+			gapLength += gap;
+                              console.log(gap);
+		}
                     if (gapLength != 0) {
-        averageGapLength = gapLength / consecutiveZeros.length; // Calculate the average gap length.
+		averageGapLength = gapLength / consecutiveZeros.length; // Calculate the average gap length.
                     } else {
                               averageGapLength = 0;
                     }
-        console.log("Average Gap Length: " + averageGapLength);
-        console.log("Average Gap Score: " + 1 / averageGapLength); // Give a normalized score.
-                    return 1 / averageGapLength;
+					console.log("Average Gap Length: " + averageGapLength);
+					console.log("Average Gap Score: " + (1 - (1 / averageGapLength))); // Give a normalized score.
+                    return (averageGapLength === 0) ? 0 : 1 - (1 / averageGapLength);
 }
 
 /** Funtion that for each 'length' of consecutive bookings, gives back a penalty.
@@ -92,4 +95,5 @@ export function countZeroes() {
 	let ratioSlots = 1 - (zeroCount / totalCount); // Ratio of filled slots is calculated by subtracting the ratio of zeroes from 1.
 	console.log("Number of zero slots: " + zeroCount + " of total matrix slots " + totalCount);
 	console.log("Ratio of filled slots: " + ratioSlots);
+	return ratioSlots; // Returns the ratio of filled slots.
 }

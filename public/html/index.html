@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/allocate.css">
     <!--<script src="https://unpkg.com/@popperjs/core@2"></script>-->
     <div id="controls">
-
       <label for="dayInput">Number of days to allocate:</label>
       <input type="number" id="dayInput" name="dayInput" value="10" min="0" step="1" />
 
@@ -44,21 +43,17 @@
         <span class="color-indicator reset"></span>
         Reset everything
       </button>
-
     </div>
-
     <div id="evaluationOutput" style="margin-top: 1rem; padding: 1rem; border: 1px solid #ccc; border-radius: 8px;">
-    <h3>Evaluation Summary</h3>
-    <ul>
-      <li><strong>Average Preference Score:</strong> <span id="avgPrefScore">-</span></li>
-      <li><strong>Assigned Bookings:</strong> <span id="assignedCount">-</span></li>
-      <li><strong>Failed Bookings:</strong> <span id="failedCount">-</span></li>
-      <li><strong>Zero Cells:</strong> <span id="zeroCells">-</span></li>
-      <li><strong>Wasted Space Score:</strong> <span id="wastedSpace">-</span></li>
-    </ul>
+      <h3>Evaluation Summary</h3>
+      <ul>
+        <li><strong>Average Preference Score:</strong> <span id="avgPrefScore">-</span></li>
+        <li><strong>Assigned Bookings:</strong> <span id="assignedCount">-</span></li>
+        <li><strong>Failed Bookings:</strong> <span id="failedCount">-</span></li>
+        <li><strong>Ratio of filled slots:</strong> <span id="zeroCells">-</span></li>
+        <li><strong>Wasted Space Score:</strong> <span id="wastedSpace">-</span></li>
+      </ul>
     </div>
-
-
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.15/index.global.min.js"></script>
     <script src="js/calendar.js"></script>
   </head>
