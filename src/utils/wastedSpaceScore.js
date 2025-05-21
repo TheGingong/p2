@@ -1,102 +1,110 @@
 //import { availabilityGrid } from "../scripts/availabilityMatrix.js";
 export { wastedSpaceEvaluate };
+import { availabilityGrid } from "../scripts/availabilityMatrix.js";
 
+/**
+ * Function that counts concecutive zeros. With the formula 1/numOfZero^2.
+ * Not currently used as the logic didn't work as intended
+ * @param {object} - Object containing the information about a room
+ * @return {float} Outputs a value form 0 - 1 higher score is worse
+ */
 function wastedSpaceEvaluate(roomsObject) {
-
-
-          const roomMatrix = Object.values(roomsObject);
+	const roomMatrix = Object.values(roomsObject);
 	const consecutiveZeros = [];
 	let currentCount = 0;
 
 	if (!Array.isArray(roomMatrix)) {
 		console.error("Input must be an array.");
-		return []; // Return empty array for invalid input
+		return [];
 	}
 
-	// Iterate through each inner array in the main array
-	for (let i = 0; i < roomMatrix.length; i++) {
+	for (let i = 0; i < roomMatrix.length; i++) { // Loop through rows of the matrix.
 		const innerArray = roomMatrix[i];
 
-		// Check if the inner element is a valid array
 		if (!Array.isArray(innerArray)) {
-			console.warn(
-				`Element at index ${i} is not an array, skipping.`
-			);
-			continue; // Skip non-array elements in the outer array
+			console.warn(`Element at index ${i} is not an array, skipping.`);
+			continue;
 		}
+		let hasBegun = 0;
 
-		// Iterate through each element in the current inner array
-		for (let j = 0; j < innerArray.length; j++) {
+		for (let j = 0; j < innerArray.length; j++) { // Loop through columns of the matrix.
 			const element = innerArray[j];
 
-			// Check if the element is 0
-			if (element === 0) {
-				// Increment the count for consecutive zeros
+			if(element !== 0){
+				hasBegun = 1;
+			}
+
+			if(hasBegun === 0){
+				continue;
+			}
+
+			if (element === 0) { // If element is zero, increment the count.
 				currentCount++;
 			} else {
-				// If the element is non-zero and we have a running count of zeros
-				if (currentCount > 0) {
-					// Push the count to the results array
-					consecutiveZeros.push(
-						currentCount
-					);
+				if (currentCount > 0) { // When a zero streak ends, push the count to the array.
+					consecutiveZeros.push(currentCount);
 				}
-				// Reset the count since the sequence of zeros is broken
 				currentCount = 0;
 			}
 		}
+		currentCount = 0; // Do not push, if the last element in array is a zero.
+	          }
+	
+		let gapLength = 0;
+                    let averageGapLength = 0
 
-		// After iterating through an inner array, check if there's a trailing count of zeros
-		if (currentCount > 0) {
-			consecutiveZeros.push(currentCount);
+
+		for (const gap of consecutiveZeros) { // Count up all the penalties for the gaps.
+			gapLength += gap;
+                              console.log(gap);
 		}
-		currentCount = 0;
-	}
-
-          let occupancyScore = 0;
-          let newScore = 0;
-
-          for (let i = 0; i < consecutiveZeros.length; i++) {
-                    console.log("Current newScore: " + newScore + ". Current number: " + consecutiveZeros[i])
-                    newScore += (1 / (consecutiveZeros[i] ** 2));
-          }
-	if (newScore !== 0) {
-          occupancyScore += newScore / (consecutiveZeros.length);
-          }
-
-          return occupancyScore;
+                    if (gapLength != 0) {
+		averageGapLength = gapLength / consecutiveZeros.length; // Calculate the average gap length.
+                    } else {
+                              averageGapLength = 0;
+                    }
+		console.log("Average Gap Length: " + averageGapLength);
+		console.log("Average Gap Score: " + 1 / averageGapLength); // Give a normalized score.
+                    return (averageGapLength === 0) ? 0 : 1 - (1 / averageGapLength);
 }
-try {
-const badArrays = [
-         [0,1,0,1,0,1,0,1,0,1],
-         [0,1,0,1,0,1,0,1,0,1],
-         [0,1,0,1,0,1,0,1,0,1],
-         [0,1,0,1,0,1,0,1,0,1],
-         [0,1,0,1,0,1,0,1,0,1]
-]
-const fullArrays = [
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-          [1,1,1,1,1,1,1,1,1,1],
-]
 
-const NormalArrays = [
-  [0, 0, 0, 1, 1, 0, 1, 0, 0, 1],
-  [1, 0, 1, 0, 1, 0, 0, 1, 0, 0],
-  [], // Empty inner array
-  [5, 6, 7], // No zeros
-  [0, 0, 0, 0], // All zeros
-  [1, 1, 1, 0], // Trailing zero
-  [0, 1, 0, 0] // Leading and internal zeros
-];
-
-const result = wastedSpaceEvaluate(fullArrays);
-//console.log("Input Arrays:", arrays);
-console.log("Consecutive Zeros Counts:", result); // Expected: [3, 1, 2, 1, 1, 2, 2, 4, 1, 1, 2]
+/*try {
+          const roomsObject = {
+            room1: [0, 1, 0, 0, 1, 0], // n=1, n=2, n=1
+            room2: [1, 0, 0, 0, 1, 1], // n=3
+            room3: [0, 0, 1, 1, 0, 0], // n=2, n=2
+        };
+        wastedSpaceEvaluate(roomsObject);
 
 } catch {
-          throw new Error ("Something went wrong bitch");
+          throw new Error("hey");
+}//*/
+
+/** Funtion that for each 'length' of consecutive bookings, gives back a penalty.
+ * The bigger the gap, the bigger the penalty.
+ */
+
+/**
+ * Function that loops over the entire avilability matrix, counting the number of times a zero occurs.
+ * Prints the amount of zeros that were counted, as well total slots and ratio of filled slots.
+ */
+export function countZeroes() {
+	let zeroCount = 0;
+	let totalCount = 0;
+
+	for (const key in availabilityGrid) { // Loops through the rows of the matrix.
+		for (let i = 0; i < availabilityGrid[key].length; i++) { // Loops trough the columns of the matrix.
+			if (availabilityGrid[key][i] === 0) {
+				zeroCount++; // Increments the zero count if a zero is found.
+			} else {
+				totalCount++; // Increments the total count if a non-zero is found.
+			}
+		}
+	}
+	
+	totalCount = totalCount + zeroCount; // Final count of total slots.
+
+	let ratioSlots = 1 - (zeroCount / totalCount); // Ratio of filled slots is calculated by subtracting the ratio of zeroes from 1.
+	console.log("Number of zero slots: " + zeroCount + " of total matrix slots " + totalCount);
+	console.log("Ratio of filled slots: " + ratioSlots);
 }
