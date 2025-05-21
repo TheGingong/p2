@@ -10,8 +10,10 @@ export { wastedSpaceEvaluate, countZeroes };
 function wastedSpaceEvaluate(roomsObject) {
 	// Convert the values of the roomsObject into an array.
 	const roomMatrix = Object.values(roomsObject);
+
 	// Initialize an array to store the lengths of consecutive zeros.
 	const consecutiveZeros = [];
+
 	// Initialize a counter for the current streak of zeros.
 	let currentCount = 0;
 
@@ -96,12 +98,15 @@ function wastedSpaceEvaluate(roomsObject) {
 			// If there are no gaps, set the average gap length to 0.
 			averageGapLength = 0;
         }
-        console.log("Average Gap Length: " + averageGapLength);
-        // Calculate and log the score. The formula aims for a normalized score.
-        console.log("Average Gap Score: " + (1 - (1 / averageGapLength))); // Give a normalized score.
-        // Return the calculated score. If averageGapLength is 0, return 0 to avoid division by zero.
-		return (averageGapLength > 0) ? 1 - (1 / averageGapLength) : 0;
+        let averageGapScore = (averageGapLength === 0) ? 0 : 1 - (1 / averageGapLength);
 
+        console.log("Average Gap Length: " + averageGapLength);
+
+        // Calculate and log the score. The formula aims for a normalized score.
+        console.log("Average Gap Score: " + averageGapScore); // Give a normalized score.
+
+        // Return the calculated score. If averageGapLength is 0, return 0 to avoid division by zero.
+        return averageGapScore;
 }
 
 function countZeroes() {

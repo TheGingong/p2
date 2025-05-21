@@ -7,10 +7,8 @@ import { loadBookings, loadRooms } from '../utils/getInfo.js';
 import { checkAvailability, availabilityGrid, insertBookings, dateDifference } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
-import { start } from 'repl';
 import { globalState } from "../utils/globalVariables.js";
 import { calculatePrefScoreRandom } from '../utils/prefScores.js';
-import { occupancyMatrixBefore } from '../../router.js';
 export { getVisibleBookings, matchBookingsToRooms, sortByDuration, timespanAvailability }
 
 // Get plugings from dayjs.
@@ -83,8 +81,7 @@ async function matchBookingsToRooms(version) {
             insertBookings(finalArray, availabilityGrid);
             return { finalArray, prefScoreBefore, discardedBookings, availabilityGrid };
         }
-        insertBookings(finalArray, occupancyMatrixBefore);
-        return { visibleBookings, prefScoreBefore, discardedBookings, occupancyMatrixBefore };
+        return { visibleBookings, prefScoreBefore, discardedBookings };
 
     } catch (error) {
         console.error("Error updating bookings:", error);
