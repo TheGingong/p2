@@ -192,11 +192,9 @@ async function allocate(res, days, version) {
         let results = await preferenceOptimization(assignedBookingsResults.visibleBookings, totalPrefScore) || [];
         totalPrefScore = results.totalPrefScore;  // Update the accumulated preference score.
         allocationArray.push(...results.bookingsStartingToday); // Push our array we made in algorithm to the array that will be allocated in fullCalendar.
-        //console.log("Preferensce score for the current allocation", totalPrefScore);
       } else {
         totalPrefScore += assignedBookingsResults.totalRandomPrefScore; // Update the accumulated preference score for the RANDOM allocation algorithm.
         allocationArray.push(...assignedBookingsResults.finalArray); // Push our array we made in algorithm
-        //console.log("Preferensce score for the random allocation (ver: " + version + ")", totalPrefScore);
       }
       
       // Updates the day
@@ -209,11 +207,11 @@ async function allocate(res, days, version) {
     globalState.totalAssigned = allocationArray.length;
     globalState.totalFailed = notAssignedBookings.length;
 
-    // Handling the different approaches to calculating the occupancy score before the preference optimization algorithm is ran on version 0 and 1.
+    // Handling the different approaches to calculating the occupancy score before the preference optimization algorithm is ran over the versions.
     if (version === 2) {
       globalState.sumOfPreferencesAfter = 0;
       globalState.sumOfPreferencesBefore = 0;
-      // Iterates through the prefScoreArrayBefore after its been filled by prefScores.js - with the purpose of evaluating.
+      // Iterates through the prefScoreArrayBefore after its been filled by prefScores.js and assigning to the sums so they can be displayed - with the purpose of evaluating.
       for (let i of prefScoreArrayBefore) {
         globalState.sumOfPreferencesBefore += i;
         globalState.sumOfPreferencesAfter += i
@@ -221,19 +219,19 @@ async function allocate(res, days, version) {
     } else {
       globalState.sumOfPreferencesAfter = 0;
       globalState.sumOfPreferencesBefore = 0;
-      // Iterates through the prefScoreArray after its been filled by algorithm.js - with the purpose of evaluating.
+      // Iterates through the prefScoreArray after its been filled by algorithm.js and assigning to the sum so it can be displayed - with the purpose of evaluating.
       for (let i of prefScoreArray) {
         globalState.sumOfPreferencesAfter += i;
       } 
 
-      // Iterates through the prefScoreArrayBefore after its been filled by prefScores.js - with the purpose of evaluating.
+      // Iterates through the prefScoreArrayBefore after its been filled by prefScores.js and assigning to the sums so it can be displayed - with the purpose of evaluating.
       for (let i of prefScoreArrayBefore) {
             globalState.sumOfPreferencesBefore += i;
       }
     }
     
     // Function call to calculate the wasted space score after preference optimization which counts consecutive zeros and countZeros which counts all zeroes in the matrix.
-    globalState.lastWastedScore = wastedSpaceEvaluate(availabilityGrid); // Assume it returns a score
+    globalState.lastWastedScore = wastedSpaceEvaluate(availabilityGrid);
     globalState.ratioSlots = countZeroes();
 
     console.log("Average preferences of the allocation (ver: " + version + ")");
