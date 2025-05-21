@@ -7,9 +7,8 @@ import { loadBookings, loadRooms } from '../utils/getInfo.js';
 import { checkAvailability, availabilityGrid, insertBookings, dateDifference } from './availabilityMatrix.js';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
-import { start } from 'repl';
-import { globalState, roomsResourceIdToObject } from "../utils/globalVariables.js";
-import { calculatePrefScore, calculatePrefScoreRandom } from '../utils/prefScores.js';
+import { globalState } from "../utils/globalVariables.js";
+import { calculatePrefScoreRandom } from '../utils/prefScores.js';
 export { getVisibleBookings, matchBookingsToRooms, sortByDuration, timespanAvailability }
 
 // Get plugings from dayjs.
@@ -29,7 +28,7 @@ async function matchBookingsToRooms(version) {
         const { roomsInfo } = await loadRooms();
 
         // Variables for calculating preference score, for random allocation.
-        let totalRandomPrefScore = 0;
+        let prefScoreBefore = 0;
         let randomPrefScore = 0;
 
         // Use function to create array of the bookings that should be visible for a given date.
@@ -61,11 +60,11 @@ async function matchBookingsToRooms(version) {
                 
                 // If this booking starts today, add it to our final array.
                 if (dayjs(booking.checkInDate).isSame(globalState.currentDay, 'day')) {
-                    // If version is 2, calculate preference score.
-                    if (version === 2) {
-                        randomPrefScore = await calculatePrefScoreRandom(booking, parseInt(booking.resourceIds));
-                        totalRandomPrefScore += randomPrefScore;
-                    }
+                    
+                    // Calculate the preference score before the preference optimization algorithm has been ran.
+                    randomPrefScore = await calculatePrefScoreRandom(booking, parseInt(booking.resourceIds));
+                    prefScoreBefore += randomPrefScore;
+                    
                     // Title for booking, which will be visible in calendar.
                     booking.title = booking.bookingId + " Guests: " + booking.guestsNumber + " Pref: " + randomPrefScore;
                     finalArray.push(booking);
@@ -80,9 +79,9 @@ async function matchBookingsToRooms(version) {
         // Update the real availability grid with today's new bookings.
         if (version === 2) {
             insertBookings(finalArray, availabilityGrid);
-            return { finalArray, totalRandomPrefScore, discardedBookings };
+            return { finalArray, prefScoreBefore, discardedBookings, availabilityGrid };
         }
-        return { visibleBookings, discardedBookings };
+        return { visibleBookings, prefScoreBefore, discardedBookings };
 
     } catch (error) {
         console.error("Error updating bookings:", error);
