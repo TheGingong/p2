@@ -1,4 +1,4 @@
-## Samarbejdspartnere
+## Collaborators
 - Frederik Sperling Schacksen (https://github.com/FrederikSperling)
 - Peter Tinning Moestrup (https://github.com/UniPinu)
 - Mathias Østerskov Kejser (https://github.com/GakkiOne)
