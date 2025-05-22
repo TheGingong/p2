@@ -1,3 +1,7 @@
+# Project P2: Hotel Room Allocation System
+
+This document outlines the architecture and workflow of the P2 Hotel Room Allocation System. The system is a web application designed to simulate and evaluate different strategies for assigning hotel room bookings.
+
 ## Collaborators
 - Frederik Sperling Schacksen (https://github.com/FrederikSperling)
 - Peter Tinning Moestrup (https://github.com/UniPinu)
@@ -6,11 +10,6 @@
 - Mads Møller Pedersen (https://github.com/MadsMoneyCrank)
 - Victoria Myrup Pedersen (https://github.com/Venil0u)
 - William Strandby Bauer (https://github.com/TheGingong)
-
-
-# Project P2: Hotel Room Allocation System
-
-This document outlines the architecture and workflow of the P2 Hotel Room Allocation System. The system is a web application designed to simulate and evaluate different strategies for assigning hotel room bookings.
 
 ## 1. Overview
 
