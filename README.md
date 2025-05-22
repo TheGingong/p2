@@ -1,8 +1,12 @@
-Commands:
-Command to use after rebasing from main in local branch and you get an error with FETCH-HEAD:
-git push --force-with-lease origin YOUR-BRANCH-CHANGE-THIS
+## Samarbejdspartnere
+- Frederik Sperling Schacksen (https://github.com/FrederikSperling)
+- Peter Tinning Moestrup (https://github.com/UniPinu)
+- Mathias Østerskov Kejser (https://github.com/GakkiOne)
+- David Henning Bach (https://github.com/DrMachoo)
+- Mads Møller Pedersen (https://github.com/MadsMoneyCrank)
+- Victoria Myrup Pedersen (https://github.com/Venil0u)
+- William Strandby Bauer (https://github.com/TheGingong)
 
-Command to use when refreshing branches from origin: git remote update origin --prune
 
 # Project P2: Hotel Room Allocation System
 
@@ -134,5 +138,9 @@ The project is organized into server-side logic, client-side interface, and data
 *   **Stay Duration:** Bookings are first sorted by duration (longest first). Then, they are assigned to the first available room that fits. After this initial assignment for the day, `preferenceOptimization` attempts to swap bookings among their assigned rooms to improve overall preference scores.
 *   **Least Difference (Best Fit):** Bookings are sorted by duration. The `bestFit` algorithm then tries to place each booking in a room that not only fits but also minimizes gaps (empty days before this booking and after it, relative to other bookings). After this sophisticated initial assignment for the day, `preferenceOptimization` further refines placements based on preferences.
 
-Skal det her være med?
-This system provides a robust framework for simulating and comparing different hotel room allocation strategies, with a clear separation of concerns between frontend display, backend API/orchestration, and core algorithmic logic.
+
+Commands:
+Command to use after rebasing from main in local branch and you get an error with FETCH-HEAD:
+git push --force-with-lease origin YOUR-BRANCH-CHANGE-THIS
+
+Command to use when refreshing branches from origin: git remote update origin --prune
