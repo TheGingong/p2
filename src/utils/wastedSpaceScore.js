@@ -82,7 +82,6 @@ function wastedSpaceEvaluate(roomsObject) {
         // Initialize a variable to store the average gap length.
         let averageGapLength = 0;
 
-
         // Loop through each gap length recorded in consecutiveZeros.
         for (const gap of consecutiveZeros) { // Count up all the penalties for the gaps.
 			// Add the current gap length to the total gapLength.
