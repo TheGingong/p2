@@ -9,6 +9,7 @@
  */
 import { extractJSON, fileResponse, htmlResponse, extractForm, jsonResponse, errorResponse, reportError, startServer } from "./server.js";
 import { availabilityGrid, clearMatrix } from "./src/scripts/availabilityMatrix.js";
+import { generateRooms } from "./src/scripts/roomGenerator.js"
 import { roomsInfo, loadRooms } from "./src/utils/getInfo.js"
 import { storeBookings } from "./src/utils/impartial.js";
 import { prefScoreArrayBefore } from "./src/utils/prefScores.js";
