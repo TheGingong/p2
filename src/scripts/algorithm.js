@@ -3,11 +3,13 @@
  * Comparisons and swaps are made, as well as defining the necessary subfunctions. 
  */
 import { globalState, roomsIndexToResourceId, roomsResourceIdToObject } from "../utils/globalVariables.js";
-import { calculatePrefScore, prefScoreArray } from "../utils/prefScores.js";
+import { calculatePrefScore } from "../utils/prefScores.js";
 import { dateIndex, availabilityGrid, insertBookings } from "./availabilityMatrix.js";
 import { roomsInfo } from "../utils/getInfo.js";
 import { timespanAvailability } from "./assignBookings.js";
 export { preferenceOptimization, locateBestMatches }
+
+export let prefScoreArray = [];
 
 
 /**

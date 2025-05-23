@@ -11,7 +11,6 @@ export { appendToCalendar, resetMatrix, resetEverything, generateBatches, alloca
  * @param {string} - Specifies the rgb values with format "rgb(77, 160, 244)".
  */
 function appendToCalendar(bookings, colorValue) {
-    //console.log(bookings)
     // Iterates through each booking we want to append to the calendar. And the specifies the information to be displayed.
     for (let i = 0; i < bookings.length; i++) { 
         calendar.addEvent( {
@@ -35,6 +34,14 @@ function appendToCalendar(bookings, colorValue) {
 function resetEverything() {
     calendar.getEvents().forEach(event => event.remove()); // For every event, remove from calender
     resetMatrix();
+
+    // Resets the evaluation score table
+    document.getElementById('occupancy').textContent = "-"
+    document.getElementById('ratio').textContent = "-"
+    document.getElementById('avgPrefScoreBefore').textContent = "-"
+    document.getElementById('avgPrefScoreAfter').textContent = "-"
+    document.getElementById('assignedCount').textContent = "-"
+    document.getElementById('failedCount').textContent = "-"
 }
 
 /** 
@@ -61,7 +68,7 @@ function resetMatrix() {
 }
 
 /**
- * Function that sends a request to generate a batch of bookings, with the amount of bookings speficied.
+ * Function that sends a request to generate a batch of bookings, with the amount of bookings specified.
  */
 function generateBatches() {
     const amountOfBookingsInput = document.querySelector("#bookingsInput");
@@ -181,7 +188,6 @@ function allocateRandom() {
  * Is responsible of calling appendToCalendar with output from stayDuration algortihm
  */
 function allocateStayDuration() {
-
     // Get the value from the input field with id "dayInput"
     // This value is used to determine the number of days for allocation
     const dayInput = document.querySelector("#dayInput");
@@ -231,11 +237,12 @@ function updateEvaluationDisplay() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('avgPrefScore').textContent = data.avgPreference.toFixed(5);
+            document.getElementById('occupancy').textContent = data.occupancy.toFixed(5);
+            document.getElementById('ratio').textContent = data.ratio.toFixed(5);
+            document.getElementById('avgPrefScoreBefore').textContent = data.avgPreferenceBefore.toFixed(5);
+            document.getElementById('avgPrefScoreAfter').textContent = data.avgPreferenceAfter.toFixed(5);
             document.getElementById('assignedCount').textContent = data.assigned;
             document.getElementById('failedCount').textContent = data.failed;
-            document.getElementById('zeroCells').textContent = data.zeroCells.toFixed(5);
-            document.getElementById('wastedSpace').textContent = data.wastedScore.toFixed(5);
         })
         .catch(error => {
             console.error("Evaluation fetch error:", error);
