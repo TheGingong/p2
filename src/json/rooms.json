@@ -1,12 +1,16 @@
 [
 {
   "roomNumber": "101",
-  "roomGuests": 2,
+  "roomGuests": 1,
   "preference": {
     "floor": 1,
-    "beds": "s2q0",
-    "pref1": "opt1.5",
-    "pref8": "opt8.4"
+    "beds": "s1q0",
+    "pref1": "opt1.2",
+    "pref2": "opt2.5",
+    "pref3": "opt3.2",
+    "pref6": "opt6.3",
+    "pref7": "opt7.1",
+    "pref8": "opt8.1"
   }
 },
 {
@@ -15,9 +19,49 @@
   "preference": {
     "floor": 1,
     "beds": "s0q2",
-    "pref6": "opt6.3",
-    "pref7": "opt7.1",
-    "pref10": "opt10.1"
+    "pref6": "opt6.1"
+  }
+},
+{
+  "roomNumber": "103",
+  "roomGuests": 4,
+  "preference": {
+    "floor": 1,
+    "beds": "s0q2",
+    "pref1": "opt1.2",
+    "pref3": "opt3.1",
+    "pref7": "opt7.1"
+  }
+},
+{
+  "roomNumber": "104",
+  "roomGuests": 3,
+  "preference": {
+    "floor": 1,
+    "beds": "s1q1",
+    "pref1": "opt1.2",
+    "pref3": "opt3.1",
+    "pref5": "opt5.4"
+  }
+},
+{
+  "roomNumber": "105",
+  "roomGuests": 4,
+  "preference": {
+    "floor": 1,
+    "beds": "s0q2",
+    "pref2": "opt2.1",
+    "pref8": "opt8.5"
+  }
+},
+{
+  "roomNumber": "106",
+  "roomGuests": 3,
+  "preference": {
+    "floor": 1,
+    "beds": "s1q1",
+    "pref6": "opt6.2",
+    "pref9": "opt9.5"
   }
 },
 {
@@ -26,7 +70,8 @@
   "preference": {
     "floor": 2,
     "beds": "s1q1",
-    "pref1": "opt1.2"
+    "pref3": "opt3.4",
+    "pref8": "opt8.3"
   }
 },
 {
@@ -35,20 +80,59 @@
   "preference": {
     "floor": 2,
     "beds": "s2q0",
+    "pref5": "opt5.4"
+  }
+},
+{
+  "roomNumber": "203",
+  "roomGuests": 1,
+  "preference": {
+    "floor": 2,
+    "beds": "s1q0",
     "pref1": "opt1.1",
-    "pref3": "opt3.4",
+    "pref3": "opt3.3",
+    "pref8": "opt8.1"
+  }
+},
+{
+  "roomNumber": "204",
+  "roomGuests": 2,
+  "preference": {
+    "floor": 2,
+    "beds": "s2q0",
+    "pref2": "opt2.4",
+    "pref6": "opt6.1",
+    "pref10": "opt10.2"
+  }
+},
+{
+  "roomNumber": "205",
+  "roomGuests": 2,
+  "preference": {
+    "floor": 2,
+    "beds": "s0q1",
+    "pref2": "opt2.4",
     "pref4": "opt4.3",
-    "pref5": "opt5.5"
+    "pref5": "opt5.3",
+    "pref9": "opt9.2"
+  }
+},
+{
+  "roomNumber": "206",
+  "roomGuests": 2,
+  "preference": {
+    "floor": 2,
+    "beds": "s2q0",
+    "pref5": "opt5.3"
   }
 },
 {
   "roomNumber": "301",
-  "roomGuests": 1,
+  "roomGuests": 4,
   "preference": {
     "floor": 3,
-    "beds": "s1q0",
-    "pref3": "opt3.1",
-    "pref8": "opt8.2"
+    "beds": "s0q2",
+    "pref3": "opt3.3"
   }
 },
 {
@@ -57,38 +141,128 @@
   "preference": {
     "floor": 3,
     "beds": "s1q1",
-    "pref5": "opt5.3"
+    "pref2": "opt2.4",
+    "pref3": "opt3.4",
+    "pref5": "opt5.1"
+  }
+},
+{
+  "roomNumber": "303",
+  "roomGuests": 2,
+  "preference": {
+    "floor": 3,
+    "beds": "s2q0",
+    "pref3": "opt3.3",
+    "pref6": "opt6.1"
+  }
+},
+{
+  "roomNumber": "304",
+  "roomGuests": 1,
+  "preference": {
+    "floor": 3,
+    "beds": "s1q0",
+    "pref1": "opt1.3",
+    "pref2": "opt2.5",
+    "pref5": "opt5.4",
+    "pref8": "opt8.3",
+    "pref10": "opt10.4"
+  }
+},
+{
+  "roomNumber": "305",
+  "roomGuests": 1,
+  "preference": {
+    "floor": 3,
+    "beds": "s1q0"
+  }
+},
+{
+  "roomNumber": "306",
+  "roomGuests": 1,
+  "preference": {
+    "floor": 3,
+    "beds": "s1q0",
+    "pref3": "opt3.1",
+    "pref5": "opt5.1",
+    "pref7": "opt7.4",
+    "pref8": "opt8.2"
   }
 },
 {
   "roomNumber": "401",
-  "roomGuests": 2,
+  "roomGuests": 4,
   "preference": {
     "floor": 4,
-    "beds": "s0q1",
-    "pref1": "opt1.1",
-    "pref2": "opt2.4",
-    "pref4": "opt4.3",
-    "pref7": "opt7.1"
-  }
-},
-{
-  "roomNumber": "402",
-  "roomGuests": 1,
-  "preference": {
-    "floor": 4,
-    "beds": "s1q0",
-    "pref4": "opt4.4",
+    "beds": "s0q2",
+    "pref6": "opt6.5",
     "pref10": "opt10.1"
   }
 },
 {
-  "roomNumber": "501",
+  "roomNumber": "402",
   "roomGuests": 4,
   "preference": {
-    "floor": 5,
+    "floor": 4,
     "beds": "s0q2",
-    "pref8": "opt8.1"
+    "pref1": "opt1.2",
+    "pref3": "opt3.3",
+    "pref7": "opt7.2"
+  }
+},
+{
+  "roomNumber": "403",
+  "roomGuests": 2,
+  "preference": {
+    "floor": 4,
+    "beds": "s2q0",
+    "pref2": "opt2.4",
+    "pref7": "opt7.3"
+  }
+},
+{
+  "roomNumber": "404",
+  "roomGuests": 2,
+  "preference": {
+    "floor": 4,
+    "beds": "s2q0",
+    "pref3": "opt3.5",
+    "pref5": "opt5.3",
+    "pref6": "opt6.5",
+    "pref9": "opt9.5"
+  }
+},
+{
+  "roomNumber": "405",
+  "roomGuests": 1,
+  "preference": {
+    "floor": 4,
+    "beds": "s1q0",
+    "pref1": "opt1.2",
+    "pref2": "opt2.2",
+    "pref8": "opt8.1",
+    "pref9": "opt9.1",
+    "pref10": "opt10.2"
+  }
+},
+{
+  "roomNumber": "406",
+  "roomGuests": 4,
+  "preference": {
+    "floor": 4,
+    "beds": "s0q2",
+    "pref6": "opt6.3",
+    "pref8": "opt8.1",
+    "pref9": "opt9.2"
+  }
+},
+{
+  "roomNumber": "501",
+  "roomGuests": 3,
+  "preference": {
+    "floor": 5,
+    "beds": "s1q1",
+    "pref3": "opt3.1"
   }
 },
 {
@@ -97,89 +271,52 @@
   "preference": {
     "floor": 5,
     "beds": "s1q1",
-    "pref6": "opt6.5"
-  }
-},
-{
-  "roomNumber": "601",
-  "roomGuests": 2,
-  "preference": {
-    "floor": 6,
-    "beds": "s2q0",
-    "pref2": "opt2.4",
-    "pref7": "opt7.1"
-  }
-},
-{
-  "roomNumber": "602",
-  "roomGuests": 1,
-  "preference": {
-    "floor": 6,
-    "beds": "s1q0",
-    "pref3": "opt3.3"
-  }
-},
-{
-  "roomNumber": "701",
-  "roomGuests": 2,
-  "preference": {
-    "floor": 7,
-    "beds": "s2q0",
+    "pref5": "opt5.2",
     "pref6": "opt6.4"
   }
 },
 {
-  "roomNumber": "702",
-  "roomGuests": 1,
+  "roomNumber": "503",
+  "roomGuests": 3,
   "preference": {
-    "floor": 7,
-    "beds": "s1q0",
-    "pref2": "opt2.4",
-    "pref5": "opt5.4",
-    "pref7": "opt7.3",
-    "pref8": "opt8.4"
-  }
-},
-{
-  "roomNumber": "801",
-  "roomGuests": 4,
-  "preference": {
-    "floor": 8,
-    "beds": "s0q2",
-    "pref1": "opt1.5",
-    "pref4": "opt4.3"
-  }
-},
-{
-  "roomNumber": "802",
-  "roomGuests": 2,
-  "preference": {
-    "floor": 8,
-    "beds": "s2q0",
-    "pref1": "opt1.4",
-    "pref3": "opt3.3",
-    "pref5": "opt5.1",
-    "pref7": "opt7.5",
-    "pref10": "opt10.4"
-  }
-},
-{
-  "roomNumber": "901",
-  "roomGuests": 2,
-  "preference": {
-    "floor": 9,
-    "beds": "s2q0",
-    "pref4": "opt4.4"
-  }
-},
-{
-  "roomNumber": "902",
-  "roomGuests": 1,
-  "preference": {
-    "floor": 9,
-    "beds": "s1q0",
-    "pref6": "opt6.4",
+    "floor": 5,
+    "beds": "s1q1",
     "pref10": "opt10.5"
+  }
+},
+{
+  "roomNumber": "504",
+  "roomGuests": 2,
+  "preference": {
+    "floor": 5,
+    "beds": "s0q1",
+    "pref1": "opt1.4",
+    "pref2": "opt2.4",
+    "pref4": "opt4.1",
+    "pref5": "opt5.5",
+    "pref6": "opt6.3"
+  }
+},
+{
+  "roomNumber": "505",
+  "roomGuests": 1,
+  "preference": {
+    "floor": 5,
+    "beds": "s1q0",
+    "pref4": "opt4.5",
+    "pref5": "opt5.1",
+    "pref6": "opt6.1",
+    "pref7": "opt7.1"
+  }
+},
+{
+  "roomNumber": "506",
+  "roomGuests": 2,
+  "preference": {
+    "floor": 5,
+    "beds": "s0q1",
+    "pref5": "opt5.1",
+    "pref10": "opt10.4"
   }
 }
 ]

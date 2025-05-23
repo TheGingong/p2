@@ -55,8 +55,8 @@ let prefOddsGuests = 20; // ex. 20 => 1/20 = 5% chance
 let prefOddsRooms = 4;
 
 // Room generation variables: 
-let buildingFloors = 9; // Floors in the hotel.
-let roomsPerFloor = 2; // How many rooms to generate for every floor.
+let buildingFloors = 5; // Floors in the hotel.
+let roomsPerFloor = 6; // How many rooms to generate for every floor.
 let maxGuests = 4; // Maximum guests for largest room (-1 because we add in the random generation).
 
 /**
