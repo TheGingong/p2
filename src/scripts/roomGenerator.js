@@ -22,7 +22,9 @@ async function generateRooms () {
     // Loop that generates rooms, and inserts them into the array for a said amount of rooms per floor for each floor.
     for (let i = 1; i <= buildingFloors; i++) {
         for (let j = 1; j <= roomsPerFloor; j++) {
-            console.log(`Room Number (${i}, ${j}):`, generateRoomNumber(i, j));
+            // Generate room number, console log for progress reports. 
+            let roomNumber = generateRoomNumber(i, j)
+            console.log(`Room Number (${i}, ${j}):`, roomNumber);
             // Generate amount of maximum guest space.
             let guests = generateGuests(maxGuests);
             // Generate object to hold preferences, followed by generation of preferences to fill object.
@@ -31,7 +33,7 @@ async function generateRooms () {
             generateSoftPrefs(preference, prefOddsRooms, 0);
 
             let roomObject = {
-                "roomNumber" : generateRoomNumber(i, j),
+                "roomNumber" : roomNumber,
                 "roomGuests" : guests,
                 "preference" : preference
             };
