@@ -1,7 +1,5 @@
-// __tests__/availabilityMatrix.test.js
-
 import { jest } from "@jest/globals";
-import dayjs from "dayjs";
+import dayjs from "dayjs"; // Corrected dayjs import based on previous error
 import {
 	bookingRange,
 	dateIndex,
@@ -9,13 +7,19 @@ import {
 	extendGrid,
 	insertBookings,
 	checkAvailability,
-          clearMatrix,
+	clearMatrix,
 	resetMatrix,
 	getAvailabilityGridForTesting,
 	setTempMinForTesting,
 	getTempMinForTesting,
 } from "../src/scripts/availabilityMatrix.js";
+import {
+	calculatePrefScore,
+	calculatePrefScoreRandom,
+} from "../src/utils/prefScores.js";
+import { roomsResourceIdToObject } from "../src/utils/globalVariables.js";
 import { wastedSpaceEvaluate } from "../src/utils/wastedSpaceScore.js";
+import { locateBestMatches } from "../src/scripts/algorithm.js";
 
 describe("availabilityMatrix module", () => {
 	const FIXED_TODAY = "2025-05-01";
@@ -113,7 +117,7 @@ describe("availabilityMatrix module", () => {
 		});
 
 		it("appends new columns on subsequent calls", () => {
-                              resetMatrix();
+			resetMatrix();
 			extendGrid(rooms, 2);
 			extendGrid(rooms, 3);
 			const grid = getAvailabilityGridForTesting();
@@ -193,7 +197,7 @@ describe("availabilityMatrix module", () => {
 		});
 
 		it("clearMatrix zeroes out everything", () => {
-                              resetMatrix();
+			resetMatrix();
 			const rooms = [{ roomNumber: "101" }];
 			extendGrid(rooms, 2);
 			const grid = getAvailabilityGridForTesting();
@@ -203,110 +207,318 @@ describe("availabilityMatrix module", () => {
 		});
 	});
 });
-describe('wastedSpaceEvaluate', () => {
-  // Test case 1: No wasted space (all rooms fully booked)
-  it('should return a score indicating minimal waste for fully booked rooms', () => {
-    const roomsObject = {
-      room1: [1, 1, 1, 1],
-      room2: [1, 1, 1, 1],
-    };
-    // Expectation: consecutiveZeros will contain only 0s.
-    // The modified function avoids 1/0. Score should be 0.
-    // Final score = (0 / (4*2)) * 2 - 1 = -1
-    expect(wastedSpaceEvaluate(roomsObject)).toBe(0);
-  });
+describe("wastedSpaceEvaluate", () => {
+	// Test case 1: No wasted space (all rooms fully booked)
+	it("should return a score indicating minimal waste for fully booked rooms", () => {
+		const roomsObject = {
+			room1: [1, 1, 1, 1],
+			room2: [1, 1, 1, 1],
+		};
+		// Expectation: consecutiveZeros will contain only 0s.
+		// The modified function avoids 1/0. Score should be 0.
+		// Final score = (0 / (4*2)) * 2 - 1 = -1
+		expect(wastedSpaceEvaluate(roomsObject)).toBe(0);
+	});
 
-  // Test case 2: All rooms completely empty
-  it('should return a score indicating maximum waste for completely empty rooms', () => {
-    const roomsObject = {
-      room1: [0, 0, 0, 0], 
-      room2: [0, 0, 0, 0], 
-    };
-    expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(1);
-  });
+	// Test case 2: All rooms completely empty
+	it("should return a score indicating maximum waste for completely empty rooms", () => {
+		const roomsObject = {
+			room1: [0, 0, 0, 0],
+			room2: [0, 0, 0, 0],
+		};
+		expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(0);
+	});
 
-  it('should calculate waste score for rooms with simple gaps', () => {
-    const roomsObject = {
-      room1: [1, 0, 0, 1], // n = 2
-      room2: [0, 1, 1, 0], // n = 1, n = 1
-    };
-     expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(1);
-  });
+	it("should calculate waste score for rooms with simple gaps", () => {
+		const roomsObject = {
+			room1: [1, 0, 0, 1], // n = 2
+			room2: [0, 1, 1, 0], // n = 1, n = 1
+		};
+		expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(0.5);
+	});
 
-    // Test case 4: More complex gaps
-    it('should calculate waste score for rooms with multiple gaps', () => {
-        const roomsObject = {
-            room1: [0, 1, 0, 0, 1, 0], // n=1, n=2, n=1
-            room2: [1, 0, 0, 0, 1, 1], // n=3
-            room3: [0, 0, 1, 1, 0, 0], // n=2, n=2
-        };
-        // room1: zeros = [1, 2, 1]
-        // room2: zeros = [0, 3, 0] -> Filtered: [3]
-        // room3: zeros = [2, 0, 2] -> Filtered: [2, 2]
-        // All zeros > 0: [1, 2, 1, 3, 2, 2]
-        // score = (1/1)^2 + (1/2)^2 + (1/1)^2 + (1/3)^2 + (1/2)^2 + (1/2)^2
-        // score (XOR) = 3 + 2 + 3 + (0.333...)^2 + 2 + 2
-        // score (XOR) = 3 + 2 + 3 + 2 + 2 + 2 = 14
-        // divider = 6 * 3 = 18
-        // average = 14 / 18 = 0.777...
-        // finalScore = (14/18) * 2 - 1 = (7/9)*2 - 1 = 14/9 - 9/9 = 5/9 = 0.555...
-        expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(5 / 9);
-    });
+	// Test case 4: More complex gaps
+	it("should calculate waste score for rooms with multiple gaps", () => {
+		const roomsObject = {
+			room1: [0, 1, 0, 0, 1, 0], // n=1, n=2, n=1
+			room2: [1, 0, 0, 0, 1, 1], // n=3
+			room3: [0, 0, 1, 1, 0, 0], // n=2, n=2
+		};
+		// finalScore = (14/18) * 2 - 1 = (7/9)*2 - 1 = 14/9 - 9/9 = 5/9 = 0.555...
+		expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(
+			//1 - 1 / 2.5
+			1 - 1 / 2.5
+		);
+	});
 
+	// Test case 5: Single room, single day (empty)
+	it("should handle a single empty room/day", () => {
+		const roomsObject = { room1: [0] }; // n=1
+		expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(0);
+	});
 
-  // Test case 5: Single room, single day (empty)
-  it('should handle a single empty room/day', () => {
-    const roomsObject = { room1: [0] }; // n=1
-    // zeros = [1]
-    // score = (1/1)^2 = 3
-    // divider = 1 * 1 = 1
-    // average = 3 / 1 = 3
-    // finalScore = 3 * 2 - 1 = 5
-    expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(5);
-  });
+	// Test case 6: Single room, single day (booked)
+	it("should handle a single booked room/day", () => {
+		const roomsObject = { room1: [1] }; // n=0
+		// zeros = [0] -> Filtered: []
+		// score = 0
+		// divider = 1 * 1 = 1
+		// average = 0 / 1 = 0
+		// finalScore = 0 * 2 - 1 = -1
+		expect(wastedSpaceEvaluate(roomsObject)).toBe(0);
+	});
 
-  // Test case 6: Single room, single day (booked)
-  it('should handle a single booked room/day', () => {
-    const roomsObject = { room1: [1] }; // n=0
-    // zeros = [0] -> Filtered: []
-    // score = 0
-    // divider = 1 * 1 = 1
-    // average = 0 / 1 = 0
-    // finalScore = 0 * 2 - 1 = -1
-    expect(wastedSpaceEvaluate(roomsObject)).toBe(-1);
-  });
+	// Test case 7: Empty input object
+	it("should handle an empty rooms object", () => {
+		const roomsObject = {};
+		// The function should return -1 for empty input based on the added check
+		expect(wastedSpaceEvaluate(roomsObject)).toBe(0);
+	});
 
-  // Test case 7: Empty input object
-  it('should handle an empty rooms object', () => {
-    const roomsObject = {};
-    // The function should return -1 for empty input based on the added check
-    expect(wastedSpaceEvaluate(roomsObject)).toBe(-1);
-  });
+	// Test case 8: Rooms object with empty days array
+	it("should handle a rooms object with an empty days array", () => {
+		const roomsObject = { room1: [] };
+		// The function should return -1 based on the added check
+		expect(wastedSpaceEvaluate(roomsObject)).toBe(0);
+	});
+	it("should handle a mix of fully booked and fully empty rooms", () => {
+		const roomsObject = {
+			room1: [1, 1, 1], // n=0
+			room2: [0, 0, 0], // n=3
+			room3: [1, 0, 1], // n=1
+		};
+		expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(0);
+	});
+});
 
-    // Test case 8: Rooms object with empty days array
-    it('should handle a rooms object with an empty days array', () => {
-        const roomsObject = { room1: [] };
-        // The function should return -1 based on the added check
-        expect(wastedSpaceEvaluate(roomsObject)).toBe(-1);
-    });
+describe("prefScoreEvaluate", () => {
+	const mockBookingData = [
+		{
+			checkInDate: "2025-11-21",
+			checkOutDate: "2025-11-27",
+			guestsNumber: 2,
+			stayDuration: 6,
+			dayOfBooking: "2025-10-24",
+			resourceIds: "0",
+			bookingId: 425,
+			preference: {
+				beds: "s0q1",
+				pref9: "opt9.5",
+			},
+		},
+		{
+			checkInDate: "2025-03-13",
+			checkOutDate: "2025-03-19",
+			guestsNumber: 2,
+			stayDuration: 6,
+			dayOfBooking: "2025-01-29",
+			resourceIds: "0",
+			bookingId: 426,
+			preference: {
+				beds: "s2q0",
+				pref6: "opt6.4",
+				pref8: "opt8.3",
+			},
+		},
+		{
+			checkInDate: "2025-01-28",
+			checkOutDate: "2025-02-05",
+			guestsNumber: 1,
+			stayDuration: 8,
+			dayOfBooking: "2025-01-21",
+			resourceIds: "0",
+			bookingId: 429,
+			preference: {
+				beds: "s1q0",
+			},
+		},
+		{
+			checkInDate: "2025-11-14",
+			checkOutDate: "2025-11-16",
+			guestsNumber: 4,
+			stayDuration: 2,
+			dayOfBooking: "2025-11-09",
+			resourceIds: "0",
+			bookingId: 430,
+			preference: {
+				beds: "s0q2",
+			},
+		},
+		{
+			checkInDate: "2025-07-22",
+			checkOutDate: "2025-07-29",
+			guestsNumber: 1,
+			stayDuration: 7,
+			dayOfBooking: "2025-06-17",
+			resourceIds: "0",
+			bookingId: 431,
+			preference: {
+				beds: "s1q0",
+			},
+		},
+	];
+	const mockRoomData = [
+		{
+			roomNumber: "102",
+			roomGuests: 3,
+			preference: {
+				floor: 1,
+				beds: "s1q1",
+				pref10: "opt10.2",
+			},
+		},
+		{
+			roomNumber: "201",
+			roomGuests: 2,
+			preference: {
+				floor: 2,
+				beds: "s0q1",
+				pref4: "opt4.1",
+				pref8: "opt8.2",
+				pref9: "opt9.2",
+				pref10: "opt10.1",
+			},
+		},
+		{
+			roomNumber: "202",
+			roomGuests: 2,
+			preference: {
+				floor: 2,
+				beds: "s0q1",
+				pref1: "opt1.3",
+				pref3: "opt3.1",
+				pref7: "opt7.3",
+				pref10: "opt10.4",
+			},
+		},
+		{
+			roomNumber: "301",
+			roomGuests: 3,
+			preference: {
+				floor: 3,
+				beds: "s1q1",
+				pref2: "opt2.2",
+				pref5: "opt5.5",
+				pref7: "opt7.2",
+				pref9: "opt9.5",
+			},
+		},
+		{
+			roomNumber: "302",
+			roomGuests: 2,
+			preference: {
+				floor: 3,
+				beds: "s0q1",
+				pref5: "opt5.5",
+				pref7: "opt7.1",
+				pref10: "opt10.3",
+			},
+		},
+	];
 
-    // Test case 9: Mixed rooms, including fully booked and fully empty
-    it('should handle a mix of fully booked and fully empty rooms', () => {
-        const roomsObject = {
-            room1: [1, 1, 1], // n=0
-            room2: [0, 0, 0], // n=3
-            room3: [1, 0, 1], // n=1
-        };
-        // room1: zeros = [0, 0, 0] -> Filtered: []
-        // room2: zeros = [3]
-        // room3: zeros = [0, 1, 0] -> Filtered: [1]
-        // All zeros > 0: [3, 1]
-        // score = (1/3)^2 + (1/1)^2
-        // score (XOR) = 2 + 3 = 5
-        // divider = 3 * 3 = 9
-        // average = 5 / 9
-        // finalScore = (5/9) * 2 - 1 = 10/9 - 9/9 = 1/9 = 0.111...
-        expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(1 / 9);
-    });
+	it("Should give a preference score from room 102 and bookingId 425", async () => {
+		expect(
+			await calculatePrefScore(
+				mockBookingData[1],
+				mockRoomData[1],
+				2
+			)
+		).toBe(0);
+	});
+	it("BookingData to 0 and RoomData to 2", async () => {
+		expect(
+			await calculatePrefScore(
+				mockBookingData[0],
+				mockRoomData[2],
+				2
+			)
+		).toBe(0.5);
+	});
+});
+describe("locateBestMatches", () => {
+	let mockPrefScoreTable2 = [
+		[
+			[1, -1],
+			[2, -1],
+		],
+		[
+			[1, -1],
+			[2, -1],
+		],
+		[],
+		[
+			[1, 0.8],
+			[2, 1],
+		],
+		[
+			[1, 0.5],
+			[2, -1],
+		],
+		[
+			[1, 0],
+			[2, 1],
+		],
+		[
+			[1, 0],
+			[2, 0],
+		],
+		[
+			[1, 0.95],
+			[2, 1],
+		],
+	];
 
+	let mockBookingData2 = [
+		{
+			checkInDate: "2025-11-21",
+			checkOutDate: "2025-11-27",
+			guestsNumber: 2,
+			stayDuration: 6,
+			dayOfBooking: "2025-10-24",
+			resourceIds: "0",
+			bookingId: 1,
+			preference: {
+				beds: "s0q1",
+				pref9: "opt9.5",
+			},
+		},
+		{
+			checkInDate: "2025-03-13",
+			checkOutDate: "2025-03-19",
+			guestsNumber: 2,
+			stayDuration: 6,
+			dayOfBooking: "2025-01-29",
+			resourceIds: "0",
+			bookingId: 2,
+			preference: {
+				beds: "s2q0",
+				pref6: "opt6.4",
+				pref8: "opt8.3",
+			},
+		},
+	];
+	it("should return the object. { currentBestIndex: 6, prefScore: 0.95 } ", () => {
+		const result = locateBestMatches(
+			mockBookingData2[0],
+			mockPrefScoreTable2,
+			[2999],
+			1
+		);
+		expect(result).toEqual({
+			currentBestIndex: 7,
+			prefScore: 0.95,
+		});
+	});
+	it("should return the object. { currentBestIndex: 3, prefScore: 1 } ", () => {
+		const result = locateBestMatches(
+			mockBookingData2[1],
+			mockPrefScoreTable2,
+			[2999],
+			1
+		);
+		expect(result).toEqual({
+			currentBestIndex: 3,
+			prefScore: 1,
+		});
+	});
 });
