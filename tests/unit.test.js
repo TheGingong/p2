@@ -245,10 +245,10 @@ describe("wastedSpaceEvaluate", () => {
 			room3: [0, 0, 1, 1, 0, 0], // n=2, n=2
 		};
 		// finalScore = (14/18) * 2 - 1 = (7/9)*2 - 1 = 14/9 - 9/9 = 5/9 = 0.555...
-		expect(wastedSpaceEvaluate(roomsObject))
-			.toBeCloseTo
+		expect(wastedSpaceEvaluate(roomsObject)).toBeCloseTo(
 			//1 - 1 / 2.5
-			();
+			1 - 1 / 2.5
+		);
 	});
 
 	// Test case 5: Single room, single day (empty)
@@ -434,4 +434,91 @@ describe("prefScoreEvaluate", () => {
 			)
 		).toBe(0.5);
 	});
-          });
+});
+describe("locateBestMatches", () => {
+	let mockPrefScoreTable2 = [
+		[
+			[1, -1],
+			[2, -1],
+		],
+		[
+			[1, -1],
+			[2, -1],
+		],
+		[],
+		[
+			[1, 0.8],
+			[2, 1],
+		],
+		[
+			[1, 0.5],
+			[2, -1],
+		],
+		[
+			[1, 0],
+			[2, 1],
+		],
+		[
+			[1, 0],
+			[2, 0],
+		],
+		[
+			[1, 0.95],
+			[2, 1],
+		],
+	];
+
+	let mockBookingData2 = [
+		{
+			checkInDate: "2025-11-21",
+			checkOutDate: "2025-11-27",
+			guestsNumber: 2,
+			stayDuration: 6,
+			dayOfBooking: "2025-10-24",
+			resourceIds: "0",
+			bookingId: 1,
+			preference: {
+				beds: "s0q1",
+				pref9: "opt9.5",
+			},
+		},
+		{
+			checkInDate: "2025-03-13",
+			checkOutDate: "2025-03-19",
+			guestsNumber: 2,
+			stayDuration: 6,
+			dayOfBooking: "2025-01-29",
+			resourceIds: "0",
+			bookingId: 2,
+			preference: {
+				beds: "s2q0",
+				pref6: "opt6.4",
+				pref8: "opt8.3",
+			},
+		},
+	];
+	it("should return the object. { currentBestIndex: 6, prefScore: 0.95 } ", () => {
+		const result = locateBestMatches(
+			mockBookingData2[0],
+			mockPrefScoreTable2,
+			[2999],
+			1
+		);
+		expect(result).toEqual({
+			currentBestIndex: 7,
+			prefScore: 0.95,
+		});
+	});
+	it("should return the object. { currentBestIndex: 3, prefScore: 1 } ", () => {
+		const result = locateBestMatches(
+			mockBookingData2[1],
+			mockPrefScoreTable2,
+			[2999],
+			1
+		);
+		expect(result).toEqual({
+			currentBestIndex: 3,
+			prefScore: 1,
+		});
+	});
+});

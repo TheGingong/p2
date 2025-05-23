@@ -12,13 +12,17 @@ export let prefScoreArray = [];
  * @param {Integer} room The ID of a room
  * @returns {Float} Returns the preference score for that booking, for a single day. 
  */
-async function calculatePrefScore(booking, room) {
+async function calculatePrefScore(booking, room, test = null) {
     // Score is initialized to be 1, and may be scaled down afterwards
     let score = 1;
     
     // Load the object containing the data on the parsed room ID.
-    const roomDetails = roomsResourceIdToObject[room];
-    
+    let roomDetails;
+    if (test == null) {
+    roomDetails = roomsResourceIdToObject[room];
+    } else {
+          roomDetails = room;
+    }
     // Load how many total preferences for the booking.
     const amountOfPreferences = Object.keys(booking.preference);
 

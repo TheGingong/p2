@@ -7,7 +7,8 @@ import { calculatePrefScore, prefScoreArray } from "../utils/prefScores.js";
 import { dateIndex, availabilityGrid, insertBookings } from "./availabilityMatrix.js";
 import { roomsInfo } from "../utils/getInfo.js";
 import { timespanAvailability } from "./assignBookings.js";
-export { preferenceOptimization }
+export { preferenceOptimization, locateBestMatches }
+
 
 /**
  * Main optimzation function, which will call on subfunctions to optimize hotel bookings according to certain variables.
@@ -160,7 +161,7 @@ function prioritySwaps(booksStartingToday) {
  * @param {Array} roomArray - Array containing all room numbers for the hotel
  * @returns {Object} object containing the index of the best room match, and the corresponding prefscore
  */ 
-function locateBestMatches(booking, prefScoreTable, roomArray) {
+function locateBestMatches(booking, prefScoreTable, roomArray, test = null) {
     let currentBestScore = -Infinity;
     let currentBestIndex = -1;
     let prefScore = 0;
@@ -173,8 +174,9 @@ function locateBestMatches(booking, prefScoreTable, roomArray) {
         if (!Array.isArray(roomScores) || roomScores.length === 0) continue;
         
         // Checks if the room is actually valid. Meaning that the room is not locked in availability grid.
+        if (test == null) {
         if (!timespanAvailability(roomNum, booking.checkInDate, booking.checkOutDate, availabilityGrid)) continue;
-
+        }
         for (let [bookingId, score] of roomScores) {
             if (bookingId === booking.bookingId && score > currentBestScore) {
                 currentBestScore = score;
