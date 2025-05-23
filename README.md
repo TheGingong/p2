@@ -137,10 +137,3 @@ The project is organized into server-side logic, client-side interface, and data
 *   **Stay Duration:** Bookings are first sorted by duration (longest first). Then, they are assigned to the first available room that fits. After this initial assignment for the day, `preferenceOptimization` attempts to swap bookings among their assigned rooms to improve overall preference scores.
 *   **Least Difference (Best Fit):** Bookings are sorted by duration. The `bestFit` algorithm then tries to place each booking in a room that not only fits but also minimizes gaps (empty days before this booking and after it, relative to other bookings). After this sophisticated initial assignment for the day, `preferenceOptimization` further refines placements based on preferences.
 
-
-### Commands for the group
-Commands:
-Command to use after rebasing from main in local branch and you get an error with FETCH-HEAD:
-git push --force-with-lease origin YOUR-BRANCH-CHANGE-THIS
-
-Command to use when refreshing branches from origin: git remote update origin --prune
