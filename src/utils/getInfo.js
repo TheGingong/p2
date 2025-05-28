@@ -4,7 +4,6 @@
  * In both cases, the loaded and then returned data is an array 
  * containing objects with the necessary information for a booking or room. 
  */
-
 import { readFile } from 'fs/promises'; // Imports function readFile from File System library.
 import path from 'path'
 import { fileURLToPath } from 'url';

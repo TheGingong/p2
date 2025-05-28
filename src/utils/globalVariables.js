@@ -35,7 +35,7 @@ let globalState = {
     }
 }
 
-// Available room/booking preferences.
+// Available rooms and booking preferences.
 let roomTypes = ["s1q0","s2q0","s0q1","s1q1","s0q2"]; // Bed layouts/room types.
 let totalPrefs = { // Object containing all the soft preference options.
     pref1  : ["opt1.1", "opt1.2", "opt1.3", "opt1.4", "opt1.5"],

@@ -6,24 +6,23 @@
     <title>Hotel Calendar</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/allocate.css">
-    <!--<script src="https://unpkg.com/@popperjs/core@2"></script>-->
     <div id="controls">
       <label for="dayInput">Number of days to allocate:</label>
       <input type="number" id="dayInput" name="dayInput" value="30" min="0" step="1" />
 
       <button id="allocateButtonLeastDiff">
         <span class="color-indicator least-diff"></span>
-        Allocate least difference
+        Allocate Best-Fit
       </button>
     
       <button id="allocateButtonStayDuration">
         <span class="color-indicator duration"></span>
-        Allocate stay duration
+        Allocate First-Fit
       </button>
     
       <button id="allocateButtonRandom">
         <span class="color-indicator random"></span>
-        Allocate random
+        Allocate Random
       </button>
 
       <label for="bookingsInput">Amount of bookings:</label>
@@ -47,10 +46,10 @@
     <div id="evaluationOutput" style="margin-top: 1rem; padding: 1rem; border: 1px solid #ccc; border-radius: 8px;">
       <h3>Evaluation Summary</h3>
       <ul>
-        <li><strong>Occupancy Score:</strong> <span id="occupancy">-</span></li>
-        <li><strong>Ratio of filled slots:</strong> <span id="ratio">-</span></li>
-        <li><strong>Avg. Preference Score before preference optimization:</strong> <span id="avgPrefScoreBefore">-</span></li>
-        <li><strong>Avg. Preference Score after preference optimization:</strong> <span id="avgPrefScoreAfter">-</span></li>
+        <li><strong>Wasted space score:</strong> <span id="occupancy">-</span></li>
+        <li><strong>Ratio of filled slots (occupancy):</strong> <span id="ratio">-</span></li>
+        <li><strong>Avg. Preference score before preference optimization:</strong> <span id="avgPrefScoreBefore">-</span></li>
+        <li><strong>Avg. Preference score after preference optimization:</strong> <span id="avgPrefScoreAfter">-</span></li>
         <li><strong>Assigned Bookings:</strong> <span id="assignedCount">-</span></li>
         <li><strong>Failed Bookings:</strong> <span id="failedCount">-</span></li>
       </ul>
@@ -82,13 +81,12 @@
     let randomElem = document.querySelector("#allocateButtonRandom");
     randomElem.addEventListener("click", allocateRandom);
 
-    // Allocate and sort by stay duration and best fit.
+    // Allocate and sort by stay duration and Best-Fit.
     let allocateLDElem = document.querySelector("#allocateButtonLeastDiff");
     allocateLDElem.addEventListener("click", allocateLeastDiff);
 
-    // Allocate and sort by stay duration only.
+    // Allocate and sort by stay duration (First-Fit) only.
     let allocateSDElem = document.querySelector("#allocateButtonStayDuration");
     allocateSDElem.addEventListener("click", allocateStayDuration);
-
   </script>
 </html>

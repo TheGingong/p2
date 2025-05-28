@@ -1,7 +1,7 @@
 /**
- * This fil
+ * This file contains how we handle the main data structure for keeping track of bookings and looking up in the bookings.
+ * The file includes functions for inserting bookings, extending the availability grid (matrix) and resetting it.
  */
-import { bookingsInfo, roomsInfo } from "../utils/getInfo.js";
 import dayjs from "dayjs";
 import { globalState } from "../utils/globalVariables.js";
 export { extendGrid, bookingRange, availabilityGrid, insertBookings, 
@@ -85,8 +85,6 @@ function extendGrid(rooms, dateRange) {
 				dateRange
 			).fill(0);
 		});
-		//console.log("avtempGRidailabilityGrid");
-		//console.log(tempGrid);
 
 		// Appends the array from tempGrid to the corresponding array in availabilityGrid.
 		for (let roomNumber in tempGrid) {
@@ -96,9 +94,6 @@ function extendGrid(rooms, dateRange) {
 			);
 		}
 	}
-	// Console logs and shows the availability grid visually.
-	//console.log("availabilityGrid");
-	//console.log(availabilityGrid);
 }
 
 /**

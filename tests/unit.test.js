@@ -13,11 +13,7 @@ import {
 	setTempMinForTesting,
 	getTempMinForTesting,
 } from "../src/scripts/availabilityMatrix.js";
-import {
-	calculatePrefScore,
-	calculatePrefScoreRandom,
-} from "../src/utils/prefScores.js";
-import { roomsResourceIdToObject } from "../src/utils/globalVariables.js";
+import { calculatePrefScore } from "../src/utils/prefScores.js";
 import { wastedSpaceEvaluate } from "../src/utils/wastedSpaceScore.js";
 import { locateBestMatches } from "../src/scripts/algorithm.js";
 

@@ -36,12 +36,12 @@ function resetEverything() {
     resetMatrix();
 
     // Resets the evaluation score table
-    document.getElementById('occupancy').textContent = "-"
-    document.getElementById('ratio').textContent = "-"
-    document.getElementById('avgPrefScoreBefore').textContent = "-"
-    document.getElementById('avgPrefScoreAfter').textContent = "-"
-    document.getElementById('assignedCount').textContent = "-"
-    document.getElementById('failedCount').textContent = "-"
+    document.getElementById('occupancy').textContent = "-";
+    document.getElementById('ratio').textContent = "-";
+    document.getElementById('avgPrefScoreBefore').textContent = "-";
+    document.getElementById('avgPrefScoreAfter').textContent = "-";
+    document.getElementById('assignedCount').textContent = "-";
+    document.getElementById('failedCount').textContent = "-";
 }
 
 /** 

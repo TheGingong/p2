@@ -3,9 +3,8 @@
  * that are in charge of generating the data on the simulated hotel's rooms.
  */
 import fs from 'fs/promises'
-import { roomTypes, totalPrefs, prefOddsRooms, buildingFloors, roomsPerFloor, maxGuests } from '../utils/globalVariables.js'
+import { prefOddsRooms, buildingFloors, roomsPerFloor, maxGuests } from '../utils/globalVariables.js'
 import { generateSoftPrefs, generateRoomTypes } from '../utils/preferences.js'
-import { bookingsInfo, loadBookings } from '../utils/getInfo.js';
 export { generateRoomNumber, generateRooms, generateGuests, generateRoomTypes }
 
 /** 
@@ -52,7 +51,6 @@ async function generateRooms () {
     await fs.appendFile(roomsPath, "\n]", "utf8");
 }
 
-
 /**
  * Function that generates a room number, adding the floor and the room number.
  * E.g. room number "109" is room 9 on floor 1.
@@ -73,5 +71,3 @@ function generateRoomNumber(roomFloor, roomNumber) {
 function generateGuests (maximumGuests) {
     return Math.floor((Math.random() * maximumGuests) + 1);
 }
-
-

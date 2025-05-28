@@ -1,5 +1,5 @@
 /**
- * This file contains functions and the like for generating the bookings' and rooms' preferences. 
+ * This file contains functions for generating the bookings' and rooms' preferences. 
  */
 import { roomTypes, buildingFloors, totalPrefs } from './globalVariables.js'
 export { generateSoftPrefs, generateRoomTypes }

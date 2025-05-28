@@ -7,10 +7,8 @@ import { calculatePrefScore } from "../utils/prefScores.js";
 import { dateIndex, availabilityGrid, insertBookings } from "./availabilityMatrix.js";
 import { roomsInfo } from "../utils/getInfo.js";
 import { timespanAvailability } from "./assignBookings.js";
-export { preferenceOptimization, locateBestMatches }
-
+export { preferenceOptimization, locateBestMatches };
 export let prefScoreArray = [];
-
 
 /**
  * Main optimzation function, which will call on subfunctions to optimize hotel bookings according to certain variables.

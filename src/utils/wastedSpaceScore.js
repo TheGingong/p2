@@ -86,7 +86,6 @@ function wastedSpaceEvaluate(roomsObject) {
         for (const gap of consecutiveZeros) { // Count up all the penalties for the gaps.
 			// Add the current gap length to the total gapLength.
 			gapLength += gap;
-			//console.log(gap);
         }
 
         // Check if there were any gaps found (i.e., gapLength is not zero).
