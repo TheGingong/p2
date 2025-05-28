@@ -18,6 +18,7 @@ This document outlines the architecture and workflow of the P2 Hotel Room Alloca
 - Download the files from Github
 - Install the necasary dependencies
 - Run Router.js
+- Side note: Program defaults to view from current month, So if running a few amount of days, remember to go back to January
 
 
 ## 1. Overview
