@@ -3,6 +3,7 @@
 This document outlines the architecture and workflow of the P2 Hotel Room Allocation System. The system is a web application designed to simulate and evaluate different strategies for assigning hotel room bookings.
 
 ## Collaborators
+
 - Frederik Sperling Schacksen (https://github.com/FrederikSperling)
 - Peter Tinning Moestrup (https://github.com/UniPinu)
 - Mathias Østerskov Kejser (https://github.com/GakkiOne)
@@ -10,6 +11,15 @@ This document outlines the architecture and workflow of the P2 Hotel Room Alloca
 - Mads Møller Pedersen (https://github.com/MadsMoneyCrank)
 - Victoria Myrup Pedersen (https://github.com/Venil0u)
 - William Strandby Bauer (https://github.com/TheGingong)
+
+
+## How To Run The Program
+
+- Download the files from Github
+- Install the necasary dependencies
+   - Dayjs
+- Run Router.js
+
 
 ## 1. Overview
 
